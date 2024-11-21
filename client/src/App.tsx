@@ -7,6 +7,8 @@ import Dashboard from "./dashboards/admin/Dashboard";
 // import Support from "./dashboards/admin/pages/support";
 import Doctors from "./dashboards/admin/pages/doctors";
 
+import AddDoctorForm from "./dashboards/admin/pages/addDoctorForm";
+
 const App: React.FC = () => {
   return (
     <Router>
@@ -29,6 +31,7 @@ const App: React.FC = () => {
               <Route path="/activity" element={<div>Activity Page</div>} />
               <Route path="/settings" element={<div>Settings Page</div>} />
               {/* <Route path="/support" element={<Support />} /> */}
+              <Route path="/add-doctor" element={<AddDoctorForm />} />
             </Routes>
           </div>
         </div>
