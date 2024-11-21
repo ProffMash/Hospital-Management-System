@@ -7,8 +7,8 @@ const Sidebar: React.FC = () => {
     { name: "Overview", icon: <FaHome />, path: "/" },
     { name: "Doctors", icon: <FaUserMd />, path: "/admin/doctors" },
     { name: "Patients", icon: <FaUsers />, path: "/admin/patients" },
-    { name: "Settings", icon: <FaCog />, path: "/admin/settings" },
     { name: "Support", icon: <FaHeadset />, path: "/admin/support" },
+    { name: "Settings", icon: <FaCog />, path: "/admin/settings" },
   ];
 
   return (
