@@ -3,8 +3,8 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Sidebar from "./dashboards/admin/Sidebar";
 import Navbar from "./dashboards/admin/Navbar";
 import Dashboard from "./dashboards/admin/Dashboard";
-import Patients from "./dashboards/admin/pages/patients";
-import Support from "./dashboards/admin/pages/support";
+// import Patients from "./dashboards/admin/pages/patients";
+// import Support from "./dashboards/admin/pages/support";
 import Doctors from "./dashboards/admin/pages/doctors";
 
 const App: React.FC = () => {
@@ -24,11 +24,11 @@ const App: React.FC = () => {
             <Routes>
               <Route path="/" element={<Dashboard />} />
               <Route path="/doctors" element={<Doctors />} />
-              <Route path="/patients" element={<Patients />} />
+              {/* <Route path="/patients" element={<Patients />} /> */}
               {/* Add routes for activity and settings */}
               <Route path="/activity" element={<div>Activity Page</div>} />
               <Route path="/settings" element={<div>Settings Page</div>} />
-              <Route path="/support" element={<Support />} />
+              {/* <Route path="/support" element={<Support />} /> */}
             </Routes>
           </div>
         </div>
