@@ -1,13 +1,12 @@
 import React from "react";
-import { Link } from "react-router-dom"; // Import Link for navigation
-import { FaHome, FaUserMd, FaUsers, FaChartPie, FaCog, FaHeadset } from "react-icons/fa";
+import { Link } from "react-router-dom"; 
+import { FaHome, FaUserMd, FaUsers, FaCog, FaHeadset } from "react-icons/fa";
 
 const Sidebar: React.FC = () => {
   const menuItems = [
     { name: "Overview", icon: <FaHome />, path: "/" },
     { name: "Doctors", icon: <FaUserMd />, path: "/admin/doctors" },
     { name: "Patients", icon: <FaUsers />, path: "/admin/patients" },
-    // { name: "Activity", icon: <FaChartPie />, path: "/admin/activity" },
     { name: "Settings", icon: <FaCog />, path: "/admin/settings" },
     { name: "Support", icon: <FaHeadset />, path: "/admin/support" },
   ];
