@@ -4,10 +4,10 @@ import { FaHome, FaUserMd, FaUsers, FaChartPie, FaCog, FaHeadset } from "react-i
 
 const Sidebar: React.FC = () => {
   const menuItems = [
-    { name: "Overview", icon: <FaHome />, path: "/admin" },
+    { name: "Overview", icon: <FaHome />, path: "/" },
     { name: "Doctors", icon: <FaUserMd />, path: "/admin/doctors" },
     { name: "Patients", icon: <FaUsers />, path: "/admin/patients" },
-    { name: "Activity", icon: <FaChartPie />, path: "/admin/activity" },
+    // { name: "Activity", icon: <FaChartPie />, path: "/admin/activity" },
     { name: "Settings", icon: <FaCog />, path: "/admin/settings" },
     { name: "Support", icon: <FaHeadset />, path: "/admin/support" },
   ];
