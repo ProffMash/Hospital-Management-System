@@ -1,14 +1,15 @@
 import React from "react";
+import { Link } from "react-router-dom"; // Import Link for navigation
 import { FaHome, FaUserMd, FaUsers, FaChartPie, FaCog, FaHeadset } from "react-icons/fa";
 
 const Sidebar: React.FC = () => {
   const menuItems = [
-    { name: "Overview", icon: <FaHome /> },
-    { name: "Doctors", icon: <FaUserMd /> },
-    { name: "Patients", icon: <FaUsers /> },
-    { name: "Activity", icon: <FaChartPie /> },
-    { name: "Settings", icon: <FaCog /> },
-    { name: "Support", icon: <FaHeadset /> },
+    { name: "Overview", icon: <FaHome />, path: "/" },
+    { name: "Doctors", icon: <FaUserMd />, path: "/doctors" },
+    { name: "Patients", icon: <FaUsers />, path: "/patients" },
+    { name: "Activity", icon: <FaChartPie />, path: "/activity" },
+    { name: "Settings", icon: <FaCog />, path: "/settings" },
+    { name: "Support", icon: <FaHeadset />, path: "/support" },
   ];
 
   return (
@@ -17,8 +18,10 @@ const Sidebar: React.FC = () => {
       <ul>
         {menuItems.map((item, index) => (
           <li key={index} className="flex items-center gap-4 p-3 rounded-lg hover:bg-blue-100 cursor-pointer">
-            <span className="text-blue-600">{item.icon}</span>
-            <span className="text-gray-700">{item.name}</span>
+            <Link to={item.path} className="flex items-center gap-4 text-gray-700">
+              <span className="text-blue-600">{item.icon}</span>
+              <span>{item.name}</span>
+            </Link>
           </li>
         ))}
       </ul>

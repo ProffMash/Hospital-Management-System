@@ -15,7 +15,7 @@ import {
 // Register required Chart.js components
 ChartJS.register(LineElement, PointElement, CategoryScale, LinearScale, ArcElement, Tooltip, Legend);
 
-const Overview: React.FC = () => {
+const Dashboard: React.FC = () => {
   // Data for the Line Chart
   const lineChartData = {
     labels: ["Week 1", "Week 2", "Week 3", "Week 4"],
@@ -222,4 +222,4 @@ const DepartmentProgress: React.FC<{ name: string; progress: number }> = ({
   </div>
 );
 
-export default Overview;
+export default Dashboard;
