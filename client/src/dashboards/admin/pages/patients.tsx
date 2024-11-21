@@ -30,7 +30,7 @@ const Patients: React.FC = () => {
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold text-blue-600">Patients</h1>
         <button
-          onClick={() => navigate("/add-patient")}
+          onClick={() => navigate("/admin/add-patient")}
           className="flex items-center bg-blue-600 text-white px-4 py-2 rounded-md shadow hover:bg-blue-700"
         >
           <FaUserPlus className="mr-2" />

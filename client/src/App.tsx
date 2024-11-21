@@ -4,9 +4,9 @@ import Sidebar from "./dashboards/admin/Sidebar";
 import Navbar from "./dashboards/admin/Navbar";
 import Dashboard from "./dashboards/admin/Dashboard";
 import Patients from "./dashboards/admin/pages/patients";
-// import Support from "./dashboards/admin/pages/support";
+import Support from "./dashboards/admin/pages/support";
 import Doctors from "./dashboards/admin/pages/doctors";
-// import Activity from "./dashboards/admin/pages/activities";
+// import Activity from "./dashboards/admin/pages/activity";
 
 import AddDoctorForm from "./dashboards/admin/pages/addDoctorForm";
 import AddPatientForm from "./dashboards/admin/pages/addPatientForm";
@@ -26,14 +26,14 @@ const App: React.FC = () => {
           {/* Page Content */}
           <div className="flex-grow p-4">
             <Routes>
-              <Route path="/" element={<Dashboard />} />
-              <Route path="/doctors" element={<Doctors />} />
-              <Route path="/patients" element={<Patients />} />
-              <Route path="/settings" element={<div>Settings Page</div>} />
-              {/* <Route path="/activity" element={<Activity />} /> */}
-              {/* <Route path="/support" element={<Support />} /> */}
-              <Route path="/add-doctor" element={<AddDoctorForm />} />
-              <Route path="/add-patient" element={<AddPatientForm />} />
+              <Route path="/admin" element={<Dashboard />} />
+              <Route path="/admin/doctors" element={<Doctors />} />
+              <Route path="/admin/patients" element={<Patients />} />
+              <Route path="/admin/settings" element={<div>Settings Page</div>} />
+              {/* <Route path="/admin/activity" element={<Activity />} /> */}
+              <Route path="/support" element={<Support />} />
+              <Route path="/admin/add-doctor" element={<AddDoctorForm />} />
+              <Route path="/admin/add-patient" element={<AddPatientForm />} />
             </Routes>
           </div>
         </div>

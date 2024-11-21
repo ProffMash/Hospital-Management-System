@@ -8,7 +8,7 @@ const AddPatientForm: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     alert("Patient added successfully!");
-    navigate("/patients"); // Navigate back to the Patients page after form submission
+    navigate("/admin/patients"); // Navigate back to the Patients page after form submission
   };
 
   return (
@@ -16,7 +16,7 @@ const AddPatientForm: React.FC = () => {
       <div className="relative w-full max-w-lg bg-white shadow-lg rounded-lg p-8">
         {/* Back Button */}
         <button
-          onClick={() => navigate("/patients")}
+          onClick={() => navigate("/admin/patients")}
           className="absolute top-4 left-4 text-gray-600 hover:text-blue-600 flex items-center gap-1"
         >
           <FaArrowLeft className="text-xl" />

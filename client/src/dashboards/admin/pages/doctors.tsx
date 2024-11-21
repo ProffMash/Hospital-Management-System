@@ -45,7 +45,7 @@ const Doctors: React.FC = () => {
         </h1>
         <button
           className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-md shadow hover:bg-blue-700"
-          onClick={() => navigate("/add-doctor")}
+          onClick={() => navigate("/admin/add-doctor")}
         >
           Add Doctor
         </button>

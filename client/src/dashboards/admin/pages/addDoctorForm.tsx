@@ -16,7 +16,7 @@ const AddDoctorForm: React.FC = () => {
       <div className="relative w-full max-w-lg bg-white shadow-lg rounded-lg p-8">
         {/* Back Button */}
         <button
-          onClick={() => navigate("/doctors")}
+          onClick={() => navigate("/admin/doctors")}
           className="absolute top-4 left-4 text-gray-600 hover:text-blue-600 flex items-center gap-1"
         >
           <FaArrowLeft className="text-xl" />
