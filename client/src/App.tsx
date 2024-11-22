@@ -24,15 +24,15 @@
 
 //           {/* Page Content */}
 //           <div className="flex-grow p-4">
-//             <Routes>
-//               <Route path="/" element={<Dashboard />} />
-//               <Route path="/admin/doctors" element={<Doctors />} />
-//               <Route path="/admin/patients" element={<Patients />} />
-//               <Route path="/admin/settings" element={<div>Settings Page</div>} />
-//               <Route path="/admin/support" element={<Support />} />
-//               <Route path="/admin/add-doctor" element={<AddDoctorForm />} />
-//               <Route path="/admin/add-patient" element={<AddPatientForm />} />
-//             </Routes>
+            // <Routes>
+            //   <Route path="/" element={<Dashboard />} />
+            //   <Route path="/admin/doctors" element={<Doctors />} />
+            //   <Route path="/admin/patients" element={<Patients />} />
+            //   <Route path="/admin/settings" element={<div>Settings Page</div>} />
+            //   <Route path="/admin/support" element={<Support />} />
+            //   <Route path="/admin/add-doctor" element={<AddDoctorForm />} />
+            //   <Route path="/admin/add-patient" element={<AddPatientForm />} />
+            // </Routes>
 //           </div>
 //         </div>
 //       </div>
@@ -81,15 +81,15 @@ const App: React.FC = () => {
 
                 {/* Page Content */}
                 <div className="flex-grow p-4">
-                  <Routes>
-                    <Route path="dashboard" element={<Dashboard />} />
-                    <Route path="doctors" element={<Doctors />} />
-                    <Route path="patients" element={<Patients />} />
-                    <Route path="settings" element={<div>Settings Page</div>} />
-                    <Route path="support" element={<Support />} />
-                    <Route path="add-doctor" element={<AddDoctorForm />} />
-                    <Route path="add-patient" element={<AddPatientForm />} />
-                  </Routes>
+                <Routes>
+              <Route path="/" element={<Dashboard />} />
+              <Route path="/admin/doctors" element={<Doctors />} />
+              <Route path="/admin/patients" element={<Patients />} />
+              <Route path="/admin/settings" element={<div>Settings Page</div>} />
+              <Route path="/admin/support" element={<Support />} />
+              <Route path="/admin/add-doctor" element={<AddDoctorForm />} />
+              <Route path="/admin/add-patient" element={<AddPatientForm />} />
+            </Routes>
                 </div>
               </div>
             </div>

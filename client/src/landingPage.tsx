@@ -1,177 +1,144 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import { FaHeartbeat, FaTooth, FaEye, FaCalendarAlt } from 'react-icons/fa';
 
-const LandingPage = () => {
-  const [hospitalCount, setHospitalCount] = useState(0);
-  const [doctorCount, setDoctorCount] = useState(0);
-
-  // Counter animation
-  useEffect(() => {
-    const incrementCounter = (setter: React.Dispatch<React.SetStateAction<number>>, target: number) => {
-      let count = 0;
-      const interval = setInterval(() => {
-        count += Math.ceil(target / 100); // Increment step
-        if (count >= target) {
-          setter(target);
-          clearInterval(interval);
-        } else {
-          setter(count);
-        }
-      }, 20); // Interval speed
-    };
-
-    incrementCounter(setHospitalCount, 1000);
-    incrementCounter(setDoctorCount, 4000);
-  }, []);
-
+const LandingPage: React.FC = () => {
   return (
-    <div className="bg-gradient-to-r from-teal-100 to-teal-50 min-h-screen p-8 flex flex-col items-center">
-      <div className="max-w-6xl w-full">
-        {/* Health Facilities Section */}
-        <div className="text-center">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-800">
-            Get convenience for your health facilities.
-          </h1>
-          <p className="text-lg text-gray-600 mt-4">
-            We help you to access health services easily anytime and anywhere.
-          </p>
-          <div className="mt-8 flex justify-center gap-4">
-            <button className="bg-teal-500 text-white py-2 px-6 rounded-lg hover:bg-teal-600 transition">
-              Try for free
-            </button>
-            <button className="text-teal-500 border border-teal-500 py-2 px-6 rounded-lg hover:bg-teal-100 transition">
-              Sign in
-            </button>
-          </div>
+    <div className="font-sans text-gray-700 scroll-smooth">
+      {/* Navbar */}
+      <header className="bg-white shadow-md sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
+          <div className="text-2xl font-bold text-blue-900">Medinik 💊</div>
+          <nav className="hidden md:flex space-x-6 text-gray-600">
+            <a href="#home" className="hover:text-blue-600">Home</a>
+            <a href="#about" className="hover:text-blue-600">About</a>
+            <a href="#services" className="hover:text-blue-600">Services</a>
+            <a href="#experience" className="hover:text-blue-600">Experience</a>
+            <a href="#contact" className="hover:text-blue-600">Contact</a>
+          </nav>
+          <button className="bg-blue-600 text-white py-2 px-4 rounded-full hover:bg-blue-700 text-sm">
+            Free Consultation
+          </button>
         </div>
+      </header>
 
-        {/* Features Section */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
-          <div className="flex flex-col items-center text-center p-6 border rounded-lg shadow-lg bg-white">
-            <div className="text-4xl text-teal-500 mb-4">🏥</div>
-            <h3 className="font-bold text-lg text-gray-800">Hospitals</h3>
-            <p className="text-2xl font-bold text-teal-600 mt-2">{hospitalCount}+</p>
-            <p className="text-gray-600 mt-2">
-              More than {hospitalCount} hospitals across Asia provide top-notch healthcare services.
+      {/* Hero Section */}
+      <div id="home" className="bg-gradient-to-r from-blue-50 via-white to-blue-50 px-8 py-16">
+        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between">
+          <div className="text-center lg:text-left">
+            <h1 className="text-4xl md:text-6xl font-bold text-blue-900 mb-4">
+              Your Health Is <br /> Our Top Priority
+            </h1>
+            <p className="text-gray-500 mb-6">
+              There are many variations of passages of Lorem Ipsum available, <br /> but the majority have suffered.
             </p>
+            <button className="bg-blue-600 text-white py-2 px-6 rounded-full hover:bg-blue-700">
+              Meet Our Specialist
+            </button>
           </div>
-          <div className="flex flex-col items-center text-center p-6 border rounded-lg shadow-lg bg-white">
-            <div className="text-4xl text-teal-500 mb-4">👨‍⚕️</div>
-            <h3 className="font-bold text-lg text-gray-800">Doctors</h3>
-            <p className="text-2xl font-bold text-teal-600 mt-2">{doctorCount}+</p>
-            <p className="text-gray-600 mt-2">
-              {doctorCount}+ certified doctors ready to assist with your medical needs.
-            </p>
-          </div>
-          <div className="flex flex-col items-center text-center p-6 border rounded-lg shadow-lg bg-white">
-            <div className="text-4xl text-teal-500 mb-4">🩺</div>
-            <h3 className="font-bold text-lg text-gray-800">Patient Safety</h3>
-            <p className="text-gray-600 mt-2">
-              We prioritize the security and privacy of your health data.
-            </p>
-          </div>
-        </div>
-
-        {/* Appointment Booking Section */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-16">
-          <div className="bg-white p-8 rounded-lg shadow-lg">
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">
-              Book an Appointment
-            </h2>
-            <form className="space-y-4">
-              <select className="w-full border border-gray-300 p-2 rounded-lg">
-                <option>Select a Doctor</option>
-                <option>Dr. Smith</option>
-                <option>Dr. Johnson</option>
-                <option>Dr. Brown</option>
-              </select>
-              <input
-                type="text"
-                placeholder="Your Name"
-                className="w-full border border-gray-300 p-2 rounded-lg"
-              />
-              <input
-                type="email"
-                placeholder="Your Email"
-                className="w-full border border-gray-300 p-2 rounded-lg"
-              />
-              <input
-                type="tel"
-                placeholder="Your Phone"
-                className="w-full border border-gray-300 p-2 rounded-lg"
-              />
-              <input
-                type="date"
-                className="w-full border border-gray-300 p-2 rounded-lg"
-              />
-              <button
-                type="submit"
-                className="bg-teal-500 text-white py-2 px-4 rounded-lg hover:bg-teal-600 transition w-full"
-              >
-                Book Now ✈️
-              </button>
-            </form>
-          </div>
-
-          <div>
-            <h2 className="text-2xl font-bold text-teal-600 mb-4">
-              Medical Departments
-            </h2>
-            <div className="grid grid-cols-2 gap-4">
-              {['Cardiology', 'Orthopedics', 'Pediatrics', 'Ophthalmology'].map(
-                (department, index) => (
-                  <div
-                    key={index}
-                    className="border border-gray-300 p-4 rounded-lg bg-white text-center"
-                  >
-                    {department}
-                  </div>
-                )
-              )}
+          <div className="relative mt-8 lg:mt-0">
+            <img
+              src="https://i.pinimg.com/736x/dd/40/50/dd40509960ebe444518919fc5530104b.jpg"
+              alt="Nurse"
+              className="w-full max-w-sm rounded-lg shadow-lg"
+            />
+            <div className="absolute top-4 right-4 bg-white p-3 rounded-lg shadow-md">
+              <p className="text-green-600 font-medium flex items-center">
+                <FaCalendarAlt className="mr-2" /> Regular Checkup
+              </p>
             </div>
           </div>
         </div>
-
-        {/* Happy Clients Section */}
-        <div className="mt-16">
-          <h2 className="text-center text-3xl font-bold text-teal-600 mb-8">
-            Happy Clients Say
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {[
-              {
-                name: 'Angela Jolie',
-                role: 'Designer',
-                feedback:
-                  'The doctors and services here are outstanding. Highly recommend!',
-                image:
-                  'https://randomuser.me/api/portraits/women/44.jpg',
-              },
-              {
-                name: 'John Doe',
-                role: 'Engineer',
-                feedback:
-                  'I had a great experience with their patient-centered care.',
-                image:
-                  'https://randomuser.me/api/portraits/men/32.jpg',
-              },
-            ].map((client, index) => (
-              <div
-                key={index}
-                className="bg-gray-800 text-white p-6 rounded-lg shadow-lg flex items-center"
-              >
-                <img
-                  src={client.image}
-                  alt={client.name}
-                  className="w-16 h-16 rounded-full mr-4"
-                />
-                <div>
-                  <h3 className="font-bold">{client.name}</h3>
-                  <p className="text-sm">{client.role}</p>
-                  <p className="text-sm mt-2">{client.feedback}</p>
-                </div>
-              </div>
-            ))}
+        <div className="mt-10 flex justify-center gap-8 text-center">
+          <div>
+            <p className="text-2xl font-semibold text-blue-900">262k+</p>
+            <p className="text-gray-500">Recovered Patients</p>
           </div>
+          <div>
+            <p className="text-2xl font-semibold text-blue-900">94%</p>
+            <p className="text-gray-500">Satisfaction Rate</p>
+          </div>
+          <div>
+            <p className="text-2xl font-semibold text-blue-900">86+</p>
+            <p className="text-gray-500">Expert Doctors</p>
+          </div>
+        </div>
+      </div>
+
+      {/* About Section */}
+      <div id="about" className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto text-center">
+          <h2 className="text-3xl font-bold text-blue-900 mb-8">About Us</h2>
+          <p className="text-gray-500 text-lg">
+            At Medinik, we combine modern technology with personalized care to deliver world-class medical services. 
+            Our mission is to ensure every patient receives the attention they deserve.
+          </p>
+        </div>
+      </div>
+
+      {/* Services Section */}
+      <div id="services" className="py-16 bg-blue-50">
+        <div className="max-w-7xl mx-auto text-center">
+          <h2 className="text-3xl font-bold text-blue-900 mb-8">Services For Your Health</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="p-6 bg-white rounded-lg text-center shadow-md hover:shadow-lg">
+              <FaHeartbeat className="text-blue-600 text-4xl mx-auto mb-4" />
+              <h3 className="font-semibold text-lg text-blue-900">Cardiology</h3>
+              <p className="text-gray-500 text-sm mt-2">Sed ut perspiciatis unde omnis iste natus error.</p>
+            </div>
+            <div className="p-6 bg-white rounded-lg text-center shadow-md hover:shadow-lg">
+              <FaCalendarAlt className="text-blue-600 text-4xl mx-auto mb-4" />
+              <h3 className="font-semibold text-lg text-blue-900">Monthly Checkup</h3>
+              <p className="text-gray-500 text-sm mt-2">Sed ut perspiciatis unde omnis iste natus error.</p>
+            </div>
+            <div className="p-6 bg-white rounded-lg text-center shadow-md hover:shadow-lg">
+              <FaTooth className="text-blue-600 text-4xl mx-auto mb-4" />
+              <h3 className="font-semibold text-lg text-blue-900">Dental Care</h3>
+              <p className="text-gray-500 text-sm mt-2">Sed ut perspiciatis unde omnis iste natus error.</p>
+            </div>
+            <div className="p-6 bg-white rounded-lg text-center shadow-md hover:shadow-lg">
+              <FaEye className="text-blue-600 text-4xl mx-auto mb-4" />
+              <h3 className="font-semibold text-lg text-blue-900">Ophthalmology</h3>
+              <p className="text-gray-500 text-sm mt-2">Sed ut perspiciatis unde omnis iste natus error.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Experience Section */}
+      <div id="experience" className="py-16 bg-gradient-to-r from-white via-blue-50 to-white">
+        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center">
+          <div className="lg:w-1/2 text-center lg:text-left">
+            <h3 className="text-xl font-bold text-blue-900 mb-4">25+ Years of Experience</h3>
+            <h2 className="text-3xl font-bold text-blue-900 mb-6">
+              We Always Ensure <br /> Best Medical Treatment For Your Health
+            </h2>
+            <p className="text-gray-500 mb-6">
+              There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration.
+            </p>
+            <button className="bg-blue-600 text-white py-2 px-6 rounded-full hover:bg-blue-700">
+              Learn More
+            </button>
+          </div>
+          <div className="lg:w-1/2 mt-8 lg:mt-0 flex justify-center">
+            <img
+              src="https://i.pinimg.com/736x/f6/74/91/f67491f2ca95f80844b6474dd26505ed.jpg"
+              alt="Doctors"
+              className="rounded-lg shadow-lg"
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Contact Section */}
+      <div id="contact" className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto text-center">
+          <h2 className="text-3xl font-bold text-blue-900 mb-8">Contact Us</h2>
+          <p className="text-gray-500">
+            Have questions? Reach out to us for more information or to schedule your consultation.
+          </p>
+          <button className="mt-6 bg-blue-600 text-white py-2 px-6 rounded-full hover:bg-blue-700">
+            Get in Touch
+          </button>
         </div>
       </div>
     </div>
