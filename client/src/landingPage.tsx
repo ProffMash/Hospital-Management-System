@@ -1,5 +1,29 @@
 import React from 'react';
 import { FaHeartbeat, FaTooth, FaEye, FaCalendarAlt } from 'react-icons/fa';
+import { useState, useEffect } from 'react';
+
+const Counter: React.FC<{ target: number }> = ({ target }) => {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    const increment = target / 100;
+    let currentCount = 0;
+
+    const interval = setInterval(() => {
+      currentCount += increment;
+      if (currentCount >= target) {
+        setCount(target);
+        clearInterval(interval);
+      } else {
+        setCount(Math.ceil(currentCount));
+      }
+    }, 30);
+
+    return () => clearInterval(interval);
+  }, [target]);
+
+  return <span>{count}</span>;
+};
 
 const LandingPage: React.FC = () => {
   return (
@@ -50,15 +74,21 @@ const LandingPage: React.FC = () => {
         </div>
         <div className="mt-10 flex justify-center gap-8 text-center">
           <div>
-            <p className="text-2xl font-semibold text-blue-900">262k+</p>
+            <p className="text-2xl font-semibold text-blue-900">
+              <Counter target={262000} />+
+            </p>
             <p className="text-gray-500">Recovered Patients</p>
           </div>
           <div>
-            <p className="text-2xl font-semibold text-blue-900">94%</p>
+            <p className="text-2xl font-semibold text-blue-900">
+              <Counter target={94} />%
+            </p>
             <p className="text-gray-500">Satisfaction Rate</p>
           </div>
           <div>
-            <p className="text-2xl font-semibold text-blue-900">86+</p>
+            <p className="text-2xl font-semibold text-blue-900">
+              <Counter target={86} />+
+            </p>
             <p className="text-gray-500">Expert Doctors</p>
           </div>
         </div>
