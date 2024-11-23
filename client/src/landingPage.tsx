@@ -75,8 +75,8 @@ const LandingPage: React.FC = () => {
                 Your Health Is <br /> Our Top Priority
               </h1>
               <p className="text-gray-500 mb-6">
-                There are many variations of passages of Lorem Ipsum available, <br /> but the
-                majority have suffered.
+              Medinik offers comprehensive, patient-focused healthcare services tailored to meet 
+              your unique needs. Experience medical care like never before.
               </p>
               <button className="bg-blue-600 text-white py-2 px-6 rounded-full hover:bg-blue-700">
                 Meet Our Specialist
@@ -179,8 +179,8 @@ const LandingPage: React.FC = () => {
                 We Always Ensure <br /> Best Medical Treatment For Your Health
               </h2>
               <p className="text-gray-500 mb-6">
-                There are many variations of passages of Lorem Ipsum available, but the majority
-                have suffered alteration.
+              Our decades of experience combined with innovative techniques ensure the best 
+              outcomes for our patients.
               </p>
               <button className="bg-blue-600 text-white py-2 px-6 rounded-full hover:bg-blue-700">
                 Learn More
