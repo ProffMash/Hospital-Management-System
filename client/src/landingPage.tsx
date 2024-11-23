@@ -86,7 +86,7 @@ const LandingPage: React.FC = () => {
               <a href="#contact" className="hover:text-blue-600">Contact</a>
             </nav>
             <button className="bg-blue-600 text-white py-2 px-4 rounded-full hover:bg-blue-700 text-sm">
-              Free Consultation
+              Staff Portal
             </button>
           </div>
         </header>
