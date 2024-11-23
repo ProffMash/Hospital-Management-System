@@ -138,28 +138,32 @@ const LandingPage: React.FC = () => {
                 <FaHeartbeat className="text-blue-600 text-4xl mx-auto mb-4" />
                 <h3 className="font-semibold text-lg text-blue-900">Cardiology</h3>
                 <p className="text-gray-500 text-sm mt-2">
-                  Sed ut perspiciatis unde omnis iste natus error.
+                Advanced diagnostics and treatments for cardiovascular health, tailored to 
+                minimize risks and improve quality of life.
                 </p>
               </div>
               <div className="p-6 bg-white rounded-lg text-center shadow-md hover:shadow-lg">
                 <FaCalendarAlt className="text-blue-600 text-4xl mx-auto mb-4" />
                 <h3 className="font-semibold text-lg text-blue-900">Monthly Checkup</h3>
                 <p className="text-gray-500 text-sm mt-2">
-                  Sed ut perspiciatis unde omnis iste natus error.
+                Routine health assessments to monitor your overall well-being and prevent 
+                potential issues before they arise.
                 </p>
               </div>
               <div className="p-6 bg-white rounded-lg text-center shadow-md hover:shadow-lg">
                 <FaTooth className="text-blue-600 text-4xl mx-auto mb-4" />
                 <h3 className="font-semibold text-lg text-blue-900">Dental Care</h3>
                 <p className="text-gray-500 text-sm mt-2">
-                  Sed ut perspiciatis unde omnis iste natus error.
+                Comprehensive dental services, from preventive cleanings to advanced procedures 
+                for a brighter, healthier smile.
                 </p>
               </div>
               <div className="p-6 bg-white rounded-lg text-center shadow-md hover:shadow-lg">
                 <FaEye className="text-blue-600 text-4xl mx-auto mb-4" />
                 <h3 className="font-semibold text-lg text-blue-900">Ophthalmology</h3>
                 <p className="text-gray-500 text-sm mt-2">
-                  Sed ut perspiciatis unde omnis iste natus error.
+                Cutting-edge eye care solutions for clear vision and effective treatment of eye 
+                disorders.
                 </p>
               </div>
             </div>
