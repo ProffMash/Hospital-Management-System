@@ -5,7 +5,7 @@ import { Chart, registerables } from 'chart.js';
 
 Chart.register(...registerables);
 
-const Dashboard: React.FC = () => {
+const PharmacyDashboard: React.FC = () => {
   const salesData = {
     labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
     datasets: [
@@ -96,4 +96,4 @@ const Dashboard: React.FC = () => {
   );
 };
 
-export default Dashboard;
+export default PharmacyDashboard;
