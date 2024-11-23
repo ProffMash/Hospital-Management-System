@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { FaHeartbeat, FaTooth, FaEye, FaCalendarAlt } from 'react-icons/fa';
+import React, { useState, useEffect } from "react";
+import { FaHeartbeat, FaTooth, FaEye, FaCalendarAlt, FaTimes } from "react-icons/fa";
 
 const Counter: React.FC<{ target: number }> = ({ target }) => {
   const [count, setCount] = useState(0);
@@ -25,13 +25,50 @@ const Counter: React.FC<{ target: number }> = ({ target }) => {
 };
 
 const LandingPage: React.FC = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [appointmentDate, setAppointmentDate] = useState("");
+  const [appointmentTime, setAppointmentTime] = useState("");
+
+  const handleModalToggle = () => setIsModalOpen(!isModalOpen);
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    alert(`Appointment scheduled for ${appointmentDate} at ${appointmentTime}`);
+    setIsModalOpen(false);
+    setAppointmentDate("");
+    setAppointmentTime("");
+  };
+
   return (
     <>
-      {/* Add smooth scrolling style */}
       <style>
         {`
           html {
             scroll-behavior: smooth;
+          }
+          .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+          }
+          .modal {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+          }
+          .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
           }
         `}
       </style>
@@ -42,21 +79,11 @@ const LandingPage: React.FC = () => {
           <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
             <div className="text-2xl font-bold text-blue-900">Medinik 💊</div>
             <nav className="hidden md:flex space-x-6 text-gray-600">
-              <a href="#home" className="hover:text-blue-600">
-                Home
-              </a>
-              <a href="#about" className="hover:text-blue-600">
-                About
-              </a>
-              <a href="#services" className="hover:text-blue-600">
-                Services
-              </a>
-              <a href="#experience" className="hover:text-blue-600">
-                Experience
-              </a>
-              <a href="#contact" className="hover:text-blue-600">
-                Contact
-              </a>
+              <a href="#home" className="hover:text-blue-600">Home</a>
+              <a href="#about" className="hover:text-blue-600">About</a>
+              <a href="#services" className="hover:text-blue-600">Services</a>
+              <a href="#experience" className="hover:text-blue-600">Experience</a>
+              <a href="#contact" className="hover:text-blue-600">Contact</a>
             </nav>
             <button className="bg-blue-600 text-white py-2 px-4 rounded-full hover:bg-blue-700 text-sm">
               Free Consultation
@@ -75,8 +102,8 @@ const LandingPage: React.FC = () => {
                 Your Health Is <br /> Our Top Priority
               </h1>
               <p className="text-gray-500 mb-6">
-              Medinik offers comprehensive, patient-focused healthcare services tailored to meet 
-              your unique needs. Experience medical care like never before.
+                Medinik offers comprehensive, patient-focused healthcare services tailored to meet
+                your unique needs. Experience medical care like never before.
               </p>
               <button className="bg-blue-600 text-white py-2 px-6 rounded-full hover:bg-blue-700">
                 Meet Our Specialist
@@ -88,9 +115,12 @@ const LandingPage: React.FC = () => {
                 alt="Nurse"
                 className="w-full max-w-sm rounded-lg shadow-lg"
               />
-              <div className="absolute top-4 right-4 bg-white p-3 rounded-lg shadow-md">
+              <div
+                className="absolute top-4 right-4 bg-white p-3 rounded-lg shadow-md cursor-pointer"
+                onClick={handleModalToggle}
+              >
                 <p className="text-green-600 font-medium flex items-center">
-                  <FaCalendarAlt className="mr-2" /> Regular Checkup
+                  <FaCalendarAlt className="mr-2" /> Book Regular Checkup
                 </p>
               </div>
             </div>
@@ -117,8 +147,50 @@ const LandingPage: React.FC = () => {
           </div>
         </div>
 
+        {/* Modal */}
+        {isModalOpen && (
+          <div className="modal-overlay" onClick={handleModalToggle}>
+            <div className="modal" onClick={(e) => e.stopPropagation()}>
+              <div className="modal-header">
+                <h2>Schedule Your Checkup</h2>
+                <button onClick={handleModalToggle} className="text-gray-500 hover:text-gray-700">
+                  <FaTimes />
+                </button>
+              </div>
+              <form onSubmit={handleFormSubmit} className="mt-4">
+                <div className="mb-4">
+                  <label className="block text-sm text-gray-600 mb-2">Select Date</label>
+                  <input
+                    type="date"
+                    value={appointmentDate}
+                    onChange={(e) => setAppointmentDate(e.target.value)}
+                    required
+                    className="w-full px-3 py-2 border rounded-lg"
+                  />
+                </div>
+                <div className="mb-4">
+                  <label className="block text-sm text-gray-600 mb-2">Select Time</label>
+                  <input
+                    type="time"
+                    value={appointmentTime}
+                    onChange={(e) => setAppointmentTime(e.target.value)}
+                    required
+                    className="w-full px-3 py-2 border rounded-lg"
+                  />
+                </div>
+                <button
+                  type="submit"
+                  className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700"
+                >
+                  Confirm Appointment
+                </button>
+              </form>
+            </div>
+          </div>
+        )}
+
         {/* About Section */}
-        <div id="about" className="py-16 bg-white">
+      <div id="about" className="py-16 bg-white">
           <div className="max-w-7xl mx-auto text-center">
             <h2 className="text-3xl font-bold text-blue-900 mb-8">About Us</h2>
             <p className="text-gray-500 text-lg">
@@ -128,7 +200,6 @@ const LandingPage: React.FC = () => {
             </p>
           </div>
         </div>
-
         {/* Services Section */}
         <div id="services" className="py-16 bg-blue-50">
           <div className="max-w-7xl mx-auto text-center">
