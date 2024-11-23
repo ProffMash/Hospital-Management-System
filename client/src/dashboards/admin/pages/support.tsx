@@ -4,9 +4,8 @@ import { FaSearch } from "react-icons/fa";
 interface SupportTicket {
   ticketId: string;
   name: string;
-  subject: string;
+  email: string;
   description: string;
-  status: string;
   createdAt: string;
 }
 
@@ -19,25 +18,22 @@ const Support: React.FC = () => {
     {
       ticketId: "T001",
       name: "Dr. John Doe",
-      subject: "Unable to access patient records",
+      email: "john.doe@example.com",
       description: "I'm unable to view patient history in the system.",
-      status: "Open",
       createdAt: "2024-11-15",
     },
     {
       ticketId: "T002",
       name: "Jane Doe (Patient)",
-      subject: "Issue with booking appointment",
+      email: "jane.doe@example.com",
       description: "I could not book an appointment for a consultation.",
-      status: "Resolved",
       createdAt: "2024-11-12",
     },
     {
       ticketId: "T003",
       name: "Dr. Emily Smith",
-      subject: "Error while updating patient information",
+      email: "emily.smith@example.com",
       description: "There is an error when trying to update patient details.",
-      status: "Pending",
       createdAt: "2024-11-14",
     },
   ];
@@ -45,8 +41,7 @@ const Support: React.FC = () => {
   // Filtering tickets based on search query
   const filteredTickets = tickets.filter(
     (ticket) =>
-      ticket.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      ticket.subject.toLowerCase().includes(searchQuery.toLowerCase())
+      ticket.name.toLowerCase().includes(searchQuery.toLowerCase()) 
   );
 
   return (
@@ -79,9 +74,8 @@ const Support: React.FC = () => {
             <tr>
               <th className="py-3 px-6 text-left font-semibold">Ticket ID</th>
               <th className="py-3 px-6 text-left font-semibold">Name</th>
-              <th className="py-3 px-6 text-left font-semibold">Subject</th>
+              <th className="py-3 px-6 text-left font-semibold">Email</th>
               <th className="py-3 px-6 text-left font-semibold">Description</th>
-              <th className="py-3 px-6 text-left font-semibold">Status</th>
               <th className="py-3 px-6 text-left font-semibold">Created At</th>
             </tr>
           </thead>
@@ -95,9 +89,8 @@ const Support: React.FC = () => {
               >
                 <td className="py-3 px-6 text-gray-700">{ticket.ticketId}</td>
                 <td className="py-3 px-6 text-gray-700">{ticket.name}</td>
-                <td className="py-3 px-6 text-gray-700">{ticket.subject}</td>
+                <td className="py-3 px-6 text-gray-700">{ticket.email}</td>
                 <td className="py-3 px-6 text-gray-700">{ticket.description}</td>
-                <td className="py-3 px-6 text-gray-700">{ticket.status}</td>
                 <td className="py-3 px-6 text-gray-700">{ticket.createdAt}</td>
               </tr>
             ))}
