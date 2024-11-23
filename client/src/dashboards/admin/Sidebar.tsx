@@ -14,6 +14,7 @@ const Sidebar: React.FC = () => {
   return (
     <aside className="bg-white shadow-lg w-64 p-4">
       <h1 className="text-2xl font-bold text-blue-600 mb-6">Medinik 💊</h1>
+      <h4 className="text-xl font-bold text-blue-600 mb-6">Admin Dashboard</h4>
       <ul>
         {menuItems.map((item, index) => (
           <li key={index} className="flex items-center gap-4 p-3 rounded-lg hover:bg-blue-100 cursor-pointer">

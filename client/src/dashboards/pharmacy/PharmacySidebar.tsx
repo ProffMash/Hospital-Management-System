@@ -5,7 +5,7 @@ import { FaTachometerAlt, FaPills, FaUser, FaCog, FaSignOutAlt } from "react-ico
 const PharmacySidebar: React.FC = () => {
   return (
     <div className="w-64 bg-gray-800 text-white h-screen p-4 space-y-6">
-      <h2 className="text-2xl font-bold mb-6">PHARMACY</h2>
+      <h6 className="text-xl font-bold mb-6">Pharmacy 💊💉</h6>
       
       {/* Dashboard Link */}
       <Link

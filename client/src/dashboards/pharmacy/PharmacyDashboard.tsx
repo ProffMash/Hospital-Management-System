@@ -38,7 +38,7 @@ const PharmacyDashboard: React.FC = () => {
     <div className="flex flex-col md:flex-row h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100">
       <main className="flex-1 p-6">
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold text-gray-800">Dashboard</h1>
+          <h1 className="text-2xl font-bold text-gray-800">Overview </h1>
           <div className="flex items-center space-x-4">
             <input
               type="text"
