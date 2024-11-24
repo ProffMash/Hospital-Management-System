@@ -21,7 +21,7 @@ const MedicineInventory: React.FC = () => {
           </button>
         </div>
         <button
-          onClick={() => navigate('/medicine-form')}
+          onClick={() => navigate('/pharmacy/medicine-form')}
           className="flex items-center space-x-2 bg-green-600 text-white py-2 px-5 rounded-full shadow-lg hover:bg-green-700 transition duration-300 transform hover:scale-105"
         >
           <FaPlus />
