@@ -13,8 +13,8 @@ import LandingPage from "./landingPage";
 import PharmacySidebar from "./dashboards/pharmacy/PharmacySidebar";
 import PharmacyDashboard from "./dashboards/pharmacy/PharmacyDashboard";
 import Users from "./dashboards/pharmacy/Users";
-// import Medicine from "./pharmacy/Medicine";
-// import MedicineForm from "./pharmacy/addMedicine";
+import MedicineInventory from "./dashboards/pharmacy/Medicine";
+import MedicineForm from "./dashboards/pharmacy/addMedicine";
 // import Users from "./pharmacy/Users";
 // import Settings from "./pharmacy/Settings";
 // import Sales from "./pharmacy/Sales";
@@ -64,8 +64,8 @@ const App: React.FC = () => {
               <div className="flex-1 p-4">
                 <Routes>
                   <Route path="/" element={<PharmacyDashboard />} />
-                  {/* <Route path="/medicine" element={<Medicine />} />
-                  <Route path="/medicine-form" element={<MedicineForm />} /> */}
+                  <Route path="/medicine" element={<MedicineInventory />} />
+                  <Route path="/medicine-form" element={<MedicineForm />} />
                   <Route path="/users" element={<Users />} />
                   {/* <Route path="/settings" element={<Settings />} />
                   <Route path="/sales" element={<Sales />} /> */}
