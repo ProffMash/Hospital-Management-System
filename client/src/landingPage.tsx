@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { FaHeartbeat, FaTooth, FaEye, FaCalendarAlt, FaTimes, FaUser, FaEnvelope, FaCommentDots, FaHandHoldingMedical, FaLeaf, FaMicroscope, FaPills, FaSyringe, FaStethoscope } from "react-icons/fa";
 
 const Counter: React.FC<{ target: number }> = ({ target }) => {
@@ -85,9 +86,15 @@ const LandingPage: React.FC = () => {
               <a href="#experience" className="hover:text-blue-600">Experience</a>
               <a href="#contact" className="hover:text-blue-600">Contact</a>
             </nav>
-            <button className="bg-blue-600 text-white py-2 px-4 rounded-full hover:bg-blue-700 text-sm">
-              Staff Portal
-            </button>
+              <button
+                className="bg-blue-600 text-white py-2 px-4 rounded-full hover:bg-blue-700 text-sm"
+                onClick={() => {
+                  const navigate = useNavigate();
+                  navigate('/admin');
+                }}
+              >
+                Staff Portal
+              </button>
           </div>
         </header>
 
