@@ -102,11 +102,12 @@ const LandingPage: React.FC = () => {
                 Your Health Is <br /> Our Top Priority
               </h1>
               <p className="text-gray-500 mb-6">
-                Medinik offers comprehensive, patient-focused healthcare services tailored to meet
-                your unique needs. Experience medical care like never before.
+                <strong>Medinik</strong> offers comprehensive, patient-focused healthcare services tailored to meet
+                your unique needs. Experience medical care like never before. We are here to guide you to better health.
               </p>
-              <button className="bg-blue-600 text-white py-2 px-6 rounded-full hover:bg-blue-700">
-                Meet Our Specialist
+              <button className="bg-blue-600 text-white py-2 px-6 rounded-full hover:bg-blue-700"
+              onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })}>
+                Explore our Services
               </button>
             </div>
             <div className="relative mt-8 lg:mt-0">
@@ -125,7 +126,7 @@ const LandingPage: React.FC = () => {
               </div>
             </div>
           </div>
-          <div className="mt-10 flex justify-center gap-8 text-center">
+          <div className="mt-5 flex justify-center gap-8 text-center">
             <div>
               <p className="text-2xl font-semibold text-blue-900">
                 <Counter target={262000} />+
@@ -194,7 +195,7 @@ const LandingPage: React.FC = () => {
             <div className="max-w-7xl mx-auto text-center">
               <h2 className="text-3xl font-bold text-blue-900 mb-8">About Us</h2>
               <p className="text-gray-500 text-lg mb-6">
-                At Medinik, we combine modern technology with personalized care to deliver 
+                At <strong>Medinik</strong>, we combine modern technology with personalized care to deliver 
                 world-class medical services. Our mission is to ensure every patient receives the 
                 attention they deserve.
               </p>
