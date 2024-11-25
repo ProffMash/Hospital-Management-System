@@ -1,8 +1,18 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaTachometerAlt, FaPills, FaUser, FaCog, FaSignOutAlt } from "react-icons/fa";
 
 const PharmacySidebar: React.FC = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    // Clear authentication state (e.g., remove tokens from localStorage or sessionStorage)
+    localStorage.removeItem("authToken");
+
+    // Redirect to the login page
+    navigate("/login");
+  };
+
   return (
     <div className="w-64 bg-gray-800 text-white h-screen p-4 space-y-6">
       <h6 className="text-xl font-bold mb-6">Pharmacy 💊💉</h6>
@@ -45,6 +55,7 @@ const PharmacySidebar: React.FC = () => {
       
       {/* Logout Button */}
       <button
+        onClick={handleLogout}
         className="flex items-center w-full text-left py-2 px-4 rounded hover:bg-gray-700"
       >
         <FaSignOutAlt className="mr-2" />
