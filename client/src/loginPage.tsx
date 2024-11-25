@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { FaUser, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
 
 const LoginPage: React.FC = () => {
@@ -7,6 +8,7 @@ const LoginPage: React.FC = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleRoleChange = (role: string) => {
     setSelectedRole(role);
@@ -24,11 +26,11 @@ const LoginPage: React.FC = () => {
 
     // Example login logic (replace with API call)
     if (email === "admin@medinik.com" && password === "admin123" && selectedRole === "admin") {
-      alert("Welcome, Admin!");
+      navigate("/admin");
     } else if (email === "doctor@medinik.com" && password === "doctor123" && selectedRole === "doctor") {
-      alert("Welcome, Doctor!");
+      navigate("/doctor");
     } else if (email === "pharmacist@medinik.com" && password === "pharma123" && selectedRole === "pharmacist") {
-      alert("Welcome, Pharmacist!");
+      navigate("/pharmacy");
     } else {
       setError("Invalid credentials. Please try again.");
     }
