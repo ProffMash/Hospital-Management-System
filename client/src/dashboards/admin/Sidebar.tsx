@@ -1,8 +1,18 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
-import { FaHome, FaUserMd, FaUsers, FaCog, FaHeadset } from "react-icons/fa";
+import { NavLink, useNavigate } from "react-router-dom";
+import { FaHome, FaUserMd, FaUsers, FaCog, FaHeadset, FaSignOutAlt } from "react-icons/fa";
 
 const Sidebar: React.FC = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    // Clear authentication data
+    localStorage.removeItem("authToken");
+
+    // Redirect to the login page
+    navigate("/login");
+  };
+
   const menuItems = [
     { name: "Overview", icon: <FaHome />, path: "/admin" },
     { name: "Doctors", icon: <FaUserMd />, path: "/admin/doctors" },
@@ -17,7 +27,10 @@ const Sidebar: React.FC = () => {
       <h4 className="text-xl font-bold text-blue-600 mb-6">Admin Dashboard</h4>
       <ul>
         {menuItems.map((item, index) => (
-          <li key={index} className="flex items-center gap-4 p-3 rounded-lg hover:bg-blue-100 cursor-pointer">
+          <li
+            key={index}
+            className="flex items-center gap-4 p-3 rounded-lg hover:bg-blue-100 cursor-pointer"
+          >
             <NavLink
               to={item.path}
               className={({ isActive }) =>
@@ -31,6 +44,17 @@ const Sidebar: React.FC = () => {
             </NavLink>
           </li>
         ))}
+
+        {/* Logout Menu Item */}
+        <li
+          className="flex items-center gap-4 p-3 rounded-lg hover:bg-blue-100 cursor-pointer"
+          onClick={handleLogout}
+        >
+          <span className="text-gray-700">
+            <FaSignOutAlt />
+          </span>
+          <span className="text-gray-700">Logout</span>
+        </li>
       </ul>
     </aside>
   );
