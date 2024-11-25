@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FaUser, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
+import { FaUser, FaLock, FaEye, FaEyeSlash,FaHome } from "react-icons/fa";
 
 const LoginPage: React.FC = () => {
   const [selectedRole, setSelectedRole] = useState("admin");
@@ -107,6 +107,13 @@ const LoginPage: React.FC = () => {
             Login as {selectedRole.charAt(0).toUpperCase() + selectedRole.slice(1)}
           </button>
         </form>
+        <button
+        onClick={() => navigate("/")}
+        className="w-full text-gray-700 py-2 rounded-lg flex items-center justify-center gap-2"
+      >
+        <FaHome />
+        Back to Home Page
+      </button>
       </div>
     </div>
   );
