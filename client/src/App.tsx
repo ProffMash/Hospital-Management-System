@@ -15,6 +15,8 @@ import PharmacyDashboard from "./dashboards/pharmacy/PharmacyDashboard";
 import Users from "./dashboards/pharmacy/Users";
 import MedicineInventory from "./dashboards/pharmacy/Medicine";
 import MedicineForm from "./dashboards/pharmacy/addMedicine";
+
+import LoginPage from "./loginPage";
 // import Users from "./pharmacy/Users";
 // import Settings from "./pharmacy/Settings";
 // import Sales from "./pharmacy/Sales";
@@ -25,6 +27,9 @@ const App: React.FC = () => {
       <Routes>
         {/* Landing Page */}
         <Route path="/" element={<LandingPage />} />
+
+        {/* Login Page */}
+        <Route path="/login" element={<LoginPage />} />
 
         {/* Admin Dashboard Layout */}
         <Route
