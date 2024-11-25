@@ -26,6 +26,7 @@ const Counter: React.FC<{ target: number }> = ({ target }) => {
 };
 
 const LandingPage: React.FC = () => {
+  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [appointmentDate, setAppointmentDate] = useState("");
   const [appointmentTime, setAppointmentTime] = useState("");
@@ -88,10 +89,7 @@ const LandingPage: React.FC = () => {
             </nav>
               <button
                 className="bg-blue-600 text-white py-2 px-4 rounded-full hover:bg-blue-700 text-sm"
-                onClick={() => {
-                  const navigate = useNavigate();
-                  navigate('/login');
-                }}
+                onClick={() => navigate('/login')}
               >
                 Staff Portal
               </button>
