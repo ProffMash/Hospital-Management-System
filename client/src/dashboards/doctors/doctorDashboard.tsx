@@ -1,6 +1,5 @@
-import React from "react";
 import DoctorSidebar from "./doctorSidebar";
-import DoctorHeader from "./doctorHeader";
+// import DoctorHeader from "./doctorHeader";
 import StatsCard from "./StatsCard";
 import AnalyticsChart from "./AnalyticsChart";
 import ReportsList from "./ReportsList";

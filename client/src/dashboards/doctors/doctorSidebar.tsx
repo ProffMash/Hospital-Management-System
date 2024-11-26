@@ -1,4 +1,3 @@
-import React from "react";
 import { Home, Users, Calendar, ClipboardList, Settings } from "lucide-react"; // Icons from lucide-react
 
 const DoctorSidebar = () => {
