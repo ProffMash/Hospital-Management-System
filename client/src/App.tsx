@@ -21,6 +21,8 @@ import LoginPage from "./loginPage";
 // import Settings from "./pharmacy/Settings";
 // import Sales from "./pharmacy/Sales";
 
+import DoctorDashboard from "./dashboards/doctors/doctorDashboard";
+
 const App: React.FC = () => {
   return (
     <Router>
@@ -74,6 +76,20 @@ const App: React.FC = () => {
                   <Route path="/users" element={<Users />} />
                   {/* <Route path="/settings" element={<Settings />} />
                   <Route path="/sales" element={<Sales />} /> */}
+                </Routes>
+              </div>
+            </div>
+          }
+        />
+      {/* Doctor Dashboard Layout */}
+      <Route
+          path="/doctor/*"
+          element={
+            <div className="flex h-screen bg-gray-100">
+              {/* Optional Sidebar if needed */}
+              <div className="flex-1 p-4">
+                <Routes>
+                  <Route path="/" element={<DoctorDashboard />} />
                 </Routes>
               </div>
             </div>
