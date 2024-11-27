@@ -1,29 +1,44 @@
-import { Home, Users, Calendar, ClipboardList, Settings } from "lucide-react"; 
+import { Link, useNavigate } from "react-router-dom";
+import { Stethoscope, User, Calendar, FileText, Settings, LogOut } from "lucide-react";
 
 const DoctorSidebar = () => {
+  const navigate = useNavigate();
+
+  // Logout function
+  const handleLogout = () => {
+    // Clear user session data (example: localStorage, sessionStorage)
+    localStorage.removeItem("authToken");
+    // Redirect to login page
+    navigate("/login");
+  };
+
+  const menuItems = [
+    { name: "Dashboard", path: "/doctor", icon: <Stethoscope size={20} /> },
+    { name: "Doctors", path: "/doctor/doctor", icon: <User size={20} /> },
+    { name: "Appointments", path: "/doctor/appointments", icon: <Calendar size={20} /> },
+    { name: "Reports", path: "/doctor/reports", icon: <FileText size={20} /> },
+    { name: "Settings", path: "/doctor/settings", icon: <Settings size={20} /> },
+    { name: "Logout", path: "/login", icon: <LogOut size={20} />, action: handleLogout },
+  ];
+
   return (
-    <aside className="w-64 bg-white shadow-lg">
-      <div className="p-4 text-center text-blue-600 font-bold text-xl">Medinik 💊</div>
-      <nav className="mt-8">
-        <ul className="space-y-4">
-          <li className="flex items-center space-x-4 p-4 hover:bg-gray-100 cursor-pointer">
-            <Home className="text-blue-500" /> <span>Overview</span>
+    <div className="h-screen w-64 bg-white text-black flex flex-col">
+      <h2 className="text-2xl font-semibold p-6 border-b border-white/20">Medinik 💊</h2>
+      <ul className="mt-4 space-y-3 flex-1">
+        {menuItems.map((item, index) => (
+          <li key={index}>
+            <Link
+              to={item.path}
+              className="flex items-center gap-4 px-4 py-2 text-sm hover:bg-blue-700 transition rounded-lg"
+              onClick={item.action ? item.action : undefined}
+            >
+              {item.icon}
+              {item.name}
+            </Link>
           </li>
-          <li className="flex items-center space-x-4 p-4 hover:bg-gray-100 cursor-pointer">
-            <Users className="text-blue-500" /> <span>Doctor</span>
-          </li>
-          <li className="flex items-center space-x-4 p-4 hover:bg-gray-100 cursor-pointer">
-            <Calendar className="text-blue-500" /> <span>Appointment</span>
-          </li>
-          <li className="flex items-center space-x-4 p-4 hover:bg-gray-100 cursor-pointer">
-            <ClipboardList className="text-blue-500" /> <span>Reports</span>
-          </li>
-          <li className="flex items-center space-x-4 p-4 hover:bg-gray-100 cursor-pointer">
-            <Settings className="text-blue-500" /> <span>Settings</span>
-          </li>
-        </ul>
-      </nav>
-    </aside>
+        ))}
+      </ul>
+    </div>
   );
 };
 

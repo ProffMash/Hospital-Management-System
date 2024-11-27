@@ -17,11 +17,10 @@ import MedicineInventory from "./dashboards/pharmacy/Medicine";
 import MedicineForm from "./dashboards/pharmacy/addMedicine";
 
 import LoginPage from "./loginPage";
-// import Users from "./pharmacy/Users";
-// import Settings from "./pharmacy/Settings";
-// import Sales from "./pharmacy/Sales";
 
+import DoctorSidebar from "./dashboards/doctors/doctorSidebar"; 
 import DoctorDashboard from "./dashboards/doctors/doctorDashboard";
+import AppointmentsTable from "./dashboards/doctors/AppointmentsTable";
 
 const App: React.FC = () => {
   return (
@@ -74,22 +73,24 @@ const App: React.FC = () => {
                   <Route path="/medicine" element={<MedicineInventory />} />
                   <Route path="/medicine-form" element={<MedicineForm />} />
                   <Route path="/users" element={<Users />} />
-                  {/* <Route path="/settings" element={<Settings />} />
-                  <Route path="/sales" element={<Sales />} /> */}
                 </Routes>
               </div>
             </div>
           }
         />
-      {/* Doctor Dashboard Layout */}
-      <Route
+
+        {/* Doctor Dashboard Layout */}
+        <Route
           path="/doctor/*"
           element={
             <div className="flex h-screen bg-gray-100">
-              {/* Optional Sidebar if needed */}
+              {/* Sidebar */}
+              <DoctorSidebar /> {/* Add the DoctorSidebar here */}
+              {/* Main Content */}
               <div className="flex-1 p-4">
                 <Routes>
                   <Route path="/" element={<DoctorDashboard />} />
+                  <Route path="/appointments" element={<AppointmentsTable />} />
                 </Routes>
               </div>
             </div>
