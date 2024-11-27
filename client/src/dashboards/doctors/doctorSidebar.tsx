@@ -1,9 +1,9 @@
-import { Home, Users, Calendar, ClipboardList, Settings } from "lucide-react"; // Icons from lucide-react
+import { Home, Users, Calendar, ClipboardList, Settings } from "lucide-react"; 
 
 const DoctorSidebar = () => {
   return (
     <aside className="w-64 bg-white shadow-lg">
-      <div className="p-4 text-center text-blue-600 font-bold text-xl">MediKit</div>
+      <div className="p-4 text-center text-blue-600 font-bold text-xl">Medinik 💊</div>
       <nav className="mt-8">
         <ul className="space-y-4">
           <li className="flex items-center space-x-4 p-4 hover:bg-gray-100 cursor-pointer">
