@@ -25,6 +25,7 @@ import DoctorDashboard from "./dashboards/doctors/doctorDashboard";
 import AppointmentsTable from "./dashboards/doctors/AppointmentsTable";
 import ReportsForm from "./dashboards/doctors/ReportsForm";
 import DoctorsList from "./dashboards/doctors/doctorsList";
+import DiagnosisForm from "./dashboards/doctors/diagnosisForm";
 
 
 const App: React.FC = () => {
@@ -58,6 +59,7 @@ const App: React.FC = () => {
                     <Route path="/add-doctor" element={<AddDoctorForm />} />
                     <Route path="/add-patient" element={<AddPatientForm />} />
                     <Route path="/reports" element={<ReportsTable />} />
+
                   </Routes>
                 </div>
               </div>
@@ -99,6 +101,7 @@ const App: React.FC = () => {
                   <Route path="/appointments" element={<AppointmentsTable />} />
                   <Route path="/reports" element={<ReportsForm onSubmit={(report) => console.log(report)} />} />
                   <Route path="/list" element={<DoctorsList />} />
+                  <Route path="/diagnosis" element={<DiagnosisForm />} />
                 </Routes>
               </div>
             </div>
