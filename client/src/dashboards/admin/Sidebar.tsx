@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { FaHome, FaUserMd, FaUsers, FaCog, FaHeadset, FaSignOutAlt } from "react-icons/fa";
+import { FaHome, FaUserMd, FaUsers, FaCog, FaHeadset, FaSignOutAlt, FaFileAlt} from "react-icons/fa";
 
 const Sidebar: React.FC = () => {
   const navigate = useNavigate();
@@ -19,7 +19,7 @@ const Sidebar: React.FC = () => {
     { name: "Patients", icon: <FaUsers />, path: "/admin/patients" },
     { name: "Support", icon: <FaHeadset />, path: "/admin/support" },
     { name: "Settings", icon: <FaCog />, path: "/admin/settings" },
-    { name: "Reports", icon: <FaCog />, path: "/admin/reports" },
+    { name: "Reports", icon: <FaFileAlt />, path: "/admin/reports" },
   ];
 
   return (
