@@ -21,8 +21,9 @@ import LoginPage from "./loginPage";
 import DoctorSidebar from "./dashboards/doctors/doctorSidebar"; 
 import DoctorDashboard from "./dashboards/doctors/doctorDashboard";
 import AppointmentsTable from "./dashboards/doctors/AppointmentsTable";
-import ReportsList from "./dashboards/doctors/ReportsList";
+import ReportsForm from "./dashboards/doctors/ReportsForm";
 import DoctorsList from "./dashboards/doctors/doctorsList";
+
 
 const App: React.FC = () => {
   return (
@@ -93,7 +94,7 @@ const App: React.FC = () => {
                 <Routes>
                   <Route path="/" element={<DoctorDashboard />} />
                   <Route path="/appointments" element={<AppointmentsTable />} />
-                  <Route path="/reports" element={<ReportsList />} />
+                  <Route path="/reports" element={<ReportsForm onSubmit={(report) => console.log(report)} />} />
                   <Route path="/list" element={<DoctorsList />} />
                 </Routes>
               </div>

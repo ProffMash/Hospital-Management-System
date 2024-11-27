@@ -2,7 +2,7 @@
 // import DoctorHeader from "./doctorHeader";
 import StatsCard from "./StatsCard";
 import AnalyticsChart from "./AnalyticsChart";
-import ReportsList from "./ReportsList";
+import ReportsList from "./ReportsForm";
 import AppointmentsTable from "./AppointmentsTable";
 import SuccessStats from "./SuccessStats";
 import DoctorsList from "./doctorsList";
