@@ -21,6 +21,8 @@ import LoginPage from "./loginPage";
 import DoctorSidebar from "./dashboards/doctors/doctorSidebar"; 
 import DoctorDashboard from "./dashboards/doctors/doctorDashboard";
 import AppointmentsTable from "./dashboards/doctors/AppointmentsTable";
+import ReportsList from "./dashboards/doctors/ReportsList";
+import DoctorsList from "./dashboards/doctors/doctorsList";
 
 const App: React.FC = () => {
   return (
@@ -91,6 +93,8 @@ const App: React.FC = () => {
                 <Routes>
                   <Route path="/" element={<DoctorDashboard />} />
                   <Route path="/appointments" element={<AppointmentsTable />} />
+                  <Route path="/reports" element={<ReportsList />} />
+                  <Route path="/list" element={<DoctorsList />} />
                 </Routes>
               </div>
             </div>

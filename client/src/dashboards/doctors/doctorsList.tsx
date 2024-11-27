@@ -1,5 +1,3 @@
-import React from "react";
-
 const DoctorsList = () => {
   const doctors = [
     { name: "Dr. John Smith", specialization: "Cardiology" },
