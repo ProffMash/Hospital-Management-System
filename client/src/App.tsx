@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+
 import AdminSidebar from "./dashboards/admin/Sidebar";
 import AdminNavbar from "./dashboards/admin/Navbar";
 import AdminDashboard from "./dashboards/admin/Dashboard";
@@ -8,6 +9,7 @@ import Support from "./dashboards/admin/pages/support";
 import Doctors from "./dashboards/admin/pages/doctors";
 import AddDoctorForm from "./dashboards/admin/pages/addDoctorForm";
 import AddPatientForm from "./dashboards/admin/pages/addPatientForm";
+import ReportsTable from "./dashboards/admin/ReportsList";
 import LandingPage from "./landingPage";
 
 import PharmacySidebar from "./dashboards/pharmacy/PharmacySidebar";
@@ -55,6 +57,7 @@ const App: React.FC = () => {
                     <Route path="/support" element={<Support />} />
                     <Route path="/add-doctor" element={<AddDoctorForm />} />
                     <Route path="/add-patient" element={<AddPatientForm />} />
+                    <Route path="/reports" element={<ReportsTable />} />
                   </Routes>
                 </div>
               </div>

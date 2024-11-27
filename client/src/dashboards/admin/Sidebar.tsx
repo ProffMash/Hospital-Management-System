@@ -19,6 +19,7 @@ const Sidebar: React.FC = () => {
     { name: "Patients", icon: <FaUsers />, path: "/admin/patients" },
     { name: "Support", icon: <FaHeadset />, path: "/admin/support" },
     { name: "Settings", icon: <FaCog />, path: "/admin/settings" },
+    { name: "Reports", icon: <FaCog />, path: "/admin/reports" },
   ];
 
   return (
