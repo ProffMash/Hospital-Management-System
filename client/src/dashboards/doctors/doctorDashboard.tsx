@@ -2,7 +2,7 @@
 // import DoctorHeader from "./doctorHeader";
 import StatsCard from "./StatsCard";
 import AnalyticsChart from "./AnalyticsChart";
-import ReportsList from "./ReportsForm";
+// import ReportsList from "./ReportsForm";
 import AppointmentsTable from "./AppointmentsTable";
 import SuccessStats from "./SuccessStats";
 import DoctorsList from "./doctorsList";
@@ -20,7 +20,7 @@ const DoctorDashboard = () => {
         </div>
         <div className="grid grid-cols-3 gap-4">
           <AnalyticsChart />
-          <ReportsList />
+          {/* <ReportsList /> */}
           <SuccessStats />
         </div>
         <div className="grid grid-cols-2 gap-4">
