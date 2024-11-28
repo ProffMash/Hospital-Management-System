@@ -37,8 +37,22 @@ const PatientsTable: React.FC = () => {
     navigate("/admin/edit-patient", { state: { patient } });
   };
 
+  const handleAddPatient = () => {
+    navigate("/admin/add-patient");
+  };
+
   return (
     <div className="overflow-x-auto max-w-full">
+      {/* Add Patient Button */}
+      <div className="flex justify-end mb-4">
+        <button
+          onClick={handleAddPatient}
+          className="bg-green-600 text-white py-2 px-6 rounded-md hover:bg-green-700 transition duration-150 ease-in-out"
+        >
+          Add Patient
+        </button>
+      </div>
+
       <table className="min-w-full table-auto bg-white shadow-md rounded-lg overflow-hidden">
         <thead className="bg-gray-100 text-gray-700">
           <tr>
