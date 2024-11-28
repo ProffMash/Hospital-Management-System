@@ -9,6 +9,7 @@ const EditDoctorForm: React.FC = () => {
   const doctor = location.state?.doctor;
 
   const [formData, setFormData] = useState({
+    id: "", // Added ID to the state
     name: "",
     specialization: "",
     phone: "",
@@ -19,6 +20,7 @@ const EditDoctorForm: React.FC = () => {
   useEffect(() => {
     if (doctor) {
       setFormData({
+        id: doctor.id, // Set ID from doctor data
         name: doctor.name,
         specialization: doctor.specialization,
         phone: doctor.phone,
@@ -36,7 +38,8 @@ const EditDoctorForm: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Simulate updating the doctor data
-    navigate("/admin/doctors");
+    alert("Doctor information updated successfully!");
+    navigate("/admin/doctors"); // Navigate back to the doctors page
   };
 
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -49,6 +52,19 @@ const EditDoctorForm: React.FC = () => {
       <h1 className="text-3xl font-extrabold text-blue-600 mb-6">Edit Doctor</h1>
 
       <form onSubmit={handleSubmit} className="bg-white shadow-lg rounded-lg p-8 max-w-3xl mx-auto">
+        {/* Doctor ID (Hidden or Readonly) */}
+        <div className="mb-6 flex items-center">
+          <label htmlFor="id" className="block text-sm font-semibold text-gray-600">Doctor ID</label>
+          <input
+            type="text"
+            id="id"
+            name="id"
+            value={formData.id}
+            readOnly
+            className="w-full mt-1 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          />
+        </div>
+
         {/* Name */}
         <div className="mb-6 flex items-center">
           <FaUser className="text-gray-500 mr-4" />

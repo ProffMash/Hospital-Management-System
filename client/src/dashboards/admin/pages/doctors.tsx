@@ -21,24 +21,28 @@ const Doctors: React.FC = () => {
       status: "Active",
     },
   ]);
+
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
 
+  // Handle deletion of doctor by ID
   const handleDelete = (id: number) => {
     setDoctors((prev) => prev.filter((doctor) => doctor.id !== id));
   };
 
+  // Handle search term change
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
   };
 
+  // Filter doctors based on the search term
   const filteredDoctors = doctors.filter((doctor) =>
     doctor.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
     <div className="p-6 bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen">
-      {/* Header */}
+      {/* Header Section */}
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-extrabold text-blue-600">Manage Doctors</h1>
         <button
@@ -54,7 +58,7 @@ const Doctors: React.FC = () => {
         <FaSearch className="text-gray-400 mr-3" />
         <input
           type="text"
-          placeholder="Search..."
+          placeholder="Search by name..."
           className="flex-1 outline-none text-gray-600"
           value={searchTerm}
           onChange={handleSearch}
@@ -66,6 +70,7 @@ const Doctors: React.FC = () => {
         <table className="w-full text-left">
           <thead>
             <tr className="text-sm font-semibold text-gray-600 border-b">
+              <th className="p-4">ID</th>
               <th className="p-4">Name</th>
               <th className="p-4">Specialization</th>
               <th className="p-4">Phone</th>
@@ -75,51 +80,47 @@ const Doctors: React.FC = () => {
             </tr>
           </thead>
           <tbody>
-            {filteredDoctors.map((doctor) => (
-              <tr
-                key={doctor.id}
-                className="text-sm text-gray-700 hover:bg-gray-50"
-              >
-                <td className="p-4">{doctor.name}</td>
-                <td className="p-4">{doctor.specialization}</td>
-                <td className="p-4">{doctor.phone}</td>
-                <td className="p-4">{doctor.email}</td>
-                <td className="p-4">
-                  <span
-                    className={`px-3 py-1 rounded-full text-xs font-medium ${
-                      doctor.status === "Active"
-                        ? "bg-green-100 text-green-700"
-                        : "bg-red-100 text-red-700"
-                    }`}
-                  >
-                    {doctor.status}
-                  </span>
-                </td>
-                <td className="p-4 flex items-center gap-3">
-                  <button
-                    className="text-blue-500 hover:text-blue-700"
-                    onClick={() => navigate("/admin/edit-doctor", { state: { doctor } })}
-                  >
-                    <FaEdit />
-                  </button>
-                  <button
-                    className="text-red-500 hover:text-red-700"
-                    onClick={() => handleDelete(doctor.id)}
-                  >
-                    <FaTrash />
-                  </button>
-                </td>
-              </tr>
-            ))}
-            {filteredDoctors.length === 0 && (
+            {filteredDoctors.length === 0 ? (
               <tr>
-                <td
-                  colSpan={6}
-                  className="p-4 text-center text-gray-500 italic"
-                >
+                <td colSpan={7} className="p-4 text-center text-gray-500 italic">
                   No doctors found.
                 </td>
               </tr>
+            ) : (
+              filteredDoctors.map((doctor) => (
+                <tr key={doctor.id} className="text-sm text-gray-700 hover:bg-gray-50">
+                  <td className="p-4">{doctor.id}</td> {/* Displaying the doctor ID */}
+                  <td className="p-4">{doctor.name}</td>
+                  <td className="p-4">{doctor.specialization}</td>
+                  <td className="p-4">{doctor.phone}</td>
+                  <td className="p-4">{doctor.email}</td>
+                  <td className="p-4">
+                    <span
+                      className={`px-3 py-1 rounded-full text-xs font-medium ${
+                        doctor.status === "Active"
+                          ? "bg-green-100 text-green-700"
+                          : "bg-red-100 text-red-700"
+                      }`}
+                    >
+                      {doctor.status}
+                    </span>
+                  </td>
+                  <td className="p-4 flex items-center gap-3">
+                    <button
+                      className="text-blue-500 hover:text-blue-700"
+                      onClick={() => navigate("/admin/edit-doctor", { state: { doctor } })}
+                    >
+                      <FaEdit />
+                    </button>
+                    <button
+                      className="text-red-500 hover:text-red-700"
+                      onClick={() => handleDelete(doctor.id)}
+                    >
+                      <FaTrash />
+                    </button>
+                  </td>
+                </tr>
+              ))
             )}
           </tbody>
         </table>

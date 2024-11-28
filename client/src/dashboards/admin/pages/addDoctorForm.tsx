@@ -1,14 +1,34 @@
-import React from "react";
+import React, { useState } from "react";
 import { FaUserMd, FaBriefcaseMedical, FaPhone, FaEnvelope, FaArrowLeft, FaCheckCircle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 const AddDoctorForm: React.FC = () => {
   const navigate = useNavigate();
 
+  // State for doctor form data
+  const [doctorData, setDoctorData] = useState({
+    id: "",
+    name: "",
+    specialization: "",
+    phone: "",
+    email: "",
+    status: "",
+  });
+
+  // Handle input change
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setDoctorData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  // Handle form submission
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     alert("Doctor added successfully!");
-    navigate("/"); // Navigate back to the Doctors page after form submission
+    navigate("/admin/doctors"); // Navigate back to the Doctors page after form submission
   };
 
   return (
@@ -27,6 +47,23 @@ const AddDoctorForm: React.FC = () => {
           Add New Doctor
         </h1>
         <form onSubmit={handleSubmit}>
+          {/* Doctor ID */}
+          <div className="mb-4">
+            <label className="block text-gray-700 mb-1 flex items-center gap-2">
+              <FaBriefcaseMedical className="text-blue-500" />
+              Doctor ID
+            </label>
+            <input
+              type="text"
+              name="id"
+              value={doctorData.id}
+              onChange={handleInputChange}
+              className="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 px-3 py-2"
+              placeholder="Doctor's ID"
+              required
+            />
+          </div>
+
           {/* Name */}
           <div className="mb-4">
             <label className="block text-gray-700 mb-1 flex items-center gap-2">
@@ -35,6 +72,9 @@ const AddDoctorForm: React.FC = () => {
             </label>
             <input
               type="text"
+              name="name"
+              value={doctorData.name}
+              onChange={handleInputChange}
               className="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 px-3 py-2"
               placeholder="Doctor's name"
               required
@@ -49,6 +89,9 @@ const AddDoctorForm: React.FC = () => {
             </label>
             <input
               type="text"
+              name="specialization"
+              value={doctorData.specialization}
+              onChange={handleInputChange}
               className="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 px-3 py-2"
               placeholder="Specialization"
               required
@@ -63,6 +106,9 @@ const AddDoctorForm: React.FC = () => {
             </label>
             <input
               type="tel"
+              name="phone"
+              value={doctorData.phone}
+              onChange={handleInputChange}
               className="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 px-3 py-2"
               placeholder="Phone number"
               required
@@ -77,6 +123,9 @@ const AddDoctorForm: React.FC = () => {
             </label>
             <input
               type="email"
+              name="email"
+              value={doctorData.email}
+              onChange={handleInputChange}
               className="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 px-3 py-2"
               placeholder="Email address"
               required
@@ -90,6 +139,9 @@ const AddDoctorForm: React.FC = () => {
               Status
             </label>
             <select
+              name="status"
+              value={doctorData.status}
+              onChange={handleInputChange}
               className="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 px-3 py-2"
               required
             >
