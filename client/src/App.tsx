@@ -7,6 +7,7 @@ import AdminDashboard from "./dashboards/admin/Dashboard";
 import Patients from "./dashboards/admin/pages/patients";
 import Support from "./dashboards/admin/pages/support";
 import Doctors from "./dashboards/admin/pages/doctors";
+import EditDoctorForm from "./dashboards/admin/pages/editDoctor";
 import AddDoctorForm from "./dashboards/admin/pages/addDoctorForm";
 import AddPatientForm from "./dashboards/admin/pages/addPatientForm";
 import ReportsTable from "./dashboards/admin/ReportsList";
@@ -57,6 +58,7 @@ const App: React.FC = () => {
                     <Route path="/patients" element={<Patients />} />
                     <Route path="/support" element={<Support />} />
                     <Route path="/add-doctor" element={<AddDoctorForm />} />
+                    <Route path="/edit-doctor" element={<EditDoctorForm />} />
                     <Route path="/add-patient" element={<AddPatientForm />} />
                     <Route path="/reports" element={<ReportsTable />} />
 
