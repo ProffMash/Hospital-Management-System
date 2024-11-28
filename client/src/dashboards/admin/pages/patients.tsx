@@ -5,7 +5,7 @@ import { MdEdit } from "react-icons/md";
 interface Patient {
   id: string;
   name: string;
-  specialization: string;
+  age: number;
   phone: string;
   email: string;
   status: string;
@@ -18,7 +18,7 @@ const PatientsTable: React.FC = () => {
     {
       id: "1",
       name: "John Doe",
-      specialization: "Cardiology",
+      age: 30,
       phone: "+123456789",
       email: "johndoe@example.com",
       status: "Active",
@@ -26,11 +26,12 @@ const PatientsTable: React.FC = () => {
     {
       id: "2",
       name: "Jane Smith",
-      specialization: "Neurology",
+      age: 45,
       phone: "+987654321",
       email: "janesmith@example.com",
       status: "Inactive",
     },
+    // Add more patients as needed
   ];
 
   const handleEdit = (patient: Patient) => {
@@ -56,8 +57,9 @@ const PatientsTable: React.FC = () => {
       <table className="min-w-full table-auto bg-white shadow-md rounded-lg overflow-hidden">
         <thead className="bg-gray-100 text-gray-700">
           <tr>
+            <th className="border-b px-6 py-3 text-left font-semibold text-sm">ID</th>
             <th className="border-b px-6 py-3 text-left font-semibold text-sm">Name</th>
-            <th className="border-b px-6 py-3 text-left font-semibold text-sm">Specialization</th>
+            <th className="border-b px-6 py-3 text-left font-semibold text-sm">Age</th>
             <th className="border-b px-6 py-3 text-left font-semibold text-sm">Phone</th>
             <th className="border-b px-6 py-3 text-left font-semibold text-sm">Email</th>
             <th className="border-b px-6 py-3 text-left font-semibold text-sm">Status</th>
@@ -67,8 +69,9 @@ const PatientsTable: React.FC = () => {
         <tbody className="text-gray-600">
           {patients.map((patient) => (
             <tr key={patient.id} className="hover:bg-gray-50">
+              <td className="border-b px-6 py-4">{patient.id}</td>
               <td className="border-b px-6 py-4">{patient.name}</td>
-              <td className="border-b px-6 py-4">{patient.specialization}</td>
+              <td className="border-b px-6 py-4">{patient.age}</td>
               <td className="border-b px-6 py-4">{patient.phone}</td>
               <td className="border-b px-6 py-4">{patient.email}</td>
               <td className="border-b px-6 py-4">
