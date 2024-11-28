@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom"; // Import useLocation and useNavigate
-import { MdPerson, MdMedicalServices, MdPhone, MdEmail, MdCheckCircle, MdCancel, MdArrowBack } from "react-icons/md";
+import { useLocation, useNavigate } from "react-router-dom"; 
+import { MdPerson, MdPhone, MdEmail, MdCheckCircle, MdCancel, MdArrowBack, MdCalendarToday } from "react-icons/md";
 
 const EditPatients: React.FC = () => {
   const { state } = useLocation(); // Access the state passed through navigation
@@ -10,15 +10,16 @@ const EditPatients: React.FC = () => {
   const patient = state?.patient || {
     id: "",
     name: "",
-    specialization: "",
+    age: "",
     phone: "",
     email: "",
     status: "",
   };
 
   const [formData, setFormData] = useState({
+    id: patient.id,
     name: patient.name,
-    specialization: patient.specialization,
+    age: patient.age,
     phone: patient.phone,
     email: patient.email,
     status: patient.status,
@@ -27,8 +28,9 @@ const EditPatients: React.FC = () => {
   useEffect(() => {
     // Update the form data if the patient data changes
     setFormData({
+      id: patient.id,
       name: patient.name,
-      specialization: patient.specialization,
+      age: patient.age,
       phone: patient.phone,
       email: patient.email,
       status: patient.status,
@@ -46,6 +48,7 @@ const EditPatients: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Form submitted:", formData);
+    // Submit the form data to the backend here, like an API call
   };
 
   const handleBack = () => {
@@ -65,8 +68,21 @@ const EditPatients: React.FC = () => {
 
       <h2 className="text-2xl font-semibold text-gray-800 mb-4">Edit Patient</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
+        {/* ID - Hidden Field or Optional Display */}
+        <div className="hidden">
+          <input
+            type="text"
+            name="id"
+            value={formData.id}
+            onChange={handleChange}
+            placeholder="Patient ID"
+            className="w-full p-2 border border-gray-300 rounded-md"
+          />
+        </div>
+
         {/* Name */}
         <div className="flex items-center space-x-3">
+          <label htmlFor="name" className="text-gray-600 font-medium">Name</label>
           <MdPerson size={24} className="text-gray-500" />
           <input
             type="text"
@@ -75,24 +91,28 @@ const EditPatients: React.FC = () => {
             onChange={handleChange}
             placeholder="Patient's Name"
             className="w-full p-2 border border-gray-300 rounded-md"
+            id="name"
           />
         </div>
 
-        {/* Specialization */}
+        {/* Age */}
         <div className="flex items-center space-x-3">
-          <MdMedicalServices size={24} className="text-gray-500" />
+          <label htmlFor="age" className="text-gray-600 font-medium">Age</label>
+          <MdCalendarToday size={24} className="text-gray-500" />
           <input
-            type="text"
-            name="specialization"
-            value={formData.specialization}
+            type="number"
+            name="age"
+            value={formData.age}
             onChange={handleChange}
-            placeholder="Specialization"
+            placeholder="Age"
             className="w-full p-2 border border-gray-300 rounded-md"
+            id="age"
           />
         </div>
 
         {/* Phone */}
         <div className="flex items-center space-x-3">
+          <label htmlFor="phone" className="text-gray-600 font-medium">Phone</label>
           <MdPhone size={24} className="text-gray-500" />
           <input
             type="text"
@@ -101,11 +121,13 @@ const EditPatients: React.FC = () => {
             onChange={handleChange}
             placeholder="Phone Number"
             className="w-full p-2 border border-gray-300 rounded-md"
+            id="phone"
           />
         </div>
 
         {/* Email */}
         <div className="flex items-center space-x-3">
+          <label htmlFor="email" className="text-gray-600 font-medium">Email</label>
           <MdEmail size={24} className="text-gray-500" />
           <input
             type="email"
@@ -114,17 +136,20 @@ const EditPatients: React.FC = () => {
             onChange={handleChange}
             placeholder="Email Address"
             className="w-full p-2 border border-gray-300 rounded-md"
+            id="email"
           />
         </div>
 
         {/* Status */}
         <div className="flex items-center space-x-3">
+          <label htmlFor="status" className="text-gray-600 font-medium">Status</label>
           <MdCheckCircle size={24} className="text-gray-500" />
           <select
             name="status"
             value={formData.status}
             onChange={handleChange}
             className="w-full p-2 border border-gray-300 rounded-md"
+            id="status"
           >
             <option value="">Select Status</option>
             <option value="active">Active</option>

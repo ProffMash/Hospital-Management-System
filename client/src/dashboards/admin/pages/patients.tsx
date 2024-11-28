@@ -44,6 +44,9 @@ const PatientsTable: React.FC = () => {
 
   return (
     <div className="overflow-x-auto max-w-full">
+      {/* Title: Manage Patients */}
+      <h1 className="text-3xl font-extrabold text-blue-600">Manage Patients</h1>
+
       {/* Add Patient Button */}
       <div className="flex justify-end mb-4">
         <button
@@ -76,9 +79,7 @@ const PatientsTable: React.FC = () => {
               <td className="border-b px-6 py-4">{patient.email}</td>
               <td className="border-b px-6 py-4">
                 <span
-                  className={`inline-block px-3 py-1 rounded-full text-sm ${
-                    patient.status === "Active" ? "bg-green-100 text-green-700" : "bg-yellow-100 text-yellow-700"
-                  }`}
+                  className={`inline-block px-3 py-1 rounded-full text-sm ${patient.status === "Active" ? "bg-green-100 text-green-700" : "bg-yellow-100 text-yellow-700"}`}
                 >
                   {patient.status}
                 </span>

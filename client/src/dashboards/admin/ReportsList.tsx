@@ -46,7 +46,7 @@ const ReportsTable: React.FC = () => {
 
   return (
     <div className="p-6 bg-white rounded-lg shadow-md">
-      <h3 className="text-xl font-semibold text-gray-800 mb-4">Submitted Reports</h3>
+      <h1 className="text-3xl font-extrabold text-blue-600">Submitted Reports</h1>
       <table className="min-w-full table-auto">
         <thead>
           <tr className="text-left border-b">
