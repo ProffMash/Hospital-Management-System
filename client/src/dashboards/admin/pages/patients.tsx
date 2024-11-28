@@ -1,6 +1,6 @@
 import React from "react";
-import { useNavigate } from "react-router-dom"; 
-import { MdEdit } from "react-icons/md"; 
+import { useNavigate } from "react-router-dom";
+import { MdEdit } from "react-icons/md";
 
 interface Patient {
   id: string;
@@ -12,8 +12,7 @@ interface Patient {
 }
 
 const PatientsTable: React.FC = () => {
-  const navigate = useNavigate(); 
-
+  const navigate = useNavigate();
 
   const patients: Patient[] = [
     {
@@ -32,39 +31,45 @@ const PatientsTable: React.FC = () => {
       email: "janesmith@example.com",
       status: "Inactive",
     },
-  
   ];
 
   const handleEdit = (patient: Patient) => {
-    // Store the patient in the state or context and navigate to the edit page
-    navigate("/admin/edit-patient", { state: { patient } }); // Passing patient data through state
+    navigate("/admin/edit-patient", { state: { patient } });
   };
 
   return (
     <div className="overflow-x-auto max-w-full">
-      <table className="min-w-full table-auto">
-        <thead>
+      <table className="min-w-full table-auto bg-white shadow-md rounded-lg overflow-hidden">
+        <thead className="bg-gray-100 text-gray-700">
           <tr>
-            <th className="border px-4 py-2">Name</th>
-            <th className="border px-4 py-2">Specialization</th>
-            <th className="border px-4 py-2">Phone</th>
-            <th className="border px-4 py-2">Email</th>
-            <th className="border px-4 py-2">Status</th>
-            <th className="border px-4 py-2">Actions</th>
+            <th className="border-b px-6 py-3 text-left font-semibold text-sm">Name</th>
+            <th className="border-b px-6 py-3 text-left font-semibold text-sm">Specialization</th>
+            <th className="border-b px-6 py-3 text-left font-semibold text-sm">Phone</th>
+            <th className="border-b px-6 py-3 text-left font-semibold text-sm">Email</th>
+            <th className="border-b px-6 py-3 text-left font-semibold text-sm">Status</th>
+            <th className="border-b px-6 py-3 text-left font-semibold text-sm">Actions</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="text-gray-600">
           {patients.map((patient) => (
-            <tr key={patient.id}>
-              <td className="border px-4 py-2">{patient.name}</td>
-              <td className="border px-4 py-2">{patient.specialization}</td>
-              <td className="border px-4 py-2">{patient.phone}</td>
-              <td className="border px-4 py-2">{patient.email}</td>
-              <td className="border px-4 py-2">{patient.status}</td>
-              <td className="border px-4 py-2">
+            <tr key={patient.id} className="hover:bg-gray-50">
+              <td className="border-b px-6 py-4">{patient.name}</td>
+              <td className="border-b px-6 py-4">{patient.specialization}</td>
+              <td className="border-b px-6 py-4">{patient.phone}</td>
+              <td className="border-b px-6 py-4">{patient.email}</td>
+              <td className="border-b px-6 py-4">
+                <span
+                  className={`inline-block px-3 py-1 rounded-full text-sm ${
+                    patient.status === "Active" ? "bg-green-100 text-green-700" : "bg-yellow-100 text-yellow-700"
+                  }`}
+                >
+                  {patient.status}
+                </span>
+              </td>
+              <td className="border-b px-6 py-4">
                 <button
-                  onClick={() => handleEdit(patient)} // Pass the patient to the edit handler
-                  className="bg-blue-600 text-white py-1 px-4 rounded-md hover:bg-blue-700 transition"
+                  onClick={() => handleEdit(patient)}
+                  className="bg-blue-600 text-white p-2 rounded-md hover:bg-blue-700 transition duration-150 ease-in-out"
                 >
                   <MdEdit size={20} />
                 </button>
