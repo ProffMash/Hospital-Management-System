@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { MdPerson, MdMedicalServices, MdPhone, MdEmail, MdCheckCircle, MdCancel } from "react-icons/md";
+import { MdPerson, MdMedicalServices, MdPhone, MdEmail, MdCheckCircle, MdCancel, MdArrowBack } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
 
 const EditDoctorForm: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -9,6 +10,8 @@ const EditDoctorForm: React.FC = () => {
     email: "",
     status: "",
   });
+
+  const navigate = useNavigate(); 
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -21,11 +24,24 @@ const EditDoctorForm: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Form submitted:", formData);
-    // You can add functionality to handle form submission, such as sending the data to an API
+
+  };
+
+  const handleBack = () => {
+    navigate("/admin/doctors"); 
   };
 
   return (
     <div className="max-w-lg mx-auto p-6 bg-white rounded-lg shadow-md">
+      {/* Back Button */}
+      <button
+        onClick={handleBack}
+        className="text-blue-600 mb-4 flex items-center space-x-2 hover:text-blue-800"
+      >
+        <MdArrowBack size={24} />
+        <span>Back to Doctor List</span>
+      </button>
+
       <h2 className="text-2xl font-semibold text-gray-800 mb-4">Edit Doctor</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* Name */}
