@@ -1,17 +1,39 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom"; // Import useLocation and useNavigate
 import { MdPerson, MdMedicalServices, MdPhone, MdEmail, MdCheckCircle, MdCancel, MdArrowBack } from "react-icons/md";
-import { useNavigate } from "react-router-dom"; 
 
 const EditPatients: React.FC = () => {
-  const [formData, setFormData] = useState({
+  const { state } = useLocation(); // Access the state passed through navigation
+  const navigate = useNavigate(); // Initialize useNavigate for navigation
+
+  // Check if the patient data is passed, otherwise use empty data
+  const patient = state?.patient || {
+    id: "",
     name: "",
     specialization: "",
     phone: "",
     email: "",
     status: "",
+  };
+
+  const [formData, setFormData] = useState({
+    name: patient.name,
+    specialization: patient.specialization,
+    phone: patient.phone,
+    email: patient.email,
+    status: patient.status,
   });
 
-  const navigate = useNavigate();
+  useEffect(() => {
+    // Update the form data if the patient data changes
+    setFormData({
+      name: patient.name,
+      specialization: patient.specialization,
+      phone: patient.phone,
+      email: patient.email,
+      status: patient.status,
+    });
+  }, [patient]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -107,7 +129,7 @@ const EditPatients: React.FC = () => {
             <option value="">Select Status</option>
             <option value="active">Active</option>
             <option value="inactive">Inactive</option>
-            <option value="on-treatment">On Treatment</option>
+            <option value="on-leave">On Leave</option>
           </select>
         </div>
 
