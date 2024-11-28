@@ -10,6 +10,7 @@ import Doctors from "./dashboards/admin/pages/doctors";
 import EditDoctorForm from "./dashboards/admin/pages/editDoctor";
 import AddDoctorForm from "./dashboards/admin/pages/addDoctorForm";
 import AddPatientForm from "./dashboards/admin/pages/addPatientForm";
+import EditPatients from "./dashboards/admin/pages/editPatient";
 import ReportsTable from "./dashboards/admin/ReportsList";
 import LandingPage from "./landingPage";
 
@@ -60,6 +61,7 @@ const App: React.FC = () => {
                     <Route path="/add-doctor" element={<AddDoctorForm />} />
                     <Route path="/edit-doctor" element={<EditDoctorForm />} />
                     <Route path="/add-patient" element={<AddPatientForm />} />
+                    <Route path="/edit-patient" element={<EditPatients />} />
                     <Route path="/reports" element={<ReportsTable />} />
 
                   </Routes>
