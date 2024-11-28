@@ -98,7 +98,10 @@ const Doctors: React.FC = () => {
                   </span>
                 </td>
                 <td className="p-4 flex items-center gap-3">
-                  <button className="text-blue-500 hover:text-blue-700">
+                  <button
+                    className="text-blue-500 hover:text-blue-700"
+                    onClick={() => navigate("/admin/edit-doctor")}
+                  >
                     <FaEdit />
                   </button>
                   <button
