@@ -40,9 +40,7 @@ const Doctors: React.FC = () => {
     <div className="p-6 bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen">
       {/* Header */}
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-extrabold text-blue-600">
-          Manage Doctors
-        </h1>
+        <h1 className="text-3xl font-extrabold text-blue-600">Manage Doctors</h1>
         <button
           className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-md shadow hover:bg-blue-700"
           onClick={() => navigate("/admin/add-doctor")}
@@ -100,7 +98,7 @@ const Doctors: React.FC = () => {
                 <td className="p-4 flex items-center gap-3">
                   <button
                     className="text-blue-500 hover:text-blue-700"
-                    onClick={() => navigate("/admin/edit-doctor")}
+                    onClick={() => navigate("/admin/edit-doctor", { state: { doctor } })}
                   >
                     <FaEdit />
                   </button>
