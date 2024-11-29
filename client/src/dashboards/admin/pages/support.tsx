@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FaSearch } from "react-icons/fa";
+import { FadeLoader } from "react-spinners";
 import { fetchSupportTickets } from "../../../api/supportTicketsApi";
 
 export interface SupportTicket {
@@ -9,7 +10,6 @@ export interface SupportTicket {
   description: string;
   createdAt: string; // Ensure that createdAt is always included
 }
-
 
 const Support: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -69,7 +69,9 @@ const Support: React.FC = () => {
 
       {/* Loading Indicator */}
       {loading ? (
-        <div className="text-center text-blue-600">Loading tickets...</div>
+        <div className="flex justify-center items-center h-64">
+          <FadeLoader color="blue" />
+        </div>
       ) : (
         <div className="overflow-x-auto bg-white shadow-md rounded-lg">
           {/* Support Ticket Table */}

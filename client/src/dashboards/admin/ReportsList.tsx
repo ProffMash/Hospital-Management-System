@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { getReports } from "../../api/reportApi";
+import { FadeLoader } from "react-spinners";
+
 interface Report {
   id: number;
   name: string;
@@ -38,13 +40,17 @@ const ReportsTable: React.FC = () => {
   };
 
   if (loading) {
-    return <div>Loading reports...</div>;
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <FadeLoader color="#3b82f6" />
+      </div>
+    );
   }
 
   return (
     <div className="p-6 bg-white rounded-lg shadow-md">
       <h1 className="text-3xl font-extrabold text-blue-600">Submitted Reports</h1>
-      <table className="min-w-full table-auto">
+      <table className="min-w-full table-auto mt-6">
         <thead>
           <tr className="text-left border-b">
             <th className="py-2 px-4 font-semibold text-gray-700">Name</th>
@@ -63,7 +69,9 @@ const ReportsTable: React.FC = () => {
               <td className="py-3 px-4">
                 <span
                   className={`inline-block px-3 py-1 rounded-full text-xs font-medium ${
-                    report.status === "Pending" ? "bg-yellow-100 text-yellow-800" : "bg-green-100 text-green-800"
+                    report.status === "Pending"
+                      ? "bg-yellow-100 text-yellow-800"
+                      : "bg-green-100 text-green-800"
                   }`}
                 >
                   {report.status}

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { FaEdit, FaTrash, FaSearch } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { getDoctors, deleteDoctor } from "../../../api/doctorApi";
+import { FadeLoader } from "react-spinners";
 
 interface Doctor {
   id: number;
@@ -15,16 +16,20 @@ interface Doctor {
 const Doctors: React.FC = () => {
   const [doctors, setDoctors] = useState<Doctor[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   // Fetch doctors on component mount
   useEffect(() => {
     const fetchDoctors = async () => {
+      setLoading(true); // Start loading
       try {
         const data = await getDoctors();
         setDoctors(data);
       } catch (error) {
         console.error("Error fetching doctors:", error);
+      } finally {
+        setLoading(false); // Stop loading
       }
     };
     fetchDoctors();
@@ -72,68 +77,81 @@ const Doctors: React.FC = () => {
         />
       </div>
 
-      <div className="bg-white shadow rounded-lg p-6">
-        <table className="w-full text-left">
-          <thead>
-            <tr className="text-sm font-semibold text-gray-600 border-b">
-              <th className="p-4">ID</th>
-              <th className="p-4">Name</th>
-              <th className="p-4">Specialization</th>
-              <th className="p-4">Phone</th>
-              <th className="p-4">Email</th>
-              <th className="p-4">Status</th>
-              <th className="p-4">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredDoctors.length === 0 ? (
-              <tr>
-                <td colSpan={7} className="p-4 text-center text-gray-500 italic">
-                  No doctors found.
-                </td>
+      {loading ? (
+        <div className="flex justify-center items-center h-64">
+          <FadeLoader color="#1D4ED8" />
+        </div>
+      ) : (
+        <div className="bg-white shadow rounded-lg p-6">
+          <table className="w-full text-left">
+            <thead>
+              <tr className="text-sm font-semibold text-gray-600 border-b">
+                <th className="p-4">ID</th>
+                <th className="p-4">Name</th>
+                <th className="p-4">Specialization</th>
+                <th className="p-4">Phone</th>
+                <th className="p-4">Email</th>
+                <th className="p-4">Status</th>
+                <th className="p-4">Actions</th>
               </tr>
-            ) : (
-              filteredDoctors.map((doctor) => (
-                <tr key={doctor.id} className="text-sm text-gray-700 hover:bg-gray-50">
-                  <td className="p-4">{doctor.id}</td>
-                  <td className="p-4">{doctor.name}</td>
-                  <td className="p-4">{doctor.specialization}</td>
-                  <td className="p-4">{doctor.phone}</td>
-                  <td className="p-4">{doctor.email}</td>
-                  <td className="p-4">
-                    <span
-                      className={`px-3 py-1 rounded-full text-xs font-medium ${
-                        doctor.status === "Active"
-                          ? "bg-green-100 text-green-700"
-                          : "bg-red-100 text-red-700"
-                      }`}
-                    >
-                      {doctor.status}
-                    </span>
-                  </td>
-                  <td className="p-4 flex items-center gap-3">
-                    <button
-                      className="text-blue-500 hover:text-blue-700"
-                      onClick={() => navigate("/admin/edit-doctor", { state: { doctor } })}
-                    >
-                      <FaEdit />
-                    </button>
-                    <button
-                      className="text-red-500 hover:text-red-700"
-                      onClick={() => handleDelete(doctor.id)}
-                    >
-                      <FaTrash />
-                    </button>
+            </thead>
+            <tbody>
+              {filteredDoctors.length === 0 ? (
+                <tr>
+                  <td
+                    colSpan={7}
+                    className="p-4 text-center text-gray-500 italic"
+                  >
+                    No doctors found.
                   </td>
                 </tr>
-              ))
-            )}
-          </tbody>
-        </table>
-      </div>
+              ) : (
+                filteredDoctors.map((doctor) => (
+                  <tr
+                    key={doctor.id}
+                    className="text-sm text-gray-700 hover:bg-gray-50"
+                  >
+                    <td className="p-4">{doctor.id}</td>
+                    <td className="p-4">{doctor.name}</td>
+                    <td className="p-4">{doctor.specialization}</td>
+                    <td className="p-4">{doctor.phone}</td>
+                    <td className="p-4">{doctor.email}</td>
+                    <td className="p-4">
+                      <span
+                        className={`px-3 py-1 rounded-full text-xs font-medium ${
+                          doctor.status === "Active"
+                            ? "bg-green-100 text-green-700"
+                            : "bg-red-100 text-red-700"
+                        }`}
+                      >
+                        {doctor.status}
+                      </span>
+                    </td>
+                    <td className="p-4 flex items-center gap-3">
+                      <button
+                        className="text-blue-500 hover:text-blue-700"
+                        onClick={() =>
+                          navigate("/admin/edit-doctor", { state: { doctor } })
+                        }
+                      >
+                        <FaEdit />
+                      </button>
+                      <button
+                        className="text-red-500 hover:text-red-700"
+                        onClick={() => handleDelete(doctor.id)}
+                      >
+                        <FaTrash />
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 };
 
 export default Doctors;
-
