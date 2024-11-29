@@ -1,48 +1,56 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaEdit, FaTrash, FaSearch } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { getDoctors, deleteDoctor } from "../../../api/doctorApi";
+
+interface Doctor {
+  id: number;
+  name: string;
+  specialization: string;
+  phone: string;
+  email: string;
+  status: string;
+}
 
 const Doctors: React.FC = () => {
-  const [doctors, setDoctors] = useState([
-    {
-      id: 1,
-      name: "Dr. John Doe",
-      specialization: "Cardiologist",
-      phone: "+1 234 567 890",
-      email: "johndoe@example.com",
-      status: "Active",
-    },
-    {
-      id: 2,
-      name: "Dr. Jane Smith",
-      specialization: "Dermatologist",
-      phone: "+1 987 654 321",
-      email: "janesmith@example.com",
-      status: "Active",
-    },
-  ]);
-
+  const [doctors, setDoctors] = useState<Doctor[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
 
-  // Handle deletion of doctor by ID
-  const handleDelete = (id: number) => {
-    setDoctors((prev) => prev.filter((doctor) => doctor.id !== id));
+  // Fetch doctors on component mount
+  useEffect(() => {
+    const fetchDoctors = async () => {
+      try {
+        const data = await getDoctors();
+        setDoctors(data);
+      } catch (error) {
+        console.error("Error fetching doctors:", error);
+      }
+    };
+    fetchDoctors();
+  }, []);
+
+  // Handle deletion of a doctor
+  const handleDelete = async (id: number) => {
+    try {
+      await deleteDoctor(id);
+      setDoctors((prev) => prev.filter((doctor) => doctor.id !== id));
+    } catch (error) {
+      console.error("Error deleting doctor:", error);
+    }
   };
 
-  // Handle search term change
+  // Handle search functionality
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
   };
 
-  // Filter doctors based on the search term
   const filteredDoctors = doctors.filter((doctor) =>
     doctor.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
     <div className="p-6 bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen">
-      {/* Header Section */}
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-extrabold text-blue-600">Manage Doctors</h1>
         <button
@@ -53,7 +61,6 @@ const Doctors: React.FC = () => {
         </button>
       </div>
 
-      {/* Search Bar */}
       <div className="flex items-center bg-white shadow rounded-lg p-2 mb-6 w-2/3 md:w-1/3">
         <FaSearch className="text-gray-400 mr-3" />
         <input
@@ -65,7 +72,6 @@ const Doctors: React.FC = () => {
         />
       </div>
 
-      {/* Doctors Table */}
       <div className="bg-white shadow rounded-lg p-6">
         <table className="w-full text-left">
           <thead>
@@ -89,7 +95,7 @@ const Doctors: React.FC = () => {
             ) : (
               filteredDoctors.map((doctor) => (
                 <tr key={doctor.id} className="text-sm text-gray-700 hover:bg-gray-50">
-                  <td className="p-4">{doctor.id}</td> {/* Displaying the doctor ID */}
+                  <td className="p-4">{doctor.id}</td>
                   <td className="p-4">{doctor.name}</td>
                   <td className="p-4">{doctor.specialization}</td>
                   <td className="p-4">{doctor.phone}</td>
@@ -130,3 +136,4 @@ const Doctors: React.FC = () => {
 };
 
 export default Doctors;
+

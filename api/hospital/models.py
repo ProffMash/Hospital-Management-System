@@ -1,4 +1,5 @@
 from django.db import models
+from django.http import JsonResponse
 
 # Patient Model
 class Patient(models.Model):
@@ -86,3 +87,15 @@ class MedicineInventory(models.Model):
 
     def __str__(self):
         return self.name
+    
+def get_doctors_count(request):
+    count = Doctor.objects.count()
+    return JsonResponse({'count': count})
+
+def get_patients_count(request):
+    count = Patient.objects.count()
+    return JsonResponse({'count': count})
+
+
+
+

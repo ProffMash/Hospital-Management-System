@@ -1,9 +1,11 @@
-import React from "react";
+
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { MdEdit } from "react-icons/md";
+import { MdEdit, MdDelete } from "react-icons/md";
+import { getPatients, deletePatient } from "../../../api/patientApi";
 
 interface Patient {
-  id: string;
+  id: number;
   name: string;
   age: number;
   phone: string;
@@ -13,41 +15,54 @@ interface Patient {
 
 const PatientsTable: React.FC = () => {
   const navigate = useNavigate();
+  const [patients, setPatients] = useState<Patient[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
-  const patients: Patient[] = [
-    {
-      id: "1",
-      name: "John Doe",
-      age: 30,
-      phone: "+123456789",
-      email: "johndoe@example.com",
-      status: "Active",
-    },
-    {
-      id: "2",
-      name: "Jane Smith",
-      age: 45,
-      phone: "+987654321",
-      email: "janesmith@example.com",
-      status: "Inactive",
-    },
-    // Add more patients as needed
-  ];
+  // Fetch patients from the backend when the component mounts
+  useEffect(() => {
+    const fetchPatients = async () => {
+      try {
+        setLoading(true);
+        const response = await getPatients();
+        setPatients(response); // Update state with fetched patients
+      } catch (error) {
+        console.error("Error fetching patients:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
+    fetchPatients();
+  }, []); // Empty dependency array means this will run once on mount
+
+  // Handle Edit
   const handleEdit = (patient: Patient) => {
     navigate("/admin/edit-patient", { state: { patient } });
   };
 
+  // Handle Add Patient
   const handleAddPatient = () => {
     navigate("/admin/add-patient");
   };
 
+  // Handle Delete Patient
+  const handleDelete = async (id: number) => {
+    try {
+      await deletePatient(id); // Delete patient via API
+      setPatients(patients.filter(patient => patient.id !== id)); // Remove deleted patient from state
+    } catch (error) {
+      console.error("Error deleting patient:", error);
+    }
+  };
+
+  if (loading) {
+    return <div>Loading...</div>; // Show loading indicator while fetching
+  }
+
   return (
     <div className="overflow-x-auto max-w-full">
-      {/* Title: Manage Patients */}
       <h1 className="text-3xl font-extrabold text-blue-600">Manage Patients</h1>
-
-      {/* Add Patient Button */}
+      
       <div className="flex justify-end mb-4">
         <button
           onClick={handleAddPatient}
@@ -90,6 +105,12 @@ const PatientsTable: React.FC = () => {
                   className="bg-blue-600 text-white p-2 rounded-md hover:bg-blue-700 transition duration-150 ease-in-out"
                 >
                   <MdEdit size={20} />
+                </button>
+                <button
+                  onClick={() => handleDelete(patient.id)}
+                  className="bg-red-600 text-white p-2 ml-2 rounded-md hover:bg-red-700 transition duration-150 ease-in-out"
+                >
+                  <MdDelete size={20} />
                 </button>
               </td>
             </tr>

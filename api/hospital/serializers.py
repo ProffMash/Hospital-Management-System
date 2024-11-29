@@ -43,3 +43,6 @@ class MedicineInventorySerializer(serializers.ModelSerializer):
     class Meta:
         model = MedicineInventory
         fields = '__all__'
+
+class CountSerializer(serializers.Serializer):
+    count = serializers.IntegerField()

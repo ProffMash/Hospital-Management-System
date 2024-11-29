@@ -1,47 +1,44 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaSearch } from "react-icons/fa";
+import { fetchSupportTickets } from "../../../api/supportTicketsApi";
 
-interface SupportTicket {
+export interface SupportTicket {
   ticketId: string;
   name: string;
   email: string;
   description: string;
-  createdAt: string;
+  createdAt: string; // Ensure that createdAt is always included
 }
 
+
 const Support: React.FC = () => {
-
   const [searchQuery, setSearchQuery] = useState("");
+  const [tickets, setTickets] = useState<SupportTicket[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string>("");
 
-  // Sample support tickets data
-  const tickets: SupportTicket[] = [
-    {
-      ticketId: "T001",
-      name: "Dr. John Doe",
-      email: "john.doe@example.com",
-      description: "I'm unable to view patient history in the system.",
-      createdAt: "2024-11-15",
-    },
-    {
-      ticketId: "T002",
-      name: "Jane Doe (Patient)",
-      email: "jane.doe@example.com",
-      description: "I could not book an appointment for a consultation.",
-      createdAt: "2024-11-12",
-    },
-    {
-      ticketId: "T003",
-      name: "Dr. Emily Smith",
-      email: "emily.smith@example.com",
-      description: "There is an error when trying to update patient details.",
-      createdAt: "2024-11-14",
-    },
-  ];
+  // Fetch support tickets from the API
+  useEffect(() => {
+    const fetchTickets = async () => {
+      try {
+        const fetchedTickets = await fetchSupportTickets();
+        setTickets(fetchedTickets);
+      } catch (err) {
+        setError("Failed to fetch tickets.");
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  // Filtering tickets based on search query
+    fetchTickets();
+  }, []);
+
+  // Filter tickets based on search query
   const filteredTickets = tickets.filter(
     (ticket) =>
-      ticket.name.toLowerCase().includes(searchQuery.toLowerCase()) 
+      ticket.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      ticket.ticketId.toLowerCase().includes(searchQuery.toLowerCase()) // Added filtering by ticket ID as well
   );
 
   return (
@@ -67,36 +64,52 @@ const Support: React.FC = () => {
         </div>
       </div>
 
-      {/* Support Ticket Table */}
-      <div className="overflow-x-auto bg-white shadow-md rounded-lg">
-        <table className="w-full border-collapse">
-          <thead className="bg-blue-600 text-white">
-            <tr>
-              <th className="py-3 px-6 text-left font-semibold">Ticket ID</th>
-              <th className="py-3 px-6 text-left font-semibold">Name</th>
-              <th className="py-3 px-6 text-left font-semibold">Email</th>
-              <th className="py-3 px-6 text-left font-semibold">Description</th>
-              <th className="py-3 px-6 text-left font-semibold">Created At</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredTickets.map((ticket, index) => (
-              <tr
-                key={ticket.ticketId}
-                className={`${
-                  index % 2 === 0 ? "bg-gray-50" : "bg-white"
-                } hover:bg-blue-50`}
-              >
-                <td className="py-3 px-6 text-gray-700">{ticket.ticketId}</td>
-                <td className="py-3 px-6 text-gray-700">{ticket.name}</td>
-                <td className="py-3 px-6 text-gray-700">{ticket.email}</td>
-                <td className="py-3 px-6 text-gray-700">{ticket.description}</td>
-                <td className="py-3 px-6 text-gray-700">{ticket.createdAt}</td>
+      {/* Error Message */}
+      {error && <div className="text-red-600 mb-4">{error}</div>}
+
+      {/* Loading Indicator */}
+      {loading ? (
+        <div className="text-center text-blue-600">Loading tickets...</div>
+      ) : (
+        <div className="overflow-x-auto bg-white shadow-md rounded-lg">
+          {/* Support Ticket Table */}
+          <table className="w-full border-collapse">
+            <thead className="bg-blue-600 text-white">
+              <tr>
+                <th className="py-3 px-6 text-left font-semibold">Ticket ID</th>
+                <th className="py-3 px-6 text-left font-semibold">Name</th>
+                <th className="py-3 px-6 text-left font-semibold">Email</th>
+                <th className="py-3 px-6 text-left font-semibold">Description</th>
+                <th className="py-3 px-6 text-left font-semibold">Created At</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {filteredTickets.length === 0 ? (
+                <tr>
+                  <td colSpan={5} className="py-3 px-6 text-center text-gray-500">
+                    No tickets found.
+                  </td>
+                </tr>
+              ) : (
+                filteredTickets.map((ticket, index) => (
+                  <tr
+                    key={ticket.ticketId}
+                    className={`${
+                      index % 2 === 0 ? "bg-gray-50" : "bg-white"
+                    } hover:bg-blue-50`}
+                  >
+                    <td className="py-3 px-6 text-gray-700">{ticket.ticketId}</td>
+                    <td className="py-3 px-6 text-gray-700">{ticket.name}</td>
+                    <td className="py-3 px-6 text-gray-700">{ticket.email}</td>
+                    <td className="py-3 px-6 text-gray-700">{ticket.description}</td>
+                    <td className="py-3 px-6 text-gray-700">{ticket.createdAt}</td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { FiUsers, FiHeart, FiActivity, FiDollarSign } from "react-icons/fi";
 import { Line, Pie } from "react-chartjs-2";
 import {
@@ -11,30 +11,43 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import { getDoctorsCount } from "../../api/doctorApi";
+import { getPatientsCount } from "../../api/patientApi";
 
 // Register required Chart.js components
 ChartJS.register(LineElement, PointElement, CategoryScale, LinearScale, ArcElement, Tooltip, Legend);
 
 const Dashboard: React.FC = () => {
-  // Data for the Line Chart
+  // State for storing doctors and patients count
+  const [doctorsCount, setDoctorsCount] = useState<number | undefined>(undefined);
+  const [patientsCount, setPatientsCount] = useState<number | undefined>(undefined);
+
+  // Fetch data on component mount
+  useEffect(() => {
+    const fetchCounts = async () => {
+      try {
+        const doctors = await getDoctorsCount(); 
+        const patients = await getPatientsCount(); 
+        setDoctorsCount(doctors);
+        setPatientsCount(patients);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchCounts();
+  }, []);
+
+  // Data for the Line Chart with dynamic counts for doctors and patients
   const lineChartData = {
-    labels: ["Week 1", "Week 2", "Week 3", "Week 4"],
+    labels: ["Doctors", "Patients"], // Labels for the x-axis
     datasets: [
       {
-        label: "Surgery",
-        data: [65, 70, 75, 80],
-        borderColor: "#1D4ED8",
-        backgroundColor: "rgba(29, 78, 216, 0.3)",
-        fill: true,
-        tension: 0.4,
-      },
-      {
-        label: "Lab Tests",
-        data: [50, 60, 65, 72],
-        borderColor: "#10B981",
-        backgroundColor: "rgba(16, 185, 129, 0.3)",
-        fill: true,
-        tension: 0.4,
+        label: "Count", 
+        data: [doctorsCount ?? 0, patientsCount ?? 0], 
+        borderColor: "#1D4ED8", 
+        backgroundColor: "rgba(29, 78, 216, 0.3)", 
+        fill: true, 
+        tension: 0.4, 
       },
     ],
   };
@@ -87,8 +100,6 @@ const Dashboard: React.FC = () => {
       {/* Header */}
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-extrabold text-blue-600">Hospital Overview</h1>
-        <div className="relative">
-        </div>
       </div>
 
       {/* Content Wrapper */}
@@ -98,7 +109,7 @@ const Dashboard: React.FC = () => {
           <SummaryCard
             icon={<FiUsers />}
             title="Doctors"
-            value="212"
+            value={doctorsCount !== undefined ? doctorsCount.toString() : "Loading..."} 
             growth="+8%"
             bgColor="bg-blue-100"
             iconColor="text-blue-600"
@@ -106,7 +117,7 @@ const Dashboard: React.FC = () => {
           <SummaryCard
             icon={<FiHeart />}
             title="Patients"
-            value="570"
+            value={patientsCount !== undefined ? patientsCount.toString() : "Loading..."} 
             growth="+12%"
             bgColor="bg-pink-100"
             iconColor="text-pink-600"
@@ -163,19 +174,13 @@ const Dashboard: React.FC = () => {
         <div className="mt-8 bg-white shadow rounded-lg p-6">
           <h2 className="text-xl font-bold mb-4">Departmental Performance</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[
-              { name: "Surgery", progress: 80 },
+            {[{ name: "Surgery", progress: 80 },
               { name: "Pediatrics", progress: 70 },
               { name: "Orthopedics", progress: 65 },
               { name: "Lab Tests", progress: 90 },
               { name: "Radiology", progress: 75 },
-              { name: "Pharmacy", progress: 85 },
-            ].map((dept, idx) => (
-              <DepartmentProgress
-                key={idx}
-                name={dept.name}
-                progress={dept.progress}
-              />
+              { name: "Pharmacy", progress: 85 }].map((dept, idx) => (
+              <DepartmentProgress key={idx} name={dept.name} progress={dept.progress} />
             ))}
           </div>
         </div>
@@ -193,9 +198,7 @@ const SummaryCard: React.FC<{
   iconColor: string;
 }> = ({ icon, title, value, growth, bgColor, iconColor }) => (
   <div className={`flex items-center p-4 rounded-lg shadow ${bgColor}`}>
-    <div
-      className={`p-4 rounded-full bg-white flex items-center justify-center shadow-sm ${iconColor}`}
-    >
+    <div className={`p-4 rounded-full bg-white flex items-center justify-center shadow-sm ${iconColor}`}>
       {icon}
     </div>
     <div className="ml-4">
@@ -206,19 +209,26 @@ const SummaryCard: React.FC<{
   </div>
 );
 
-const DepartmentProgress: React.FC<{ name: string; progress: number }> = ({
-  name,
-  progress,
-}) => (
-  <div>
-    <h3 className="text-sm font-semibold text-gray-600 mb-1">{name}</h3>
-    <div className="w-full bg-gray-200 rounded-full h-4">
-      <div
-        className="h-4 rounded-full bg-blue-500"
-        style={{ width: `${progress}%` }}
-      ></div>
+const DepartmentProgress: React.FC<{ name: string; progress: number }> = ({ name, progress }) => (
+  <div className="bg-gray-50 shadow p-4 rounded-lg">
+    <h4 className="text-sm font-semibold">{name}</h4>
+    <div className="relative pt-1">
+      <div className="flex mb-2 items-center justify-between">
+        <div>
+          <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-green-600 bg-green-200">
+            {progress}%
+          </span>
+        </div>
+      </div>
+      <div className="flex mb-2">
+        <div className="w-full bg-gray-200 rounded-full h-2.5">
+          <div
+            className="bg-green-500 h-2.5 rounded-full"
+            style={{ width: `${progress}%` }}
+          />
+        </div>
+      </div>
     </div>
-    <p className="text-xs text-gray-500 mt-1">{progress}% Performance</p>
   </div>
 );
 

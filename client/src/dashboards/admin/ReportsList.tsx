@@ -1,38 +1,31 @@
-// ReportsTable.tsx
-import React, { useState } from "react";
-
+import React, { useState, useEffect } from "react";
+import { getReports } from "../../api/reportApi";
 interface Report {
   id: number;
   name: string;
   subject: string;
   message: string;
-  status: "Pending" | "Resolved";
+  status: "Pending" | "Resolved"; // Make sure 'status' is part of the Report type
 }
 
 const ReportsTable: React.FC = () => {
-  const [reports, setReports] = useState<Report[]>([
-    {
-      id: 1,
-      name: "Steve",
-      subject: "Room 501 AC is not working",
-      message: "The AC in Room 501 is malfunctioning and needs immediate repair.",
-      status: "Pending",
-    },
-    {
-      id: 2,
-      name: "Andrew",
-      subject: "Daniel extended his holiday",
-      message: "Daniel has extended his holiday for an additional week.",
-      status: "Resolved",
-    },
-    {
-      id: 3,
-      name: "Steve",
-      subject: "101 washroom needed to clean",
-      message: "The washroom in Room 101 requires cleaning as it is not in a hygienic state.",
-      status: "Pending",
-    },
-  ]);
+  const [reports, setReports] = useState<Report[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    // Fetch the reports from the API
+    const fetchReports = async () => {
+      try {
+        const fetchedReports = await getReports();
+        setReports(fetchedReports);
+      } catch (error) {
+        console.error("Error fetching reports:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchReports();
+  }, []);
 
   const toggleStatus = (id: number) => {
     setReports((prevReports) =>
@@ -43,6 +36,10 @@ const ReportsTable: React.FC = () => {
       )
     );
   };
+
+  if (loading) {
+    return <div>Loading reports...</div>;
+  }
 
   return (
     <div className="p-6 bg-white rounded-lg shadow-md">

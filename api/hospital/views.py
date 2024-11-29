@@ -6,8 +6,11 @@ from .models import (
 from .serializers import (
     PatientSerializer, DoctorSerializer, PharmacistSerializer,
     ReportSerializer, SupportTicketSerializer, PatientDiagnosisSerializer,
-    AppointmentSerializer, MedicineInventorySerializer
+    AppointmentSerializer, MedicineInventorySerializer, CountSerializer
 )
+
+from rest_framework.decorators import action
+from rest_framework.response import Response
 
 class PatientViewSet(viewsets.ModelViewSet):
     queryset = Patient.objects.all()
@@ -40,3 +43,30 @@ class AppointmentViewSet(viewsets.ModelViewSet):
 class MedicineInventoryViewSet(viewsets.ModelViewSet):
     queryset = MedicineInventory.objects.all()
     serializer_class = MedicineInventorySerializer
+
+
+class PatientViewSet(viewsets.ModelViewSet):
+    queryset = Patient.objects.all()
+    serializer_class = PatientSerializer
+
+    @action(detail=False, methods=['get'], url_path='count')
+    def get_patient_count(self, request):
+        """
+        Returns the total count of patients.
+        """
+        count = Patient.objects.count()
+        # Use the CountSerializer to return the count
+        return Response(CountSerializer({'count': count}).data)
+
+class DoctorViewSet(viewsets.ModelViewSet):
+    queryset = Doctor.objects.all()
+    serializer_class = DoctorSerializer
+
+    @action(detail=False, methods=['get'], url_path='count')
+    def get_doctor_count(self, request):
+        """
+        Returns the total count of doctors.
+        """
+        count = Doctor.objects.count()
+        # Use the CountSerializer to return the count
+        return Response(CountSerializer({'count': count}).data)
