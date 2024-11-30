@@ -12,7 +12,7 @@ router.register(r'doctors', DoctorViewSet)
 router.register(r'pharmacists', PharmacistViewSet)
 router.register(r'reports', ReportViewSet)
 router.register(r'support-tickets', SupportTicketViewSet)
-router.register(r'patient-diagnoses', PatientDiagnosisViewSet)
+router.register(r'patient-diagnosis', PatientDiagnosisViewSet)
 router.register(r'appointments', AppointmentViewSet)
 router.register(r'medicines', MedicineInventoryViewSet)
 

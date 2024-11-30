@@ -1,27 +1,37 @@
+import { useState, useEffect } from "react";
+import { getDoctors } from "../../api/doctorApi"; // Import the API function
+
 const DoctorsList = () => {
-  const doctors = [
-    {
-      name: "Dr. John Smith",
-      specialization: "Cardiology",
-      phone: "+1 (123) 456-7890",
-      email: "john.smith@medinik.com",
-      status: "Available",
-    },
-    {
-      name: "Dr. Sarah Brown",
-      specialization: "Neurology",
-      phone: "+1 (234) 567-8901",
-      email: "sarah.brown@medinik.com",
-      status: "On Leave",
-    },
-    {
-      name: "Dr. Alice Green",
-      specialization: "Orthopedics",
-      phone: "+1 (345) 678-9012",
-      email: "alice.green@medinik.com",
-      status: "Available",
-    },
-  ];
+  const [doctors, setDoctors] = useState<
+    { name: string; specialization: string; phone: string; email: string; status: string }[]
+  >([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // Fetch doctors from the backend
+  useEffect(() => {
+    const fetchDoctors = async () => {
+      try {
+        const data = await getDoctors(); 
+        setDoctors(data);
+      } catch (err) {
+        console.error("Error fetching doctors:", err);
+        setError("Failed to load doctors.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDoctors();
+  }, []);
+
+  if (loading) {
+    return <div>Loading doctors...</div>;
+  }
+
+  if (error) {
+    return <div className="text-red-500">{error}</div>;
+  }
 
   return (
     <div className="bg-white p-6 shadow-lg rounded-lg">
@@ -49,7 +59,9 @@ const DoctorsList = () => {
               <td className="py-2 px-4 text-sm text-gray-600">
                 <span
                   className={`px-3 py-1 rounded-full text-xs ${
-                    doctor.status === "Available" ? "bg-green-100 text-green-800" : "bg-yellow-100 text-yellow-800"
+                    doctor.status === "Available"
+                      ? "bg-green-100 text-green-800"
+                      : "bg-yellow-100 text-yellow-800"
                   }`}
                 >
                   {doctor.status}
