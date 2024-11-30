@@ -1,67 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaUser, FaClipboardCheck, FaCheckCircle } from 'react-icons/fa';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { getDiagnoses, deleteDiagnosis } from '../../api/diagnosisApi';
 
 const Users: React.FC = () => {
-  const [usersData, setUsersData] = useState([
-    {
-      id: 1,
-      name: 'John Doe',
-      diagnosis: 'Hypertension',
-      prescribedMedicine: 'Lisinopril 10mg',
-      dosage: 'Once daily',
-      nextCheckup: '12/12/2024',
-    },
-    {
-      id: 2,
-      name: 'Jane Smith',
-      diagnosis: 'Type 2 Diabetes',
-      prescribedMedicine: 'Metformin 500mg',
-      dosage: 'Twice daily',
-      nextCheckup: '15/12/2024',
-    },
-    {
-      id: 3,
-      name: 'Alice Johnson',
-      diagnosis: 'Asthma',
-      prescribedMedicine: ['Albuterol 100mg', 'Fluticasone 50mg'],
-      dosage: 'As needed',
-      nextCheckup: '20/12/2024',
-    },
-    {
-      id: 4,
-      name: 'Bob Brown',
-      diagnosis: 'Hypercholesterolemia',
-      prescribedMedicine: 'Atorvastatin 20mg',
-      dosage: 'Once daily',
-      nextCheckup: '25/12/2024',
-    },
-    {
-      id: 5,
-      name: 'Eve Wilson',
-      diagnosis: 'Depression',
-      prescribedMedicine: 'Sertraline 50mg',
-      dosage: 'Once daily',
-      nextCheckup: '30/12/2024',
-    },
-    {
-      id: 6,
-      name: 'Michael Lee',
-      diagnosis: 'Acid Reflux',
-      prescribedMedicine: 'Omeprazole 20mg',
-      dosage: 'Once daily',
-      nextCheckup: '05/01/2025',
-    },
+  const [usersData, setUsersData] = useState<any[]>([]); 
 
-  ]);
+  useEffect(() => {
+    const fetchDiagnoses = async () => {
+      try {
+        const data = await getDiagnoses();
+        setUsersData(data);
+      } catch (error) {
+        console.error('Error fetching diagnoses:', error);
+      }
+    };
+    fetchDiagnoses();
+  }, []); 
 
-  // remove a user from the list and show a toast notification
-  const clearPatient = (id: number) => {
-    setUsersData(usersData.filter((user) => user.id !== id));
-    toast.success('Patient cleared successfully', { 
-    position: 'top-right'
-    });
+  // Clear a patient from the list (remove from the state) and show a toast notification
+  const clearPatient = async (id: number) => {
+    try {
+      await deleteDiagnosis(id); // Delete diagnosis from the backend
+      setUsersData(usersData.filter((user) => user.id !== id)); // Update state to remove patient
+      toast.success('Patient cleared successfully', { position: 'top-right' });
+    } catch (error) {
+      toast.error('Failed to clear patient', { position: 'top-right' });
+    }
   };
 
   return (
@@ -86,15 +52,15 @@ const Users: React.FC = () => {
                 <td className="p-4">{user.id}</td>
                 <td className="p-4 flex items-center space-x-2">
                   <FaUser className="h-5 w-5 text-blue-500" />
-                  <span>{user.name}</span>
+                  <span>{user.patient_name}</span> {/* Display patient_name directly */}
                 </td>
                 <td className="p-4">{user.diagnosis}</td>
                 <td className="p-4 flex items-center space-x-2">
                   <FaClipboardCheck className="h-5 w-5 text-green-500" />
-                  <span>{user.prescribedMedicine}</span>
+                  <span>{user.prescribed_medicine}</span>
                 </td>
                 <td className="p-4">{user.dosage}</td>
-                <td className="p-4">{user.nextCheckup}</td>
+                <td className="p-4">{user.next_checkup}</td>
                 <td className="p-4">
                   <button
                     onClick={() => clearPatient(user.id)}

@@ -28,16 +28,15 @@ class SupportTicketSerializer(serializers.ModelSerializer):
     class Meta:
         model = SupportTicket
         fields = '__all__'
-
+        
 class PatientDiagnosisSerializer(serializers.ModelSerializer):
+    # Explicitly reference the `name` of the patient related to the diagnosis
+    patient_name = serializers.CharField(source='patient.name', read_only=True)
+
     class Meta:
         model = PatientDiagnosis
-        fields = '__all__'
+        fields = ['id', 'patient_name', 'diagnosis', 'prescribed_medicine', 'dosage', 'next_checkup']
 
-# class AppointmentSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Appointment
-#         fields = '__all__'
 class AppointmentSerializer(serializers.ModelSerializer):
     # Add a read-only field for patient_name that gets the patient's name from the Patient model
     patient_name = serializers.CharField(source='patient.name', read_only=True)

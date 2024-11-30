@@ -36,9 +36,6 @@ class PatientDiagnosisViewSet(viewsets.ModelViewSet):
     queryset = PatientDiagnosis.objects.all()
     serializer_class = PatientDiagnosisSerializer
 
-# class AppointmentViewSet(viewsets.ModelViewSet):
-#     queryset = Appointment.objects.all()
-#     serializer_class = AppointmentSerializer
 class AppointmentViewSet(viewsets.ModelViewSet):
     queryset = Appointment.objects.all()  # Get all appointments
     serializer_class = AppointmentSerializer  # Use the modified serializer
