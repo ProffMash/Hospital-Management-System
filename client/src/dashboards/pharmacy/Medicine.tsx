@@ -1,9 +1,33 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaPlus, FaSearch, FaEdit, FaTrash } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+import { getMedicines, deleteMedicine } from '../../api/medicineInventoryApi';
 
 const MedicineInventory: React.FC = () => {
   const navigate = useNavigate();
+  const [medicines, setMedicines] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchMedicines = async () => {
+      try {
+        const data = await getMedicines();
+        setMedicines(data);
+      } catch (error) {
+        console.error('Error fetching medicines:', error);
+      }
+    };
+    fetchMedicines();
+  }, []);
+
+  // Handle medicine deletion
+  const handleDelete = async (id: number) => {
+    try {
+      await deleteMedicine(id);
+      setMedicines(medicines.filter((medicine) => medicine.id !== id));
+    } catch (error) {
+      console.error('Error deleting medicine:', error);
+    }
+  };
 
   return (
     <div className="p-8 bg-gradient-to-br from-gray-50 to-gray-200 min-h-screen">
@@ -42,24 +66,21 @@ const MedicineInventory: React.FC = () => {
             </tr>
           </thead>
           <tbody>
-            {[
-              { id: '001', name: 'Paracetamol', category: 'Pain Relief', quantity: 200, price: '$5.00' },
-              { id: '002', name: 'Ibuprofen', category: 'Pain Relief', quantity: 150, price: '$8.00' },
-            ].map((medicine, index) => (
-              <tr
-                key={medicine.id}
-                className={`transition duration-150 ${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'} hover:bg-blue-50`}
-              >
+            {medicines.map((medicine) => (
+              <tr key={medicine.id} className="transition duration-150 hover:bg-blue-50">
                 <td className="p-4 font-semibold text-gray-600">{medicine.id}</td>
                 <td className="p-4 font-semibold text-gray-600">{medicine.name}</td>
                 <td className="p-4 text-gray-500">{medicine.category}</td>
                 <td className="p-4 text-gray-500">{medicine.quantity}</td>
-                <td className="p-4 text-gray-500">{medicine.price}</td>
+                <td className="p-4 text-gray-500">${medicine.price}</td>
                 <td className="p-4 flex space-x-3">
                   <button className="p-2 bg-blue-100 text-blue-600 rounded-full hover:bg-blue-200 transition duration-200">
                     <FaEdit />
                   </button>
-                  <button className="p-2 bg-red-100 text-red-600 rounded-full hover:bg-red-200 transition duration-200">
+                  <button
+                    onClick={() => handleDelete(medicine.id)}
+                    className="p-2 bg-red-100 text-red-600 rounded-full hover:bg-red-200 transition duration-200"
+                  >
                     <FaTrash />
                   </button>
                 </td>
