@@ -7,7 +7,6 @@ const axiosInstance = axios.create({
   },
 });
 
-// API Functions
 export const createDoctor = async (doctorData: {
   name: string;
   specialization: string;
@@ -15,31 +14,59 @@ export const createDoctor = async (doctorData: {
   email: string;
   status: string;
 }) => {
-  const response = await axiosInstance.post('doctors/', doctorData);
-  return response.data;
+  try {
+    const response = await axiosInstance.post('doctors/', doctorData);
+    return response.data;
+  } catch (error) {
+    console.error('Error creating doctor:', error);
+    throw error; 
+  }
 };
 
 export const getDoctors = async () => {
-  const response = await axiosInstance.get('doctors/');
-  return response.data;
+  try {
+    const response = await axiosInstance.get('doctors/');
+    const mappedData = response.data.map((doctor: any) => ({
+      id: doctor.doctor_id, 
+      name: doctor.name,
+      specialization: doctor.specialization,
+      phone: doctor.phone,
+      email: doctor.email,
+      status: doctor.status,
+    }));
+    return mappedData;
+  } catch (error) {
+    console.error('Error fetching doctors:', error);
+    throw error; 
+  }
 };
 
 export const updateDoctor = async (id: number, doctorData: object) => {
-  const response = await axiosInstance.put(`doctors/${id}/`, doctorData);
-  return response.data;
+  try {
+    const response = await axiosInstance.put(`doctors/${id}/`, doctorData);
+    return response.data;
+  } catch (error) {
+    console.error(`Error updating doctor with ID ${id}:`, error);
+    throw error; 
+  }
 };
+
 
 export const deleteDoctor = async (id: number) => {
-  await axiosInstance.delete(`doctors/${id}/`);
+  try {
+    await axiosInstance.delete(`doctors/${id}/`);
+  } catch (error) {
+    console.error(`Error deleting doctor with ID ${id}:`, error);
+    throw error; 
+  }
 };
 
-// Get getDoctorsCount function using axiosInstance
 export const getDoctorsCount = async () => {
   try {
-    const response = await axiosInstance.get('doctors/count'); 
+    const response = await axiosInstance.get('doctors/count');
     return response.data.count; 
   } catch (error) {
     console.error('Error fetching doctors count:', error);
-    return 0;
+    return 0; 
   }
 };
