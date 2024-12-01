@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom"; 
-import { MdPerson, MdPhone, MdEmail, MdCheckCircle, MdCancel, MdArrowBack, MdCalendarToday } from "react-icons/md";
+import { MdPerson, MdPhone, MdEmail, MdCheckCircle, MdArrowBack, MdCalendarToday } from "react-icons/md";
+import { updatePatient } from "../../../api/patientApi";
 
 const EditPatients: React.FC = () => {
-  const { state } = useLocation(); // Access the state passed through navigation
-  const navigate = useNavigate(); // Initialize useNavigate for navigation
+  const { state } = useLocation(); 
+  const navigate = useNavigate(); 
 
-  // Check if the patient data is passed, otherwise use empty data
   const patient = state?.patient || {
     id: "",
     name: "",
@@ -26,7 +26,6 @@ const EditPatients: React.FC = () => {
   });
 
   useEffect(() => {
-    // Update the form data if the patient data changes
     setFormData({
       id: patient.id,
       name: patient.name,
@@ -45,14 +44,26 @@ const EditPatients: React.FC = () => {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
-    // Submit the form data to the backend here, like an API call
+    try {
+      await updatePatient(formData.id, {
+        name: formData.name,
+        age: Number(formData.age),
+        phone: Number(formData.phone),
+        email: formData.email,
+        status: formData.status,
+      });
+      alert("Patient updated successfully!");
+      navigate("/admin/patients");
+    } catch (error) {
+      console.error("Error updating patient:", error);
+      alert("Failed to update patient. Please try again.");
+    }
   };
 
   const handleBack = () => {
-    navigate("/admin/patients"); 
+    navigate("/admin/patients");
   };
 
   return (
@@ -68,18 +79,6 @@ const EditPatients: React.FC = () => {
 
       <h2 className="text-2xl font-semibold text-gray-800 mb-4">Edit Patient</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
-        {/* ID - Hidden Field or Optional Display */}
-        <div className="hidden">
-          <input
-            type="text"
-            name="id"
-            value={formData.id}
-            onChange={handleChange}
-            placeholder="Patient ID"
-            className="w-full p-2 border border-gray-300 rounded-md"
-          />
-        </div>
-
         {/* Name */}
         <div className="flex items-center space-x-3">
           <label htmlFor="name" className="text-gray-600 font-medium">Name</label>
@@ -92,6 +91,7 @@ const EditPatients: React.FC = () => {
             placeholder="Patient's Name"
             className="w-full p-2 border border-gray-300 rounded-md"
             id="name"
+            required
           />
         </div>
 
@@ -107,6 +107,7 @@ const EditPatients: React.FC = () => {
             placeholder="Age"
             className="w-full p-2 border border-gray-300 rounded-md"
             id="age"
+            required
           />
         </div>
 
@@ -122,6 +123,7 @@ const EditPatients: React.FC = () => {
             placeholder="Phone Number"
             className="w-full p-2 border border-gray-300 rounded-md"
             id="phone"
+            required
           />
         </div>
 
@@ -137,6 +139,7 @@ const EditPatients: React.FC = () => {
             placeholder="Email Address"
             className="w-full p-2 border border-gray-300 rounded-md"
             id="email"
+            required
           />
         </div>
 
@@ -150,15 +153,15 @@ const EditPatients: React.FC = () => {
             onChange={handleChange}
             className="w-full p-2 border border-gray-300 rounded-md"
             id="status"
+            required
           >
             <option value="">Select Status</option>
-            <option value="active">Active</option>
-            <option value="inactive">Inactive</option>
-            <option value="on-leave">On Leave</option>
+            <option value="Admitted">Admitted</option>
+            <option value="Discharged">Discharged</option>
           </select>
         </div>
 
-        {/* Submit Button */}
+        {/* Submit and Cancel Buttons */}
         <div className="flex justify-end space-x-4">
           <button
             type="submit"
@@ -169,9 +172,8 @@ const EditPatients: React.FC = () => {
           <button
             type="button"
             className="bg-gray-400 text-white py-2 px-4 rounded-md hover:bg-gray-500 transition"
-            onClick={() => console.log("Cancel Edit")}
+            onClick={handleBack}
           >
-            <MdCancel size={18} className="inline-block mr-2" />
             Cancel
           </button>
         </div>

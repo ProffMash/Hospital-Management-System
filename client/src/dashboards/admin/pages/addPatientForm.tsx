@@ -1,14 +1,44 @@
-import React from "react";
-import { FaUser, FaCalendar, FaPhone, FaEnvelope, FaArrowLeft, FaCheckCircle, FaIdCard } from "react-icons/fa";
+import React, { useState } from "react";
+import { FaUser, FaCalendar, FaPhone, FaEnvelope, FaArrowLeft, FaCheckCircle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { addPatient } from "../../../api/patientApi";
 
 const AddPatientForm: React.FC = () => {
   const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [patientData, setPatientData] = useState({
+    name: "",
+    age: "",
+    phone: "",
+    email: "",
+    status: ""
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setPatientData((prevData) => ({
+      ...prevData,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    alert("Patient added successfully!");
-    navigate("/admin/patients"); 
+
+    try {
+      await addPatient({
+        name: patientData.name,
+        age: parseInt(patientData.age, 10),
+        phone: parseInt(patientData.phone, 10),
+        email: patientData.email,
+        status: patientData.status
+      });
+      alert("Patient added successfully!");
+      navigate("/admin/patients"); 
+    } catch (error) {
+      console.error("Error adding patient:", error);
+      alert("Failed to add patient. Please try again.");
+    }
   };
 
   return (
@@ -27,20 +57,6 @@ const AddPatientForm: React.FC = () => {
           Add New Patient
         </h1>
         <form onSubmit={handleSubmit}>
-          {/* ID */}
-          <div className="mb-4">
-            <label className="block text-gray-700 mb-1 flex items-center gap-2">
-              <FaIdCard className="text-blue-500" />
-              Patient ID
-            </label>
-            <input
-              type="text"
-              className="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 px-3 py-2"
-              placeholder="Patient's ID (Auto-generated or custom)"
-              required
-            />
-          </div>
-
           {/* Name */}
           <div className="mb-4">
             <label className="block text-gray-700 mb-1 flex items-center gap-2">
@@ -49,6 +65,9 @@ const AddPatientForm: React.FC = () => {
             </label>
             <input
               type="text"
+              name="name"
+              value={patientData.name}
+              onChange={handleChange}
               className="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 px-3 py-2"
               placeholder="Patient's name"
               required
@@ -63,6 +82,9 @@ const AddPatientForm: React.FC = () => {
             </label>
             <input
               type="number"
+              name="age"
+              value={patientData.age}
+              onChange={handleChange}
               className="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 px-3 py-2"
               placeholder="Age"
               required
@@ -77,6 +99,9 @@ const AddPatientForm: React.FC = () => {
             </label>
             <input
               type="tel"
+              name="phone"
+              value={patientData.phone}
+              onChange={handleChange}
               className="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 px-3 py-2"
               placeholder="Phone number"
               required
@@ -91,6 +116,9 @@ const AddPatientForm: React.FC = () => {
             </label>
             <input
               type="email"
+              name="email"
+              value={patientData.email}
+              onChange={handleChange}
               className="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 px-3 py-2"
               placeholder="Email address"
               required
@@ -104,6 +132,9 @@ const AddPatientForm: React.FC = () => {
               Status
             </label>
             <select
+              name="status"
+              value={patientData.status}
+              onChange={handleChange}
               className="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 px-3 py-2"
               required
             >

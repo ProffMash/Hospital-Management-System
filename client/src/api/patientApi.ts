@@ -11,7 +11,6 @@ interface Patient {
   status: string;
 }
 
-// Fetch all patients
 export const getPatients = async () => {
   try {
     const response = await axios.get(API_URL);
@@ -22,7 +21,6 @@ export const getPatients = async () => {
   }
 };
 
-// Get a single patient by ID
 export const getPatientById = async (id: number) => {
   try {
     const response = await axios.get(`${API_URL}${id}/`);
@@ -33,7 +31,6 @@ export const getPatientById = async (id: number) => {
   }
 };
 
-// Add a new patient
 export const addPatient = async (patient: Omit<Patient, 'id'>) => {
   try {
     const response = await axios.post(API_URL, patient);
@@ -44,7 +41,6 @@ export const addPatient = async (patient: Omit<Patient, 'id'>) => {
   }
 };
 
-// Update an existing patient
 export const updatePatient = async (id: number, patient: Omit<Patient, 'id'>) => {
   try {
     const response = await axios.patch(`${API_URL}${id}/`, patient);
@@ -55,7 +51,6 @@ export const updatePatient = async (id: number, patient: Omit<Patient, 'id'>) =>
   }
 };
 
-// Delete a patient
 export const deletePatient = async (id: number) => {
   try {
     await axios.delete(`${API_URL}${id}/`);
@@ -66,11 +61,10 @@ export const deletePatient = async (id: number) => {
   }
 };
 
-// Get getPatientsCount function using axios
 export const getPatientsCount = async () => {
   try {
     const response = await axios.get('http://127.0.0.1:8000/api/patients/count/');
-    return response.data.count; // Return the count from the API response
+    return response.data.count; 
   } catch (error) {
     console.error('Error fetching patients count:', error);
     return 0;

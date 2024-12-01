@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MdEdit, MdDelete } from "react-icons/md";
 import { getPatients, deletePatient } from "../../../api/patientApi";
-import { FadeLoader } from "react-spinners"; // Import the spinner
+import { FadeLoader } from "react-spinners"; 
 
 interface Patient {
   id: number;
@@ -18,13 +18,20 @@ const PatientsTable: React.FC = () => {
   const [patients, setPatients] = useState<Patient[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
-  // Fetch patients from the backend when the component mounts
   useEffect(() => {
     const fetchPatients = async () => {
       try {
         setLoading(true);
         const response = await getPatients();
-        setPatients(response); // Update state with fetched patients
+        const mappedPatients = response.map((patient: any) => ({
+          id: patient.patient_id,
+          name: patient.name,
+          age: patient.age,
+          phone: patient.phone,
+          email: patient.email,
+          status: patient.status,
+        }));
+        setPatients(mappedPatients); 
       } catch (error) {
         console.error("Error fetching patients:", error);
       } finally {
@@ -33,7 +40,7 @@ const PatientsTable: React.FC = () => {
     };
 
     fetchPatients();
-  }, []); // Empty dependency array means this will run once on mount
+  }, []); 
 
   // Handle Edit
   const handleEdit = (patient: Patient) => {
@@ -48,7 +55,7 @@ const PatientsTable: React.FC = () => {
   // Handle Delete Patient
   const handleDelete = async (id: number) => {
     try {
-      await deletePatient(id); // Delete patient via API
+      await deletePatient(id); 
       setPatients(patients.filter((patient) => patient.id !== id)); // Remove deleted patient from state
     } catch (error) {
       console.error("Error deleting patient:", error);
@@ -60,7 +67,7 @@ const PatientsTable: React.FC = () => {
       <div className="flex justify-center items-center h-screen">
         <FadeLoader height={15} width={5} color="#4A90E2" loading={loading} />
       </div>
-    ); // Show spinner while fetching
+    ); 
   }
 
   return (
