@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MdEdit, MdDelete } from "react-icons/md";
 import { getPatients, deletePatient } from "../../../api/patientApi";
-import { FadeLoader } from "react-spinners"; 
+import { FadeLoader } from "react-spinners";
 
 interface Patient {
   id: number;
@@ -17,6 +17,7 @@ const PatientsTable: React.FC = () => {
   const navigate = useNavigate();
   const [patients, setPatients] = useState<Patient[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const [searchTerm, setSearchTerm] = useState<string>("");
 
   useEffect(() => {
     const fetchPatients = async () => {
@@ -31,7 +32,7 @@ const PatientsTable: React.FC = () => {
           email: patient.email,
           status: patient.status,
         }));
-        setPatients(mappedPatients); 
+        setPatients(mappedPatients);
       } catch (error) {
         console.error("Error fetching patients:", error);
       } finally {
@@ -40,7 +41,12 @@ const PatientsTable: React.FC = () => {
     };
 
     fetchPatients();
-  }, []); 
+  }, []);
+
+  // Filter patients based on search term
+  const filteredPatients = patients.filter((patient) =>
+    patient.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   // Handle Edit
   const handleEdit = (patient: Patient) => {
@@ -55,7 +61,7 @@ const PatientsTable: React.FC = () => {
   // Handle Delete Patient
   const handleDelete = async (id: number) => {
     try {
-      await deletePatient(id); 
+      await deletePatient(id);
       setPatients(patients.filter((patient) => patient.id !== id)); // Remove deleted patient from state
     } catch (error) {
       console.error("Error deleting patient:", error);
@@ -67,14 +73,22 @@ const PatientsTable: React.FC = () => {
       <div className="flex justify-center items-center h-screen">
         <FadeLoader height={15} width={5} color="#4A90E2" loading={loading} />
       </div>
-    ); 
+    );
   }
 
   return (
     <div className="overflow-x-auto max-w-full">
       <h1 className="text-3xl font-extrabold text-blue-600">Manage Patients</h1>
 
-      <div className="flex justify-end mb-4">
+      <div className="flex justify-between items-center mb-4 mt-4"> 
+        <input
+          type="text"
+          placeholder="Search by name"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="border border-gray-300 rounded-md px-4 py-2"
+        />
+
         <button
           onClick={handleAddPatient}
           className="bg-green-600 text-white py-2 px-6 rounded-md hover:bg-green-700 transition duration-150 ease-in-out"
@@ -96,7 +110,7 @@ const PatientsTable: React.FC = () => {
           </tr>
         </thead>
         <tbody className="text-gray-600">
-          {patients.map((patient) => (
+          {filteredPatients.map((patient) => (
             <tr key={patient.id} className="hover:bg-gray-50">
               <td className="border-b px-6 py-4">{patient.id}</td>
               <td className="border-b px-6 py-4">{patient.name}</td>
