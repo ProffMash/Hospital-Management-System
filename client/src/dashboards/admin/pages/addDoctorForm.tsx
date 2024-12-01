@@ -1,19 +1,21 @@
 import React, { useState } from "react";
 import { FaUserMd, FaBriefcaseMedical, FaPhone, FaEnvelope, FaArrowLeft, FaCheckCircle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { createDoctor } from "../../../api/doctorApi";
 
 const AddDoctorForm: React.FC = () => {
   const navigate = useNavigate();
 
-  // State for doctor form data
   const [doctorData, setDoctorData] = useState({
-    id: "",
     name: "",
     specialization: "",
     phone: "",
     email: "",
     status: "",
   });
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   // Handle input change
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -25,10 +27,21 @@ const AddDoctorForm: React.FC = () => {
   };
 
   // Handle form submission
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    alert("Doctor added successfully!");
-    navigate("/admin/doctors"); // Navigate back to the Doctors page after form submission
+    setLoading(true);
+    setError(null); // Reset error before submitting
+
+    try {
+      await createDoctor(doctorData);
+      alert("Doctor added successfully!");
+      navigate("/admin/doctors"); 
+    } catch (err: any) {
+      setError("Failed to add doctor. Please try again.");
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -46,24 +59,13 @@ const AddDoctorForm: React.FC = () => {
         <h1 className="text-2xl font-bold text-blue-600 mb-6 text-center">
           Add New Doctor
         </h1>
-        <form onSubmit={handleSubmit}>
-          {/* Doctor ID */}
-          <div className="mb-4">
-            <label className="block text-gray-700 mb-1 flex items-center gap-2">
-              <FaBriefcaseMedical className="text-blue-500" />
-              Doctor ID
-            </label>
-            <input
-              type="text"
-              name="id"
-              value={doctorData.id}
-              onChange={handleInputChange}
-              className="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 px-3 py-2"
-              placeholder="Doctor's ID"
-              required
-            />
-          </div>
 
+        {/* Error message */}
+        {error && (
+          <div className="text-red-500 text-center mb-4">{error}</div>
+        )}
+
+        <form onSubmit={handleSubmit}>
           {/* Name */}
           <div className="mb-4">
             <label className="block text-gray-700 mb-1 flex items-center gap-2">
@@ -145,7 +147,7 @@ const AddDoctorForm: React.FC = () => {
               className="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 px-3 py-2"
               required
             >
-              <option value="">Select Status</option>
+              <option value="">Select status</option>
               <option value="Active">Active</option>
               <option value="Inactive">Inactive</option>
             </select>
@@ -154,9 +156,10 @@ const AddDoctorForm: React.FC = () => {
           {/* Submit Button */}
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded-md shadow hover:bg-blue-700"
+            className="w-full py-2 bg-blue-600 text-white rounded-md shadow hover:bg-blue-700"
+            disabled={loading}
           >
-            Add Doctor
+            {loading ? "Adding..." : "Add Doctor"}
           </button>
         </form>
       </div>
