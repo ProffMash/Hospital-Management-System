@@ -20,9 +20,11 @@ class PharmacistSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class ReportSerializer(serializers.ModelSerializer):
+    doctor_name = serializers.CharField(source='doctor.name', read_only=True)  
+
     class Meta:
         model = Report
-        fields = '__all__'
+        fields = ['id', 'subject', 'message', 'doctor', 'doctor_name']
 
 class SupportTicketSerializer(serializers.ModelSerializer):
     class Meta:
