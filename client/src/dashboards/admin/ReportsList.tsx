@@ -9,7 +9,7 @@ interface Report {
   message: string;
   doctor: number;
   doctor_name: string;
-  status?: "Pending" | "Resolved"; // Optional until explicitly included in the API
+  status?: "Pending" | "Resolved";
 }
 
 const ReportsTable: React.FC = () => {
