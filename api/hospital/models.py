@@ -73,7 +73,7 @@ class PatientDiagnosis(models.Model):
     diagnosis = models.TextField()
     prescribed_medicine = models.TextField()
     dosage = models.CharField(max_length=50)
-    next_checkup = models.DateField()
+    # next_checkup = models.DateField()
 
     def __str__(self):
         return f"Diagnosis for {self.patient.name}"

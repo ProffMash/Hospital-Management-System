@@ -42,7 +42,7 @@ class PatientDiagnosisSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = PatientDiagnosis
-        fields = ['id', 'patient', 'patient_name', 'diagnosis', 'prescribed_medicine', 'dosage', 'next_checkup']
+        fields = ['id', 'patient', 'patient_name', 'diagnosis', 'prescribed_medicine', 'dosage']
 
 class AppointmentSerializer(serializers.ModelSerializer):
     # Add a read-only field for patient_name that gets the patient's name from the Patient model
