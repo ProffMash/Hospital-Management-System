@@ -5,7 +5,7 @@ import AdminSidebar from "./dashboards/admin/Sidebar";
 import AdminNavbar from "./dashboards/admin/Navbar";
 import AdminDashboard from "./dashboards/admin/Dashboard";
 import Patients from "./dashboards/admin/pages/patients";
-import Support from "./dashboards/admin/pages/support";
+import Support from "./dashboards/admin/pages/Contacts";
 import Doctors from "./dashboards/admin/pages/doctors";
 import EditDoctorForm from "./dashboards/admin/pages/editDoctor";
 import AddDoctorForm from "./dashboards/admin/pages/addDoctorForm";

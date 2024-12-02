@@ -1,8 +1,13 @@
 from rest_framework import serializers
 from .models import (
     Patient, Doctor, Pharmacist, Report, SupportTicket,
-    PatientDiagnosis, Appointment, MedicineInventory, Contacts
+    PatientDiagnosis, Appointment, MedicineInventory, Contact
 )
+
+class ContactSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Contact
+        fields =  '__all__'
 
 class PatientSerializer(serializers.ModelSerializer):
     class Meta:
@@ -30,16 +35,6 @@ class SupportTicketSerializer(serializers.ModelSerializer):
     class Meta:
         model = SupportTicket
         fields = '__all__'
-
-class ContactsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Contacts
-        fields = '__all__'
-        
-class ContactsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = SupportTicket
-        fields = '__all__'
         
 class PatientDiagnosisSerializer(serializers.ModelSerializer):
     # Explicitly reference the `name` of the patient related to the diagnosis
@@ -47,7 +42,7 @@ class PatientDiagnosisSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = PatientDiagnosis
-        fields = ['id', 'patient_name', 'diagnosis', 'prescribed_medicine', 'dosage', 'next_checkup']
+        fields = ['id', 'patient', 'patient_name', 'diagnosis', 'prescribed_medicine', 'dosage', 'next_checkup']
 
 class AppointmentSerializer(serializers.ModelSerializer):
     # Add a read-only field for patient_name that gets the patient's name from the Patient model

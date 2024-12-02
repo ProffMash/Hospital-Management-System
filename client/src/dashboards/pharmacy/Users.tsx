@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { FaUser, FaClipboardCheck, FaCheckCircle } from 'react-icons/fa';
+import { FaUser, FaClipboardCheck, FaCheckCircle, FaSearch } from 'react-icons/fa';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { getDiagnoses, deleteDiagnosis } from '../../api/diagnosisApi';
+import { getDiagnoses } from '../../api/diagnosisApi';
 
 const Users: React.FC = () => {
-  const [usersData, setUsersData] = useState<any[]>([]); 
+  const [usersData, setUsersData] = useState<any[]>([]);
+  const [searchQuery, setSearchQuery] = useState<string>(''); // State for search query
 
   useEffect(() => {
     const fetchDiagnoses = async () => {
@@ -17,22 +18,36 @@ const Users: React.FC = () => {
       }
     };
     fetchDiagnoses();
-  }, []); 
+  }, []);
 
   // Clear a patient from the list (remove from the state) and show a toast notification
-  const clearPatient = async (id: number) => {
-    try {
-      await deleteDiagnosis(id); // Delete diagnosis from the backend
-      setUsersData(usersData.filter((user) => user.id !== id)); // Update state to remove patient
-      toast.success('Patient cleared successfully', { position: 'top-right' });
-    } catch (error) {
-      toast.error('Failed to clear patient', { position: 'top-right' });
-    }
+  const clearPatient = (id: number) => {
+    setUsersData(usersData.filter((user) => user.id !== id)); // Update state to remove patient
+    toast.success('Patient cleared from the list', { position: 'top-right' });
   };
+
+  // Filter users based on the search query
+  const filteredUsers = usersData.filter((user) =>
+    user.patient_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    user.diagnosis.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <div className="p-8 bg-gray-100 min-h-screen">
       <h1 className="text-3xl font-bold text-blue-800 mb-6">Patients List</h1>
+
+      {/* Search Bar */}
+      <div className="mb-6 flex items-center space-x-2">
+        <FaSearch className="text-gray-500" />
+        <input
+          type="text"
+          placeholder="Search by name or diagnosis..."
+          className="p-2 w-80 border border-gray-300 rounded-md"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)} // Update search query
+        />
+      </div>
+
       <div className="overflow-hidden rounded-lg shadow-lg">
         <table className="w-full bg-white">
           <thead>
@@ -47,7 +62,7 @@ const Users: React.FC = () => {
             </tr>
           </thead>
           <tbody>
-            {usersData.map((user) => (
+            {filteredUsers.map((user) => (
               <tr key={user.id} className="hover:bg-blue-50 transition duration-150">
                 <td className="p-4">{user.id}</td>
                 <td className="p-4 flex items-center space-x-2">
