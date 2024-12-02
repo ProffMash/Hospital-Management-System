@@ -54,6 +54,11 @@ export const updateReport = async (
   }
 };
 
+export const updateReportStatus = async (id: number, status: string) => {
+  const response = await axios.put(`http://localhost:8000/api/reports/${id}`, { status });
+  return response.data;
+};
+
 // Delete a report
 export const deleteReport = async (id: number) => {
   try {
