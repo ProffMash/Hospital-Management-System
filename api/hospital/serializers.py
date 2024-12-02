@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from .models import (
     Patient, Doctor, Pharmacist, Report, SupportTicket,
-    PatientDiagnosis, Appointment, MedicineInventory
+    PatientDiagnosis, Appointment, MedicineInventory, Contacts
 )
 
 class PatientSerializer(serializers.ModelSerializer):
@@ -27,6 +27,16 @@ class ReportSerializer(serializers.ModelSerializer):
         fields = ['id', 'subject', 'message', 'doctor', 'doctor_name']
 
 class SupportTicketSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SupportTicket
+        fields = '__all__'
+
+class ContactsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Contacts
+        fields = '__all__'
+        
+class ContactsSerializer(serializers.ModelSerializer):
     class Meta:
         model = SupportTicket
         fields = '__all__'

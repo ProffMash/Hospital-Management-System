@@ -57,6 +57,16 @@ class SupportTicket(models.Model):
     def __str__(self):
         return self.ticket_id
 
+# Support Tickets Model
+class Contacts(models.Model):
+    ticket_id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    message = models.TextField()
+
+    def __str__(self):
+        return self.ticket_id
+
 # Patient Diagnosis Model
 class PatientDiagnosis(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)

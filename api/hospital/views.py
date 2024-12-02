@@ -6,7 +6,7 @@ from .models import (
 from .serializers import (
     PatientSerializer, DoctorSerializer, PharmacistSerializer,
     ReportSerializer, SupportTicketSerializer, PatientDiagnosisSerializer,
-    AppointmentSerializer, MedicineInventorySerializer, CountSerializer
+    AppointmentSerializer, MedicineInventorySerializer, CountSerializer, ContactsSerializer
 )
 
 from rest_framework.decorators import action
@@ -31,6 +31,10 @@ class ReportViewSet(viewsets.ModelViewSet):
 class SupportTicketViewSet(viewsets.ModelViewSet):
     queryset = SupportTicket.objects.all()
     serializer_class = SupportTicketSerializer
+    
+class ContactsViewSet(viewsets.ModelViewSet):
+    queryset = SupportTicket.objects.all()
+    serializer_class = ContactsSerializer
 
 class PatientDiagnosisViewSet(viewsets.ModelViewSet):
     queryset = PatientDiagnosis.objects.all()
