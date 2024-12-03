@@ -174,6 +174,7 @@ INSTALLED_APPS = [
     'hospital',
     'corsheaders',  # Added CORS Headers
     'rest_framework',  # Ensure Django REST framework is installed
+    'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [
