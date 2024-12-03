@@ -29,6 +29,7 @@ import AppointmentsTable from "./dashboards/doctors/AppointmentsTable";
 import ReportsForm from "./dashboards/doctors/ReportsForm";
 import DoctorsList from "./dashboards/doctors/doctorsList";
 import DiagnosisForm from "./dashboards/doctors/diagnosisForm";
+import DoctorSettings from "./dashboards/doctors/doctorSetting";
 
 
 const App: React.FC = () => {
@@ -108,6 +109,7 @@ const App: React.FC = () => {
                   <Route path="/reports" element={<ReportsForm onSubmit={(report) => console.log(report)} />} />
                   <Route path="/list" element={<DoctorsList />} />
                   <Route path="/diagnosis" element={<DiagnosisForm />} />
+                  <Route path="/settings" element={<DoctorSettings />} />
                 </Routes>
               </div>
             </div>
