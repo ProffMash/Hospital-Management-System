@@ -41,7 +41,7 @@ const PharmacySidebar: React.FC = () => {
         className="flex items-center w-full text-left py-2 px-4 rounded hover:bg-gray-300"
       >
         <FaUser className="mr-2" />
-        Users
+        Patients
       </Link>
       
       {/* Settings Link */}

@@ -17,14 +17,14 @@ const EditMedicine: React.FC = () => {
   const handleSave = async () => {
     try {
       await updateMedicine(formData.id, formData);
-      navigate('/pharmacy/medicine'); // Redirect after saving
+      navigate('/pharmacy/medicine'); 
     } catch (error) {
       console.error('Error updating medicine:', error);
     }
   };
 
   const handleCancel = () => {
-    navigate('/pharmacy/medicine'); // Redirect on cancel
+    navigate('/pharmacy/medicine'); 
   };
 
   return (
