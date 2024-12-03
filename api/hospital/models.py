@@ -1,11 +1,12 @@
 from django.db import models
 from django.http import JsonResponse
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
-# Patient Model
-class Patient(models.Model):
-    patient_id = models.AutoField(primary_key=True)
+# Doctor Model
+class Doctor(models.Model):
+    doctor_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
-    age = models.IntegerField()
+    specialization = models.CharField(max_length=100)
     phone = models.CharField(max_length=15)
     email = models.EmailField(unique=True)
     status = models.CharField(max_length=50)
@@ -13,11 +14,35 @@ class Patient(models.Model):
     def __str__(self):
         return self.name
 
-# Doctor Model
-class Doctor(models.Model):
-    doctor_id = models.AutoField(primary_key=True)
+class DoctorAuthManager(BaseUserManager):
+    def create_user(self, email, password=None, **extra_fields):
+        if not email:
+            raise ValueError('The Email field must be set')
+        email = self.normalize_email(email)
+        user = self.model(email=email, **extra_fields)
+        user.set_password(password)  # This will hash the password
+        user.save(using=self._db)
+        return user
+    
+class DoctorAuth(AbstractBaseUser):
+    doctor = models.OneToOneField(Doctor, on_delete=models.CASCADE)
+    email = models.EmailField(unique=True)
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
+
+    objects = DoctorAuthManager()
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['doctor']
+
+    def __str__(self):
+        return self.email
+
+# Patient Model
+class Patient(models.Model):
+    patient_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
-    specialization = models.CharField(max_length=100)
+    age = models.IntegerField()
     phone = models.CharField(max_length=15)
     email = models.EmailField(unique=True)
     status = models.CharField(max_length=50)

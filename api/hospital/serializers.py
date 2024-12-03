@@ -1,8 +1,9 @@
 from rest_framework import serializers
 from .models import (
     Patient, Doctor, Pharmacist, Report, SupportTicket,
-    PatientDiagnosis, Appointment, MedicineInventory, Contact, DoctorProfile
+    PatientDiagnosis, Appointment, MedicineInventory, Contact, DoctorProfile, DoctorAuth
 )
+from django.contrib.auth.hashers import make_password, check_password
 
 class DoctorProfileSerializer(serializers.ModelSerializer):
     doctor_name = serializers.CharField(source='doctor.name', read_only=True)  # Add doctor's name
@@ -23,11 +24,60 @@ class PatientSerializer(serializers.ModelSerializer):
         model = Patient
         fields = '__all__'
 
-class DoctorSerializer(serializers.ModelSerializer):
+# class DoctorSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Doctor
+#         fields = '__all__'
+
+class DoctorRegisterSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True)
+
     class Meta:
         model = Doctor
-        fields = '__all__'
+        fields = ['name', 'specialization', 'phone', 'email', 'status', 'password']
 
+    def create(self, validated_data):
+        password = validated_data.pop('password')  # Extract password
+        doctor = Doctor.objects.create(**validated_data)  # Create the doctor instance
+        doctor_auth = DoctorAuth.objects.create(
+            doctor=doctor, 
+            email=doctor.email,
+            password=password
+        )
+        doctor_auth.set_password(password)  # Hash the password
+        doctor_auth.save()
+        return doctor
+
+class DoctorLoginSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    password = serializers.CharField(write_only=True)
+
+    def validate(self, data):
+        try:
+            # Fetch the DoctorAuth instance
+            doctor_auth = DoctorAuth.objects.get(email=data["email"])
+        except DoctorAuth.DoesNotExist:
+            raise serializers.ValidationError("Invalid email or password")
+
+        # Check the password
+        if not doctor_auth.check_password(data["password"]):
+            raise serializers.ValidationError("Invalid email or password")
+
+        # Ensure the associated doctor exists and fetch details
+        doctor = doctor_auth.doctor
+        if not doctor:
+            raise serializers.ValidationError("Associated doctor not found")
+
+        # Return the doctor's details
+        return {
+            "doctor_id": doctor_auth.id,  # Correctly fetch the DoctorAuth ID
+            "name": doctor.name,
+            "specialization": doctor.specialization,
+            "phone": doctor.phone,
+            "email": doctor.email,
+            "status": doctor.status,
+        }
+        
 class PharmacistSerializer(serializers.ModelSerializer):
     class Meta:
         model = Pharmacist
