@@ -7,8 +7,8 @@ const ItemForm: React.FC = () => {
   const [formData, setFormData] = useState({
     name: '',
     category: '',
-    quantity: 0,
-    price: 0,
+    quantity: '',
+    price: '',
   });
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
@@ -17,14 +17,18 @@ const ItemForm: React.FC = () => {
     const { id, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [id]: id === 'quantity' || id === 'price' ? Number(value) : value,
+      [id]: value,
     }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await createMedicine(formData);
+      await createMedicine({
+        ...formData,
+        quantity: Number(formData.quantity),
+        price: Number(formData.price),
+      });
       navigate('/pharmacy/medicine'); // Redirect after successful creation
     } catch (error) {
       console.error('Error saving item:', error);
@@ -105,7 +109,6 @@ const ItemForm: React.FC = () => {
               <input
                 id="price"
                 type="number"
-                step="0.01"
                 placeholder="Price"
                 className="p-3 w-full rounded-r-full outline-none text-gray-700 placeholder-gray-500"
                 value={formData.price}

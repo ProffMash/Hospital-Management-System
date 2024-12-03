@@ -1,17 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { FaPlus, FaSearch, FaEdit, FaTrash } from 'react-icons/fa';
+import { FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { getMedicines, deleteMedicine } from '../../api/medicineInventoryApi';
 
 const MedicineInventory: React.FC = () => {
   const navigate = useNavigate();
   const [medicines, setMedicines] = useState<any[]>([]);
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [filteredMedicines, setFilteredMedicines] = useState<any[]>([]);
 
   useEffect(() => {
     const fetchMedicines = async () => {
       try {
         const data = await getMedicines();
         setMedicines(data);
+        setFilteredMedicines(data);
       } catch (error) {
         console.error('Error fetching medicines:', error);
       }
@@ -23,10 +26,24 @@ const MedicineInventory: React.FC = () => {
   const handleDelete = async (id: number) => {
     try {
       await deleteMedicine(id);
-      setMedicines(medicines.filter((medicine) => medicine.id !== id));
+      const updatedMedicines = medicines.filter((medicine) => medicine.id !== id);
+      setMedicines(updatedMedicines);
+      setFilteredMedicines(updatedMedicines);
     } catch (error) {
       console.error('Error deleting medicine:', error);
     }
+  };
+
+  // Handle search query change
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const query = event.target.value.toLowerCase();
+    setSearchQuery(query);
+    const filtered = medicines.filter(
+      (medicine) =>
+        medicine.name.toLowerCase().includes(query) ||
+        medicine.category.toLowerCase().includes(query)
+    );
+    setFilteredMedicines(filtered);
   };
 
   return (
@@ -37,12 +54,11 @@ const MedicineInventory: React.FC = () => {
         <div className="flex items-center border border-blue-300 rounded-full shadow-lg overflow-hidden">
           <input
             type="text"
+            value={searchQuery}
+            onChange={handleSearch}
             placeholder="Search medicine..."
             className="p-3 w-72 outline-none text-gray-600 placeholder-gray-400"
           />
-          <button className="p-3 bg-blue-600 text-white hover:bg-blue-700 transition duration-300">
-            <FaSearch />
-          </button>
         </div>
         <button
           onClick={() => navigate('/pharmacy/medicine-form')}
@@ -66,26 +82,39 @@ const MedicineInventory: React.FC = () => {
             </tr>
           </thead>
           <tbody>
-            {medicines.map((medicine) => (
-              <tr key={medicine.id} className="transition duration-150 hover:bg-blue-50">
-                <td className="p-4 font-semibold text-gray-600">{medicine.id}</td>
-                <td className="p-4 font-semibold text-gray-600">{medicine.name}</td>
-                <td className="p-4 text-gray-500">{medicine.category}</td>
-                <td className="p-4 text-gray-500">{medicine.quantity}</td>
-                <td className="p-4 text-gray-500">${medicine.price}</td>
-                <td className="p-4 flex space-x-3">
-                  <button className="p-2 bg-blue-100 text-blue-600 rounded-full hover:bg-blue-200 transition duration-200">
-                    <FaEdit />
-                  </button>
-                  <button
-                    onClick={() => handleDelete(medicine.id)}
-                    className="p-2 bg-red-100 text-red-600 rounded-full hover:bg-red-200 transition duration-200"
-                  >
-                    <FaTrash />
-                  </button>
+            {filteredMedicines.length > 0 ? (
+              filteredMedicines.map((medicine) => (
+                <tr key={medicine.id} className="transition duration-150 hover:bg-blue-50">
+                  <td className="p-4 font-semibold text-gray-600">{medicine.id}</td>
+                  <td className="p-4 font-semibold text-gray-600">{medicine.name}</td>
+                  <td className="p-4 text-gray-500">{medicine.category}</td>
+                  <td className="p-4 text-gray-500">{medicine.quantity}</td>
+                  <td className="p-4 text-gray-500">${medicine.price}</td>
+                  <td className="p-4 flex space-x-3">
+                    <button
+                      className="p-2 bg-blue-100 text-blue-600 rounded-full hover:bg-blue-200 transition duration-200"
+                      onClick={() =>
+                        navigate('/pharmacy/edit-medicine', { state: { medicine } })
+                      }
+                    >
+                      <FaEdit />
+                    </button>
+                    <button
+                      onClick={() => handleDelete(medicine.id)}
+                      className="p-2 bg-red-100 text-red-600 rounded-full hover:bg-red-200 transition duration-200"
+                    >
+                      <FaTrash />
+                    </button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={6} className="p-4 text-center text-gray-500">
+                  No medicines found.
                 </td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </div>
