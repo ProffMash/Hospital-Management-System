@@ -1,8 +1,17 @@
 from rest_framework import serializers
 from .models import (
     Patient, Doctor, Pharmacist, Report, SupportTicket,
-    PatientDiagnosis, Appointment, MedicineInventory, Contact
+    PatientDiagnosis, Appointment, MedicineInventory, Contact, DoctorProfile
 )
+
+class DoctorProfileSerializer(serializers.ModelSerializer):
+    doctor_name = serializers.CharField(source='doctor.name', read_only=True)  # Add doctor's name
+    doctor_phone = serializers.CharField(source='doctor.phone', read_only=True)  # Add doctor's phone
+    doctor_email = serializers.EmailField(source='doctor.email', read_only=True)  # Add doctor's email
+
+    class Meta:
+        model = DoctorProfile
+        fields = ['id', 'doctor', 'doctor_name', 'doctor_phone', 'doctor_email', 'address']
 
 class ContactSerializer(serializers.ModelSerializer):
     class Meta:

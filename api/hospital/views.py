@@ -1,16 +1,21 @@
 from rest_framework import viewsets
 from .models import (
     Patient, Doctor, Pharmacist, Report, SupportTicket,
-    PatientDiagnosis, Appointment, MedicineInventory, Contact
+    PatientDiagnosis, Appointment, MedicineInventory, Contact, DoctorProfile
 )
 from .serializers import (
     PatientSerializer, DoctorSerializer, PharmacistSerializer,
     ReportSerializer, SupportTicketSerializer, PatientDiagnosisSerializer,
-    AppointmentSerializer, MedicineInventorySerializer, CountSerializer, ContactSerializer
+    AppointmentSerializer, MedicineInventorySerializer, CountSerializer, ContactSerializer,
+    DoctorProfileSerializer
 )
 
 from rest_framework.decorators import action
 from rest_framework.response import Response
+
+class DoctorProfileViewSet(viewsets.ModelViewSet):
+    queryset = DoctorProfile.objects.all()
+    serializer_class = DoctorProfileSerializer
 
 class ContactViewSet(viewsets.ModelViewSet):
     queryset = Contact.objects.all()

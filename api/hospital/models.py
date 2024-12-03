@@ -24,6 +24,14 @@ class Doctor(models.Model):
 
     def __str__(self):
         return self.name
+    
+###### DoctorProfile Model #############
+class DoctorProfile(models.Model):
+    doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
+    address = models.TextField()  # Doctor's address
+
+    def __str__(self):
+        return self.doctor.name
 
 # Pharmacist Model
 class Pharmacist(models.Model):

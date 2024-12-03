@@ -3,7 +3,7 @@ from rest_framework.routers import DefaultRouter
 from .views import (
     PatientViewSet, DoctorViewSet, PharmacistViewSet,
     ReportViewSet, SupportTicketViewSet, PatientDiagnosisViewSet,
-    AppointmentViewSet, MedicineInventoryViewSet, ContactViewSet
+    AppointmentViewSet, MedicineInventoryViewSet, ContactViewSet, DoctorProfileViewSet
 )
 
 router = DefaultRouter()
@@ -16,6 +16,7 @@ router.register(r'contacts', ContactViewSet)
 router.register(r'patient-diagnosis', PatientDiagnosisViewSet)
 router.register(r'appointments', AppointmentViewSet)
 router.register(r'medicines', MedicineInventoryViewSet)
+router.register(r'doctorprofiles', DoctorProfileViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
