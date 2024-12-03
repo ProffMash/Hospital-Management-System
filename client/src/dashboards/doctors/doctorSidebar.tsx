@@ -24,7 +24,7 @@ const DoctorSidebar = () => {
 
   return (
     <div className="h-screen w-64 bg-white text-black flex flex-col">
-      <h2 className="text-2xl font-semibold p-6 border-b border-white/20">Medinik 💊</h2>
+      <h3 className="text-xl font-semibold p-6 border-b border-white/20">Doctors Dashboard 💊</h3>
       <ul className="mt-4 space-y-3 flex-1">
         {menuItems.map((item, index) => (
           <li key={index}>
