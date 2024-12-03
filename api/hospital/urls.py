@@ -23,8 +23,8 @@ urlpatterns = [
     path('', include(router.urls)),
     path('api/patients/count/', PatientViewSet.as_view({'get': 'get_patient_count'}), name='patient-count'),
     # path('api/doctors/count/', DoctorViewSet.as_view({'get': 'get_doctor_count'}), name='doctor-count'),
-    path("register/", DoctorRegisterView.as_view(), name="register-doctor"),
-    path("login/", DoctorLoginView.as_view(), name="login-doctor"),
+    path("register/doctor", DoctorRegisterView.as_view(), name="register-doctor"),
+    path("login/doctor", DoctorLoginView.as_view(), name="login-doctor"),
     path('register/pharmacist/', PharmacistRegisterView.as_view(), name='register_pharmacist'),
     path('login/pharmacist/', PharmacistLoginView.as_view(), name='login_pharmacist'),
 ]
