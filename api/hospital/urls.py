@@ -4,7 +4,8 @@ from .views import (
     PatientViewSet, PharmacistViewSet,
     ReportViewSet, SupportTicketViewSet, PatientDiagnosisViewSet,
     AppointmentViewSet, MedicineInventoryViewSet, ContactViewSet, DoctorProfileViewSet,
-    DoctorRegisterView, DoctorLoginView, PharmacistRegisterView, PharmacistLoginView
+    DoctorRegisterView, DoctorLoginView, PharmacistRegisterView, PharmacistLoginView,
+    get_doctors_count, get_patients_count, get_pharmacists_count, get_counts
 )
 
 router = DefaultRouter()
@@ -21,8 +22,10 @@ router.register(r'doctorprofiles', DoctorProfileViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('api/patients/count/', PatientViewSet.as_view({'get': 'get_patient_count'}), name='patient-count'),
-    # path('api/doctors/count/', DoctorViewSet.as_view({'get': 'get_doctor_count'}), name='doctor-count'),
+    path('doctors/count/', get_doctors_count, name='doctors_count'),
+    path('patients/count/', get_patients_count, name='patients_count'),
+    path('pharmacists/count/', get_pharmacists_count, name='pharmacists_count'),
+    path('counts/', get_counts, name='all_counts'),
     path("register/doctor", DoctorRegisterView.as_view(), name="register-doctor"),
     path("login/doctor", DoctorLoginView.as_view(), name="login-doctor"),
     path('register/pharmacist/', PharmacistRegisterView.as_view(), name='register_pharmacist'),

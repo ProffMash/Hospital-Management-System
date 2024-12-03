@@ -24,11 +24,6 @@ class PatientSerializer(serializers.ModelSerializer):
         model = Patient
         fields = '__all__'
 
-# class DoctorSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Doctor
-#         fields = '__all__'
-
 class DoctorRegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
 

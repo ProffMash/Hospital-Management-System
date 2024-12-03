@@ -12,6 +12,7 @@ from .serializers import (
 )
 from rest_framework import status
 from django.contrib.auth.hashers import check_password, make_password
+from django.http import JsonResponse
 
 class DoctorRegisterView(APIView):
     def post(self, request):
@@ -206,3 +207,34 @@ class PharmacistLoginView(APIView):
                 {"error": str(e)},
                 status=status.HTTP_400_BAD_REQUEST,
             )
+            
+            
+            
+            
+            
+            
+# Count for doctors
+def get_doctors_count(request):
+    count = Doctor.objects.count()
+    return JsonResponse({'doctors_count': count})
+
+# Count for patients
+def get_patients_count(request):
+    count = Patient.objects.count()
+    return JsonResponse({'patients_count': count})
+
+# Count for pharmacists
+def get_pharmacists_count(request):
+    count = Pharmacist.objects.count()
+    return JsonResponse({'pharmacists_count': count})
+
+# Combine all counts into one endpoint
+def get_counts(request):
+    doctors_count = Doctor.objects.count()
+    patients_count = Patient.objects.count()
+    pharmacists_count = Pharmacist.objects.count()
+    return JsonResponse({
+        'doctors_count': doctors_count,
+        'patients_count': patients_count,
+        'pharmacists_count': pharmacists_count,
+    })
