@@ -129,7 +129,7 @@ const LandingPage: React.FC = () => {
                 onClick={handleModalToggle}
               >
                 <p className="text-green-600 font-medium flex items-center">
-                  <FaCalendarAlt className="mr-2" /> Book Regular Checkup
+                  <FaCalendarAlt className="mr-2" /> Book Regular Appointment
                 </p>
               </div>
             </div>
@@ -137,7 +137,7 @@ const LandingPage: React.FC = () => {
           <div className="mt-5 flex justify-center gap-8 text-center">
             <div>
               <p className="text-2xl font-semibold text-blue-900">
-                <Counter target={262000} />+
+                <Counter target={750} />+
               </p>
               <p className="text-gray-500">Recovered Patients</p>
             </div>
@@ -161,7 +161,7 @@ const LandingPage: React.FC = () => {
           <div className="modal-overlay" onClick={handleModalToggle}>
             <div className="modal" onClick={(e) => e.stopPropagation()}>
               <div className="modal-header">
-                <h2>Schedule Your Appointment</h2>
+                <h2 className="text-xl ont-bold">Schedule Your Appointment</h2>
                 <button onClick={handleModalToggle} className="text-gray-500 hover:text-gray-700">
                   <FaTimes />
                 </button>
