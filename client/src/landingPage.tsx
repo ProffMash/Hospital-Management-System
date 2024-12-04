@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaHeartbeat, FaTooth, FaEye, FaCalendarAlt, FaTimes, FaUser, FaEnvelope, FaCommentDots, FaHandHoldingMedical, FaLeaf, FaMicroscope, FaPills, FaSyringe, FaStethoscope } from "react-icons/fa";
+import { createAppointment } from "./api/appointmentApi";
+import { toast, Toaster } from "react-hot-toast";
 
 const Counter: React.FC<{ target: number }> = ({ target }) => {
   const [count, setCount] = useState(0);
@@ -30,18 +32,19 @@ const LandingPage: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [appointmentDate, setAppointmentDate] = useState("");
   const [appointmentTime, setAppointmentTime] = useState("");
+  const [patientName, setPatientName] = useState("");
 
   const handleModalToggle = () => setIsModalOpen(!isModalOpen);
-  const handleFormSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    alert(`Appointment scheduled for ${appointmentDate} at ${appointmentTime}`);
-    setIsModalOpen(false);
-    setAppointmentDate("");
-    setAppointmentTime("");
-  };
 
   return (
     <>
+    {/* Toaster */}
+    <div>
+        <Toaster 
+        position="top-right"
+        reverseOrder={false}
+        />
+      </div>
       <style>
         {`
           html {
@@ -158,12 +161,43 @@ const LandingPage: React.FC = () => {
           <div className="modal-overlay" onClick={handleModalToggle}>
             <div className="modal" onClick={(e) => e.stopPropagation()}>
               <div className="modal-header">
-                <h2>Schedule Your Checkup</h2>
+                <h2>Schedule Your Appointment</h2>
                 <button onClick={handleModalToggle} className="text-gray-500 hover:text-gray-700">
                   <FaTimes />
                 </button>
               </div>
-              <form onSubmit={handleFormSubmit} className="mt-4">
+              <form
+                onSubmit={async (e) => {
+                  e.preventDefault();
+                  try {
+                    const newAppointment = {
+                      patient_name: patientName, 
+                      date: appointmentDate,
+                      time: appointmentTime,
+                    };
+                    const response = await createAppointment(newAppointment);
+                    toast.success("Appointment scheduled successfully!");
+                    console.log("Appointment created successfully:", response);
+                    setPatientName(""); // Clear form
+                    setAppointmentDate(""); // Clear form
+                    setAppointmentTime(""); // Clear form
+                    
+                    handleModalToggle(); // Optionally close the modal
+                  } catch (error) {
+                    console.error("Error creating appointment:", error);
+                  }
+                }}
+                className="mt-4"
+              >
+                <div className="mb-4">
+                  <label className="block text-sm text-gray-600 mb-2">Patient Name</label>
+                  <input
+                    value={patientName} // Update state value
+                    onChange={(e) => setPatientName(e.target.value)} // Update state handler
+                    required
+                    className="w-full px-3 py-2 border rounded-lg"
+                  />
+                </div>
                 <div className="mb-4">
                   <label className="block text-sm text-gray-600 mb-2">Select Date</label>
                   <input

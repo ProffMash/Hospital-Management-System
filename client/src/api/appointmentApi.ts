@@ -1,76 +1,40 @@
-import axios from 'axios';
+import axios from "axios";
 
-// Create Axios instance for API calls
-const axiosInstance = axios.create({
-  baseURL: 'http://127.0.0.1:8000/api/', // Base URL for the API
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
+const BASE_URL = "http://127.0.0.1:8000/api/medappointment/";
 
-// API Functions
-
-// Create an appointment
-export const createAppointment = async (appointmentData: {
-  patient: string;
-  date: string;
-  time: string;
-}) => {
-  try {
-    const response = await axiosInstance.post('appointments/', appointmentData);
-    return response.data;
-  } catch (error) {
-    console.error('Error creating appointment:', error);
-    throw error;
-  }
-};
+// Define the Appointment interface
+export interface Appointment {
+  appointment_id?: number; 
+  patient_name: string;   
+  date: string;            
+  time: string;            
+}
 
 // Fetch all appointments
-export const getAppointments = async () => {
-  try {
-    const response = await axiosInstance.get('appointments/');
-    return response.data;
-  } catch (error) {
-    console.error('Error fetching appointments:', error);
-    throw error;
-  }
+export const getAppointments = async (): Promise<Appointment[]> => {
+  const response = await axios.get(BASE_URL);
+  return response.data;
 };
 
-// Update an appointment by ID
-export const updateAppointment = async (
-  id: number,
-  appointmentData: {
-    patient?: string;
-    date?: string;
-    time?: string;
-  }
-) => {
-  try {
-    const response = await axiosInstance.put(`appointments/${id}/`, appointmentData);
-    return response.data;
-  } catch (error) {
-    console.error('Error updating appointment:', error);
-    throw error;
-  }
+// Fetch a specific appointment by ID
+export const getAppointmentById = async (appointment_id: number): Promise<Appointment> => {
+  const response = await axios.get(`${BASE_URL}${appointment_id}/`);
+  return response.data;
+};
+
+// Create a new appointment
+export const createAppointment = async (appointment: Appointment): Promise<Appointment> => {
+  const response = await axios.post(BASE_URL, appointment);
+  return response.data;
+};
+
+// Update an existing appointment by ID
+export const updateAppointment = async (appointment_id: number, appointment: Appointment): Promise<Appointment> => {
+  const response = await axios.put(`${BASE_URL}${appointment_id}/`, appointment);
+  return response.data;
 };
 
 // Delete an appointment by ID
-export const deleteAppointment = async (id: number) => {
-  try {
-    await axiosInstance.delete(`appointments/${id}/`);
-  } catch (error) {
-    console.error('Error deleting appointment:', error);
-    throw error;
-  }
-};
-
-// Count total appointments
-export const getAppointmentsCount = async () => {
-  try {
-    const response = await axiosInstance.get('appointments/count/');
-    return response.data.count; // Ensure the backend provides this `count` field
-  } catch (error) {
-    console.error('Error fetching appointments count:', error);
-    return 0; // Return 0 as a fallback
-  }
+export const deleteAppointment = async (appointment_id: number): Promise<void> => {
+  await axios.delete(`${BASE_URL}${appointment_id}/`);
 };
