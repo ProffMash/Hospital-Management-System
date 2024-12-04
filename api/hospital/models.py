@@ -104,6 +104,16 @@ class Appointment(models.Model):
 
     def __str__(self):
         return f"Appointment for {self.patient.name} on {self.date}"
+    
+class Appointments(models.Model):
+    appointment_id = models.AutoField(primary_key=True)  # Auto-generated unique ID
+    patient_name = models.CharField(max_length=255)  # Patient's name
+    date = models.DateField()  # Appointment date
+    time = models.TimeField()  # Appointment time
+
+    def __str__(self):
+        return f"Appointment {self.appointment_id} for {self.patient_name} on {self.date} at {self.time}"
+
 
 # Medicine Inventory Model
 class MedicineInventory(models.Model):

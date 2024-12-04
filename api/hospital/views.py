@@ -1,17 +1,21 @@
 from rest_framework import viewsets
 from .models import (
     Patient, Doctor, Pharmacist, Report, SupportTicket,
-    PatientDiagnosis, Appointment, MedicineInventory, Contact, DoctorProfile, Support
+    PatientDiagnosis, Appointment, MedicineInventory, Contact, DoctorProfile, Support, Appointments
 )
 from .serializers import (
     PatientSerializer, DoctorSerializer, PharmacistSerializer,
     ReportSerializer, SupportTicketSerializer, PatientDiagnosisSerializer,
     AppointmentSerializer, MedicineInventorySerializer, CountSerializer, ContactSerializer,
-    DoctorProfileSerializer, SupportSerializer
+    DoctorProfileSerializer, SupportSerializer, AppointmentsSerializer
 )
 
 from rest_framework.decorators import action
 from rest_framework.response import Response
+
+class AppointmentsViewSet(viewsets.ModelViewSet):
+    queryset = Appointments.objects.all()  # Fetch all appointments
+    serializer_class = AppointmentsSerializer  # Use the serializer
 
 class SupportViewSet(viewsets.ModelViewSet):
     queryset = Support.objects.all()
