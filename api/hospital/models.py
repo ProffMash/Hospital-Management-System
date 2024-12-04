@@ -67,7 +67,7 @@ class SupportTicket(models.Model):
     
 # Support Model
 class Support(models.Model):
-    support_id = models.AutoField(primary_key=True),
+    support_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
     email = models.EmailField()
     description = models.TextField()
