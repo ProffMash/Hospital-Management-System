@@ -64,6 +64,16 @@ class SupportTicket(models.Model):
 
     def __str__(self):
         return self.ticket_id
+    
+# Support Model
+class Support(models.Model):
+    support_id = models.CharField(max_length=50, primary_key=True)
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    description = models.TextField()
+
+    def __str__(self):
+        return self.support_id
 
 #Contacts Model
 class Contact(models.Model):
