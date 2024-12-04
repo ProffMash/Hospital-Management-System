@@ -17,7 +17,7 @@ const DoctorSidebar = () => {
     { name: "Doctors", path: "/doctor/list", icon: <User size={20} /> },
     { name: "Diagnose", path: "/doctor/diagnosis", icon: <Tablet size={20} /> },
     { name: "Appointments", path: "/doctor/appointments", icon: <Calendar size={20} /> },
-    { name: "Reports", path: "/doctor/reports", icon: <FileText size={20} /> },
+    { name: "Support", path: "/doctor/support", icon: <FileText size={20} /> },
     { name: "Settings", path: "/doctor/settings", icon: <Settings size={20} /> },
     { name: "Logout", path: "/login", icon: <LogOut size={20} />, action: handleLogout },
   ];

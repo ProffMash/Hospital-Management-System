@@ -22,20 +22,15 @@ export const fetchSupportTickets = async (): Promise<Support[]> => {
   }
 };
 
-export const createReport = async (reportData: { name: string; subject: string; message: string }) => {
-  const response = await fetch('http://127.0.0.1:8000/api/reports/', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(reportData),
-  });
-
-  if (!response.ok) {
-    throw new Error('Failed to create report');
+// Create a support ticket
+export const createSupportTicket = async (supportData: Support) => {
+  try {
+    const response = await axios.post(API_BASE_URL, supportData);
+    return response.data;
+  } catch (error) {
+    console.error('Error creating support ticket:', error);
+    throw error;
   }
-
-  return response.json();
 };
 
 
