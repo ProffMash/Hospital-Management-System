@@ -5,13 +5,14 @@ import AdminSidebar from "./dashboards/admin/Sidebar";
 import AdminNavbar from "./dashboards/admin/Navbar";
 import AdminDashboard from "./dashboards/admin/Dashboard";
 import Patients from "./dashboards/admin/pages/patients";
-import Support from "./dashboards/admin/pages/Contacts";
+import Support from "./dashboards/admin/pages/Support";
 import Doctors from "./dashboards/admin/pages/doctors";
 import EditDoctorForm from "./dashboards/admin/pages/editDoctor";
 import AddDoctorForm from "./dashboards/admin/pages/addDoctorForm";
 import AddPatientForm from "./dashboards/admin/pages/addPatientForm";
 import EditPatients from "./dashboards/admin/pages/editPatient";
-import ReportsTable from "./dashboards/admin/ReportsList";
+// import ReportsTable from "./dashboards/admin/ReportsList";
+// import Support from "./dashboards/admin/pages/Support";
 import LandingPage from "./landingPage";
 
 import PharmacySidebar from "./dashboards/pharmacy/PharmacySidebar";
@@ -26,7 +27,7 @@ import LoginPage from "./loginPage";
 import DoctorSidebar from "./dashboards/doctors/doctorSidebar"; 
 import DoctorDashboard from "./dashboards/doctors/doctorDashboard";
 import AppointmentsTable from "./dashboards/doctors/AppointmentsTable";
-import ReportsForm from "./dashboards/doctors/ReportsForm";
+// import ReportsForm from "./dashboards/doctors/SupportForm";
 import DoctorsList from "./dashboards/doctors/doctorsList";
 import DiagnosisForm from "./dashboards/doctors/diagnosisForm";
 import DoctorSettings from "./dashboards/doctors/doctorSetting";
@@ -64,7 +65,7 @@ const App: React.FC = () => {
                     <Route path="/edit-doctor" element={<EditDoctorForm />} />
                     <Route path="/add-patient" element={<AddPatientForm />} />
                     <Route path="/edit-patient" element={<EditPatients />} />
-                    <Route path="/reports" element={<ReportsTable />} />
+                    {/* <Route path="/reports" element={<ReportsTable />} /> */}
 
                   </Routes>
                 </div>
@@ -106,7 +107,7 @@ const App: React.FC = () => {
                 <Routes>
                   <Route path="/" element={<DoctorDashboard />} />
                   <Route path="/appointments" element={<AppointmentsTable />} />
-                  <Route path="/reports" element={<ReportsForm onSubmit={(report) => console.log(report)} />} />
+                  {/* <Route path="/reports" element={<ReportsForm onSubmit={(report) => console.log(report)} />} /> */}
                   <Route path="/list" element={<DoctorsList />} />
                   <Route path="/diagnosis" element={<DiagnosisForm />} />
                   <Route path="/settings" element={<DoctorSettings />} />
