@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaHeartbeat, FaTooth, FaEye, FaCalendarAlt, FaTimes, FaUser, FaEnvelope, FaCommentDots, FaHandHoldingMedical, FaLeaf, FaMicroscope, FaPills, FaSyringe, FaStethoscope } from "react-icons/fa";
 import { createAppointment } from "./api/appointmentApi";
+import { createContact } from "./api/contactApi";
 import { toast, Toaster } from "react-hot-toast";
 
 const Counter: React.FC<{ target: number }> = ({ target }) => {
@@ -28,6 +29,9 @@ const Counter: React.FC<{ target: number }> = ({ target }) => {
 };
 
 const LandingPage: React.FC = () => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [appointmentDate, setAppointmentDate] = useState("");
@@ -486,102 +490,118 @@ const LandingPage: React.FC = () => {
         </div>
 
 
-      {/* Contact Section */}
-      <div id="contact" className="py-16 bg-gradient-to-r from-blue-50 via-white to-blue-50 px-8 py-16">
-       <div className="text-center mb-10">
-        <h2 className="text-3xl font-bold text-blue-900">Contact Us</h2>
-          <p className="text-gray-500 mt-2">
-             Reach out to us for any inquiries, assistance, or feedback. We're here to help!
-          </p>
-       </div>
-        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-8 px-8">
-          {/* Contact Form on the Left */}
-          <div className="w-full lg:w-1/2 bg-white shadow-lg p-6 rounded-lg">
-            <h2 className="text-2xl font-bold text-blue-900 mb-4">Send Us a Message</h2>
-            <p className="text-gray-500 mb-6">
-              Have a question, concern, or feedback? We'd love to hear from you. Fill out the form below, and we'll get back to you shortly.
+         {/* Contact Section */}
+        <div id="contact" className="py-16 bg-gradient-to-r from-blue-50 via-white to-blue-50 px-8 py-16">
+          <div className="text-center mb-10">
+            <h2 className="text-3xl font-bold text-blue-900">Contact Us</h2>
+            <p className="text-gray-500 mt-2">
+              Reach out to us for any inquiries, assistance, or feedback. We're here to help!
             </p>
-            <form>
-              <div className="mb-4">
-                <div className="flex items-center border border-gray-300 rounded-lg px-3 py-2">
-                  <FaUser className="text-gray-500 mr-3" />
-                  <input
-                    type="text"
-                    placeholder="Your Name"
-                    className="w-full outline-none text-gray-700"
-                    required
-                  />
-                </div>
-              </div>
-              <div className="mb-4">
-                <div className="flex items-center border border-gray-300 rounded-lg px-3 py-2">
-                  <FaEnvelope className="text-gray-500 mr-3" />
-                  <input
-                    type="email"
-                    placeholder="Your Email"
-                    className="w-full outline-none text-gray-700"
-                    required
-                  />
-                </div>
-              </div>
-              <div className="mb-4">
-                <div className="flex items-start border border-gray-300 rounded-lg px-3 py-2">
-                  <FaCommentDots className="text-gray-500 mt-1 mr-3" />
-                  <textarea
-                    placeholder="Your Message"
-                    rows={4}
-                    className="w-full outline-none text-gray-700 resize-none"
-                    required
-                  ></textarea>
-                </div>
-              </div>
-              <button
-                type="submit"
-                className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700"
-              >
-                Send Message
-              </button>
-            </form>
           </div>
+          <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-8 px-8">
+            {/* Contact Form on the Left */}
+            <div className="w-full lg:w-1/2 bg-white shadow-lg p-6 rounded-lg">
+              <h2 className="text-2xl font-bold text-blue-900 mb-4">Send Us a Message</h2>
+              <form
+                onSubmit={async (e) => {
+                  e.preventDefault();
+                  try {
+                    await createContact({ name, email, message });
+                    toast.success("Message sent successfully!");
+                    setName("");
+                    setEmail("");
+                    setMessage("");
+                  } catch (error) {
+                    console.error("Error sending message:", error);
+                    toast.error("Failed to send the message. Please try again.");
+                  }
+                }}
+              >
+                  
+                <div className="mb-4">
+                  <div className="flex items-center border border-gray-300 rounded-lg px-3 py-2">
+                    <FaUser className="text-gray-500 mr-3" />
+                    <input
+                      type="text"
+                      placeholder="Your Name"
+                      className="w-full outline-none text-gray-700"
+                      required
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                    />
+                  </div>
+                </div>
+                <div className="mb-4">
+                  <div className="flex items-center border border-gray-300 rounded-lg px-3 py-2">
+                    <FaEnvelope className="text-gray-500 mr-3" />
+                    <input
+                      type="email"
+                      placeholder="Your Email"
+                      className="w-full outline-none text-gray-700"
+                      required
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                  </div>
+                </div>
+                <div className="mb-4">
+                  <div className="flex items-start border border-gray-300 rounded-lg px-3 py-2">
+                    <FaCommentDots className="text-gray-500 mt-1 mr-3" />
+                    <textarea
+                      placeholder="Your Message"
+                      rows={4}
+                      className="w-full outline-none text-gray-700 resize-none"
+                      required
+                      value={message}
+                      onChange={(e) => setMessage(e.target.value)}
+                    ></textarea>
+                  </div>
+                </div>
+                <button
+                  type="submit"
+                  className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700"
+                >
+                  Send Message
+                </button>
+              </form>
+            </div>
 
-          {/* Medical Content on the Right */}
-          <div className="w-full lg:w-1/2">
-            <h3 className="text-2xl font-bold text-blue-900 mb-4">Your Health is Our Priority</h3>
-            <p className="text-gray-500 mb-6">
-              At Medinik, we combine modern technology with compassionate care to ensure your health and
-              well-being are in safe hands. Our team of experts is here to provide world-class medical
-              solutions tailored to your needs.
-            </p>
-            <div className="flex items-center gap-4 mb-6">
-              <FaHeartbeat className="text-red-500 text-4xl" />
-              <div>
-                <h4 className="text-lg font-semibold text-blue-900">Heart Health</h4>
-                <p className="text-gray-500">
-                  Advanced diagnostics and personalized treatment plans for optimal heart care.
-                </p>
+            {/* Medical Content on the Right */}
+            <div className="w-full lg:w-1/2">
+              <h3 className="text-2xl font-bold text-blue-900 mb-4">Your Health is Our Priority</h3>
+              <p className="text-gray-500 mb-6">
+                At Medinik, we combine modern technology with compassionate care to ensure your health and well-being are in safe hands. Our team of experts is here to provide world-class medical solutions tailored to your needs.
+              </p>
+              <div className="flex items-center gap-4 mb-6">
+                <FaHeartbeat className="text-red-500 text-4xl" />
+                <div>
+                  <h4 className="text-lg font-semibold text-blue-900">Heart Health</h4>
+                  <p className="text-gray-500">
+                    Advanced diagnostics and personalized treatment plans for optimal heart care.
+                  </p>
+                </div>
               </div>
-            </div>
-            <div className="flex items-center gap-4 mb-6">
-              <FaTooth className="text-yellow-500 text-4xl" />
-              <div>
-                <h4 className="text-lg font-semibold text-blue-900">Dental Care</h4>
-                <p className="text-gray-500">
-                  Comprehensive dental services to keep your smile bright and healthy.
-                </p>
+              <div className="flex items-center gap-4 mb-6">
+                <FaTooth className="text-yellow-500 text-4xl" />
+                <div>
+                  <h4 className="text-lg font-semibold text-blue-900">Dental Care</h4>
+                  <p className="text-gray-500">
+                    Comprehensive dental services to keep your smile bright and healthy.
+                  </p>
+                </div>
               </div>
-            </div>
-            <div className="flex items-center gap-4">
-              <FaEye className="text-blue-500 text-4xl" />
-              <div>
-                <h4 className="text-lg font-semibold text-blue-900">Eye Care</h4>
-                <p className="text-gray-500">
-                  Cutting-edge solutions for all your ophthalmological needs.
-                </p>
+              <div className="flex items-center gap-4">
+                <FaEye className="text-blue-500 text-4xl" />
+                <div>
+                  <h4 className="text-lg font-semibold text-blue-900">Eye Care</h4>
+                  <p className="text-gray-500">
+                    Cutting-edge solutions for all your ophthalmological needs.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
     </div>
     </>
   );
