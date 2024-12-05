@@ -1,5 +1,4 @@
-import React from 'react';
-import { MdSearch, MdNotifications } from 'react-icons/md';
+import { MdNotifications } from 'react-icons/md';
 
 const doctorHeader = () => {
   return (
