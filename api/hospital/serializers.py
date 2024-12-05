@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from .models import (
     Patient, Doctor, Pharmacist, Report, SupportTicket,
-    PatientDiagnosis, Appointment, MedicineInventory, Contact, DoctorProfile, Support, Appointments
+    PatientDiagnosis, Appointment, MedicineInventory,Contact, DoctorProfile, Support, Appointments
 )
 
 

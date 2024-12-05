@@ -1,12 +1,12 @@
 from rest_framework import viewsets
 from .models import (
     Patient, Doctor, Pharmacist, Report, SupportTicket,
-    PatientDiagnosis, Appointment, MedicineInventory, Contact, DoctorProfile, Support, Appointments
+    PatientDiagnosis, Appointment, MedicineInventory,Contact, DoctorProfile, Support, Appointments
 )
 from .serializers import (
-    PatientSerializer, DoctorSerializer, PharmacistSerializer,
+    PatientSerializer, DoctorSerializer, PharmacistSerializer, ContactSerializer,
     ReportSerializer, SupportTicketSerializer, PatientDiagnosisSerializer,
-    AppointmentSerializer, MedicineInventorySerializer, CountSerializer, ContactSerializer,
+    AppointmentSerializer, MedicineInventorySerializer, CountSerializer, 
     DoctorProfileSerializer, SupportSerializer, AppointmentsSerializer
 )
 

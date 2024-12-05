@@ -77,7 +77,7 @@ class Support(models.Model):
 
 #Contacts Model
 class Contact(models.Model):
-    contact_id= models.AutoField(primary_key=True),
+    contact_id= models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
     email = models.EmailField()
     message = models.TextField()

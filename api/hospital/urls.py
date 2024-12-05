@@ -3,8 +3,8 @@ from rest_framework.routers import DefaultRouter
 from .views import (
     PatientViewSet, DoctorViewSet, PharmacistViewSet,
     ReportViewSet, SupportTicketViewSet, PatientDiagnosisViewSet,
-    AppointmentViewSet, MedicineInventoryViewSet, ContactViewSet, DoctorProfileViewSet, 
-    SupportViewSet, AppointmentsViewSet
+    AppointmentViewSet, MedicineInventoryViewSet,  DoctorProfileViewSet, 
+    SupportViewSet, AppointmentsViewSet, ContactViewSet
     
 )
 
