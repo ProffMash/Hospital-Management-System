@@ -1,25 +1,33 @@
 from rest_framework import viewsets
 from .models import (
-    Patient, MedDoctor, Pharmacist, Report, SupportTicket,
+    Patient, MedDoctor, Pharmacist, Report, SupportTicket, 
     PatientDiagnosis, Appointment, MedicineInventory,Contact, DoctorProfile, Support, Appointments,
-    Admin
+    Admin, CustomToken
 )
 from rest_framework.authtoken.models import Token
 from rest_framework import status
+from rest_framework import serializers
 from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
+import uuid
 
 from .serializers import (
     PatientSerializer, DoctorSerializer, PharmacistSerializer, ContactSerializer,
     ReportSerializer, SupportTicketSerializer, PatientDiagnosisSerializer,
     AppointmentSerializer, MedicineInventorySerializer, CountSerializer, 
     DoctorProfileSerializer, SupportSerializer, AppointmentsSerializer,
-     AdminSerializer, LoginSerializer,
-    DoctorRegistrationSerializer, PharmacistRegistrationSerializer
+     AdminSerializer,
+    DoctorRegistrationSerializer, PharmacistRegistrationSerializer, DoctorLoginSerializer, PharmacistLoginSerializer, AdminRegistrationSerializer, AdminLoginSerializer
 )
 
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.authtoken.models import Token
+from django.contrib.auth.hashers import check_password
+from rest_framework.exceptions import AuthenticationFailed
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework import status
 
 class AdminRegistrationView(APIView):
     permission_classes = [AllowAny]
@@ -28,71 +36,7 @@ class AdminRegistrationView(APIView):
         serializer = AdminSerializer(data=request.data)
         if serializer.is_valid():
             admin = serializer.save()
-            token, _ = Token.objects.get_or_create(user=admin)
-            return Response({
-                "message": "Admin registered successfully",
-                "token": token.key
-            }, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-class LoginView(APIView):
-    permission_classes = [AllowAny]
-
-    def post(self, request):
-        serializer = LoginSerializer(data=request.data)
-        if serializer.is_valid():
-            user = serializer.validated_data  # This will be either a Doctor or Pharmacist instance
-            
-            # Generate a token for Doctor or Pharmacist
-            if isinstance(user, MedDoctor):
-                token, _ = Token.objects.get_or_create(user=user)  # Token creation
-                return Response({
-                    "message": "Doctor login successful",
-                    "token": token.key
-                }, status=status.HTTP_200_OK)
-            
-            elif isinstance(user, Pharmacist):
-                token, _ = Token.objects.get_or_create(user=user)  # Token creation
-                return Response({
-                    "message": "Pharmacist login successful",
-                    "token": token.key
-                }, status=status.HTTP_200_OK)
-            
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-
-
-# class DoctorRegistrationView(APIView):
-#     def post(self, request):
-#         serializer = DoctorRegistrationSerializer(data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response({
-#                 "message": "Doctor registered successfully"
-#             }, status=status.HTTP_201_CREATED)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-# class PharmacistRegistrationView(APIView):
-#     def post(self, request):
-#         serializer = PharmacistRegistrationSerializer(data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response({
-#                 "message": "Pharmacist registered successfully"
-#             }, status=status.HTTP_201_CREATED)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-class AdminRegistrationView(APIView):
-    permission_classes = [AllowAny]
-
-    def post(self, request):
-        serializer = AdminSerializer(data=request.data)
-        if serializer.is_valid():
-            admin = serializer.save()  # This saves the admin data to Admin model
-            token, _ = Token.objects.get_or_create(user=admin)
+            token, _ = CustomToken.objects.get_or_create(admin=admin)
             return Response({
                 "message": "Admin registered successfully",
                 "token": token.key
@@ -109,18 +53,66 @@ class DoctorRegistrationView(APIView):
                 "message": "Doctor registered successfully"
             }, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
+    
+# Doctor Login View
+class DoctorLoginView(APIView):
+    def post(self, request):
+        serializer = DoctorLoginSerializer(data=request.data)
+        if serializer.is_valid():
+            doctor = serializer.validated_data
+            doctor.generate_token()  # Generate token for the session
+            return Response({
+                "message": "Login successful",
+                "token": doctor.token
+            }, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class PharmacistRegistrationView(APIView):
     def post(self, request):
         serializer = PharmacistRegistrationSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()  # This saves the pharmacist data to Pharmacist model
+            serializer.save()  # Save pharmacist data to the Pharmacist model
             return Response({
                 "message": "Pharmacist registered successfully"
             }, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+class PharmacistLoginView(APIView):
+    def post(self, request):
+        serializer = PharmacistLoginSerializer(data=request.data)
+        if serializer.is_valid():
+            pharmacist = serializer.validated_data
+            pharmacist.generate_token()  # Generate token for the session
+            return Response({
+                "message": "Login successful",
+                "token": pharmacist.token
+            }, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class AdminRegistrationView(APIView):
+    def post(self, request):
+        serializer = AdminRegistrationSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()  # Save admin data to the Admin model
+            return Response({
+                "message": "Admin registered successfully"
+            }, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class AdminLoginView(APIView):
+    def post(self, request):
+        serializer = AdminLoginSerializer(data=request.data)
+        if serializer.is_valid():
+            admin = serializer.validated_data
+            admin.generate_token()  # Generate a unique token for the session
+            return Response({
+                "message": "Login successful",
+                "token": admin.token
+            }, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 

@@ -6,7 +6,8 @@ from .views import (
     AppointmentViewSet, MedicineInventoryViewSet,  DoctorProfileViewSet, 
     SupportViewSet, AppointmentsViewSet, ContactViewSet,
     AdminRegistrationView, 
-    DoctorRegistrationView, PharmacistRegistrationView, LoginView
+    DoctorRegistrationView, PharmacistRegistrationView, DoctorLoginView, PharmacistLoginView,
+    AdminRegistrationView, AdminLoginView
     
 )
 
@@ -32,6 +33,8 @@ urlpatterns = [
     path('auth/register/admin/', AdminRegistrationView.as_view(), name='register-admin'),
     path('auth/register/doctor/', DoctorRegistrationView.as_view(), name='register-doctor'),
     path('auth/register/pharmacist/', PharmacistRegistrationView.as_view(), name='register-pharmacist'),
-     path('auth/login/', LoginView.as_view(), name='login'),
-    # path('auth/login/doctor/', DoctorLoginView.as_view(), name='login-doctor'),
+    path('auth/login/doctor/', DoctorLoginView.as_view(), name='login-doctor'),
+    path('auth/login/pharmacist/', PharmacistLoginView.as_view(), name='login-pharmacist'),
+    path('auth/login/admin/', AdminLoginView.as_view(), name='login-admin'),
+    
 ]

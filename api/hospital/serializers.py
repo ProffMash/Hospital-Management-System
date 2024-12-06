@@ -5,55 +5,7 @@ from .models import (
 )
 from django.contrib.auth import authenticate
 
-# class AdminSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Admin
-#         fields = ['id', 'email', 'name', 'password']
-#         extra_kwargs = {'password': {'write_only': True}}
-
-#     def create(self, validated_data):
-#         return Admin.objects.create_user(**validated_data)
-
-
-class LoginSerializer(serializers.Serializer):
-    email = serializers.EmailField()
-    password = serializers.CharField(write_only=True)
-
-    def validate(self, data):
-        email = data['email']
-        password = data['password']
-
-        # First, check if the user exists in the Doctor model
-        try:
-            doctor = MedDoctor.objects.get(email=email)
-            if doctor.check_password(password):  # Using check_password to validate the password
-                return doctor
-        except MedDoctor.DoesNotExist:
-            pass  # If doctor does not exist, move to the next check
-
-        # Check if the user exists in the Pharmacist model
-        try:
-            pharmacist = Pharmacist.objects.get(email=email)
-            if pharmacist.check_password(password):  # Using check_password to validate the password
-                return pharmacist
-        except Pharmacist.DoesNotExist:
-            pass  # If pharmacist does not exist, raise an error below
-
-        raise serializers.ValidationError("Invalid credentials")
-
-
-# class DoctorRegistrationSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Doctor
-#         fields = ['name', 'specialization', 'phone', 'email', 'status']
-
-
-# class PharmacistRegistrationSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Pharmacist
-#         fields = ['name', 'specialization', 'phone', 'email', 'status']
-        
-    
+ 
 class AdminSerializer(serializers.ModelSerializer):
     class Meta:
         model = Admin
@@ -76,16 +28,98 @@ class DoctorRegistrationSerializer(serializers.ModelSerializer):
         doctor.save()
         return doctor
 
+#Doctor Login Serializer
+class DoctorLoginSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    password = serializers.CharField(write_only=True)
 
+    def validate(self, data):
+        email = data['email']
+        password = data['password']
+
+        try:
+            doctor = MedDoctor.objects.get(email=email)
+            if doctor.check_password(password):  # Validate password
+                return doctor
+            else:
+                raise serializers.ValidationError("Invalid password")
+        except MedDoctor.DoesNotExist:
+            raise serializers.ValidationError("Doctor with this email does not exist")
+
+# class PharmacistRegistrationSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Pharmacist
+#         fields = ['name', 'specialization', 'phone', 'email', 'status']
+
+#     def create(self, validated_data):
+#         return Pharmacist.objects.create(**validated_data)
+# Pharmacist Registration Serializer
 class PharmacistRegistrationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Pharmacist
-        fields = ['name', 'specialization', 'phone', 'email', 'status']
+        fields = ['name', 'specialization', 'email', 'phone', 'status', 'password']
+        extra_kwargs = {
+            'password': {'write_only': True}
+        }
 
     def create(self, validated_data):
-        return Pharmacist.objects.create(**validated_data)
+        pharmacist = Pharmacist(**validated_data)
+        pharmacist.set_password(validated_data['password'])  # Hash password
+        pharmacist.save()
+        return pharmacist
+
+
+# Pharmacist Login Serializer
+class PharmacistLoginSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    password = serializers.CharField(write_only=True)
+
+    def validate(self, data):
+        email = data['email']
+        password = data['password']
+
+        try:
+            pharmacist = Pharmacist.objects.get(email=email)
+            if pharmacist.check_password(password):  # Validate password
+                return pharmacist
+            else:
+                raise serializers.ValidationError("Invalid password")
+        except Pharmacist.DoesNotExist:
+            raise serializers.ValidationError("Pharmacist with this email does not exist")
+
         
-        
+class AdminRegistrationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Admin
+        fields = ['name', 'email', 'phone', 'status', 'password']
+        extra_kwargs = {
+            'password': {'write_only': True}  # Ensure password is write-only
+        }
+
+    def create(self, validated_data):
+        admin = Admin(**validated_data)
+        admin.set_password(validated_data['password'])  # Hash the password
+        admin.save()
+        return admin
+
+
+class AdminLoginSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    password = serializers.CharField(write_only=True)
+    
+    def validate(self, data):
+        email = data['email']
+        password = data['password']
+
+        try:
+            admin = Admin.objects.get(email=email)
+            if admin.check_password(password):  # Validate password
+                return admin
+            else:
+                raise serializers.ValidationError("Invalid password")
+        except Admin.DoesNotExist:
+            raise serializers.ValidationError("Admin with this email does not exist")
+
         
         
         

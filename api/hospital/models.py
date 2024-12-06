@@ -1,58 +1,36 @@
 from django.db import models
 from django.http import JsonResponse
+import uuid
+from django.contrib.auth.hashers import make_password
 from django.contrib.auth.hashers import make_password, check_password
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 
-# User Manager
-class CustomUserManager(BaseUserManager):
-    def create_user(self, email, password=None, **extra_fields):
-        if not email:
-            raise ValueError("The Email field must be set")
-        email = self.normalize_email(email)
-        user = self.model(email=email, **extra_fields)
-        user.set_password(password)
-        user.save(using=self._db)
-        return user
+class CustomToken(models.Model):
+    key = models.CharField(max_length=255, primary_key=True, default=uuid.uuid4, editable=False)
+    admin = models.OneToOneField('Admin', on_delete=models.CASCADE, null=True, blank=True)
+    doctor = models.OneToOneField('MedDoctor', on_delete=models.CASCADE, null=True, blank=True)
+    pharmacist = models.OneToOneField('Pharmacist', on_delete=models.CASCADE, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
-    def create_superuser(self, email, password=None, **extra_fields):
-        extra_fields.setdefault('is_staff', True)
-        extra_fields.setdefault('is_superuser', True)
-        return self.create_user(email, password, **extra_fields)
-
-# Custom Admin Model
-class Admin(AbstractBaseUser, PermissionsMixin):
+    
+class Admin(models.Model):
+    admin_id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=255)
     email = models.EmailField(unique=True)
-    name = models.CharField(max_length=100)
-    is_active = models.BooleanField(default=True)
-    is_staff = models.BooleanField(default=False)
+    phone = models.CharField(max_length=15)
+    status = models.CharField(max_length=50)
+    password = models.CharField(max_length=128)
+    token = models.CharField(max_length=255, blank=True, null=True)  # Token field
 
-    # Specify unique related names for groups and user_permissions
-    groups = models.ManyToManyField(
-        'auth.Group',
-        related_name='admin_user_set',
-        blank=True,
-        help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.',
-        verbose_name='groups',
-    )
-    user_permissions = models.ManyToManyField(
-        'auth.Permission',
-        related_name='admin_user_set',
-        blank=True,
-        help_text='Specific permissions for this user.',
-        verbose_name='user permissions',
-    )
+    def set_password(self, raw_password):
+        self.password = make_password(raw_password)
 
-    objects = CustomUserManager()
+    def check_password(self, raw_password):
+        return check_password(raw_password, self.password)  # Validate hashed password
 
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['name']
-
-    def __str__(self):
-        return self.email
-
-
-
-
+    def generate_token(self):
+        self.token = str(uuid.uuid4())
+        self.save()
 
 
 # Patient Model
@@ -67,35 +45,26 @@ class Patient(models.Model):
     def __str__(self):
         return self.name
 
-# # Doctor Model
-# class Doctor(models.Model):
-#     doctor_id = models.AutoField(primary_key=True)
-#     name = models.CharField(max_length=100)
-#     specialization = models.CharField(max_length=100)
-#     phone = models.CharField(max_length=15)
-#     email = models.EmailField(unique=True)
-#     status = models.CharField(max_length=50)
-
-#     def __str__(self):
-#         return self.name
     
 class MedDoctor(models.Model):
     doctor_id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=100)
-    specialization = models.CharField(max_length=100)
+    name = models.CharField(max_length=255)
+    specialization = models.CharField(max_length=255)
     phone = models.CharField(max_length=15)
     email = models.EmailField(unique=True)
     status = models.CharField(max_length=50)
-    password = models.CharField(max_length=255)
+    password = models.CharField(max_length=128)
+    token = models.CharField(max_length=255, blank=True, null=True)  # Token field
 
     def set_password(self, raw_password):
         self.password = make_password(raw_password)
 
     def check_password(self, raw_password):
-        return check_password(raw_password, self.password)
+        return check_password(raw_password, self.password)  # Compare raw password with hashed password
 
-    def __str__(self):
-        return self.name
+    def generate_token(self):
+        self.token = str(uuid.uuid4())
+        self.save()
     
 ###### DoctorProfile Model #############
 class DoctorProfile(models.Model):
@@ -108,14 +77,30 @@ class DoctorProfile(models.Model):
 # Pharmacist Model
 class Pharmacist(models.Model):
     pharmacist_id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=100)
-    specialization = models.CharField(max_length=100)
-    phone = models.CharField(max_length=15)
+    name = models.CharField(max_length=255)
+    specialization = models.CharField(max_length=255)
     email = models.EmailField(unique=True)
+    phone = models.CharField(max_length=15)
     status = models.CharField(max_length=50)
+    password = models.CharField(max_length=128)
+    token = models.CharField(max_length=255, blank=True, null=True)  # Token field
+
+    def set_password(self, raw_password):
+        self.password = make_password(raw_password)
+
+    def check_password(self, raw_password):
+        # Use Django's check_password function to verify the password
+        return check_password(raw_password, self.password)
+
+    def generate_token(self):
+        self.token = str(uuid.uuid4())
+        self.save()
 
     def __str__(self):
-        return self.name
+        return self.email
+
+
+
 
 # Reports Model
 class Report(models.Model):
