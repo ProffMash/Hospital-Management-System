@@ -1,7 +1,4 @@
 from django.db import models
-
-# Create your models here.
-from django.db import models
 from django.http import JsonResponse
 from django.contrib.auth.hashers import make_password, check_password
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
@@ -69,8 +66,20 @@ class Patient(models.Model):
 
     def __str__(self):
         return self.name
+
+# # Doctor Model
+# class Doctor(models.Model):
+#     doctor_id = models.AutoField(primary_key=True)
+#     name = models.CharField(max_length=100)
+#     specialization = models.CharField(max_length=100)
+#     phone = models.CharField(max_length=15)
+#     email = models.EmailField(unique=True)
+#     status = models.CharField(max_length=50)
+
+#     def __str__(self):
+#         return self.name
     
-class Doctor(models.Model):
+class MedDoctor(models.Model):
     doctor_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
     specialization = models.CharField(max_length=100)
@@ -90,43 +99,11 @@ class Doctor(models.Model):
     
 ###### DoctorProfile Model #############
 class DoctorProfile(models.Model):
-    doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
+    doctor = models.ForeignKey(MedDoctor, on_delete=models.CASCADE)
     address = models.TextField()  # Doctor's address
 
     def __str__(self):
         return self.doctor.name
-
- #Custom Admin Model
-class Admin(AbstractBaseUser, PermissionsMixin):
-    email = models.EmailField(unique=True)
-    name = models.CharField(max_length=100)
-    password = models.CharField(max_length=128)  # Add password field
-    is_active = models.BooleanField(default=True)
-    is_staff = models.BooleanField(default=False)
-
-    # Specify unique related names for groups and user_permissions
-    groups = models.ManyToManyField(
-        'auth.Group',
-        related_name='admin_user_set',
-        blank=True,
-        help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.',
-        verbose_name='groups',
-    )
-    user_permissions = models.ManyToManyField(
-        'auth.Permission',
-        related_name='admin_user_set',
-        blank=True,
-        help_text='Specific permissions for this user.',
-        verbose_name='user permissions',
-    )
-
-    objects = CustomUserManager()
-
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['name']
-
-    def __str__(self):
-        return self.email
 
 # Pharmacist Model
 class Pharmacist(models.Model):
@@ -136,14 +113,13 @@ class Pharmacist(models.Model):
     phone = models.CharField(max_length=15)
     email = models.EmailField(unique=True)
     status = models.CharField(max_length=50)
-    password = models.CharField(max_length=128)  # Add password field
 
     def __str__(self):
         return self.name
 
 # Reports Model
 class Report(models.Model):
-    doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)  # Reference to Doctor
+    doctor = models.ForeignKey(MedDoctor, on_delete=models.CASCADE)  # Reference to Doctor
     subject = models.CharField(max_length=255)
     message = models.TextField()
 
@@ -223,7 +199,7 @@ class MedicineInventory(models.Model):
         return self.name
     
 def get_doctors_count(request):
-    count = Doctor.objects.count()
+    count = MedDoctor.objects.count()
     return JsonResponse({'count': count})
 
 def get_patients_count(request):

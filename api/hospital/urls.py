@@ -5,7 +5,8 @@ from .views import (
     ReportViewSet, SupportTicketViewSet, PatientDiagnosisViewSet,
     AppointmentViewSet, MedicineInventoryViewSet,  DoctorProfileViewSet, 
     SupportViewSet, AppointmentsViewSet, ContactViewSet,
-    AdminRegistrationView, DoctorRegistrationView, PharmacistRegistrationView, LoginView
+    AdminRegistrationView, 
+    DoctorRegistrationView, PharmacistRegistrationView, LoginView
     
 )
 
@@ -31,5 +32,6 @@ urlpatterns = [
     path('auth/register/admin/', AdminRegistrationView.as_view(), name='register-admin'),
     path('auth/register/doctor/', DoctorRegistrationView.as_view(), name='register-doctor'),
     path('auth/register/pharmacist/', PharmacistRegistrationView.as_view(), name='register-pharmacist'),
-    path('auth/login/', LoginView.as_view(), name='login'),
+     path('auth/login/', LoginView.as_view(), name='login'),
+    # path('auth/login/doctor/', DoctorLoginView.as_view(), name='login-doctor'),
 ]
