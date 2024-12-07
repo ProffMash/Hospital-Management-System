@@ -1,7 +1,14 @@
 import React, { useState } from "react";
-import { FaUserMd, FaBriefcaseMedical, FaPhone, FaEnvelope, FaArrowLeft, FaCheckCircle } from "react-icons/fa";
+import {
+  FaUserMd,
+  FaBriefcaseMedical,
+  FaPhone,
+  FaEnvelope,
+  FaArrowLeft,
+  FaCheckCircle,
+} from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import { createDoctor } from "../../../api/doctorApi";
+import { registerDoctor } from "../../../api/doctorAuth";
 
 const AddDoctorForm: React.FC = () => {
   const navigate = useNavigate();
@@ -11,7 +18,10 @@ const AddDoctorForm: React.FC = () => {
     specialization: "",
     phone: "",
     email: "",
+    password: "", 
     status: "",
+    is_staff: true, // Default values for is_staff and is_active
+    is_active: true,
   });
 
   const [loading, setLoading] = useState(false);
@@ -33,11 +43,11 @@ const AddDoctorForm: React.FC = () => {
     setError(null); // Reset error before submitting
 
     try {
-      await createDoctor(doctorData);
-      alert("Doctor added successfully!");
-      navigate("/admin/doctors"); 
+      await registerDoctor(doctorData);
+      alert("Doctor registered successfully!");
+      navigate("/admin/doctors");
     } catch (err: any) {
-      setError("Failed to add doctor. Please try again.");
+      setError("Failed to register doctor. Please try again.");
       console.error(err);
     } finally {
       setLoading(false);
@@ -134,6 +144,22 @@ const AddDoctorForm: React.FC = () => {
             />
           </div>
 
+          {/* Password */}
+          <div className="mb-4">
+            <label className="block text-gray-700 mb-1">
+              Password
+            </label>
+            <input
+              type="password"
+              name="password"
+              value={doctorData.password}
+              onChange={handleInputChange}
+              className="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 px-3 py-2"
+              placeholder="Password"
+              required
+            />
+          </div>
+
           {/* Status */}
           <div className="mb-4">
             <label className="block text-gray-700 mb-1 flex items-center gap-2">
@@ -159,7 +185,7 @@ const AddDoctorForm: React.FC = () => {
             className="w-full py-2 bg-blue-600 text-white rounded-md shadow hover:bg-blue-700"
             disabled={loading}
           >
-            {loading ? "Adding..." : "Add Doctor"}
+            {loading ? "Registering..." : "Register Doctor"}
           </button>
         </form>
       </div>
@@ -168,3 +194,4 @@ const AddDoctorForm: React.FC = () => {
 };
 
 export default AddDoctorForm;
+
