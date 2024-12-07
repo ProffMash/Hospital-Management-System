@@ -6,11 +6,14 @@ const PharmacySidebar: React.FC = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    // Clear authentication state (e.g., remove tokens from localStorage or sessionStorage)
+    // Clear authentication data
     localStorage.removeItem("authToken");
-
-    // Redirect to the login page
+  
+    // Force navigation to login
     navigate("/login");
+    
+    // Clear browser history to prevent going back to protected routes
+    window.history.pushState(null, "", "/login");
   };
 
   return (

@@ -6,12 +6,15 @@ const DoctorSidebar = () => {
 
   // Logout function
   const handleLogout = () => {
-    // Clear user session data (example: localStorage, sessionStorage)
+    // Clear authentication data
     localStorage.removeItem("authToken");
-    // Redirect to login page
+  
+    // Force navigation to login
     navigate("/login");
+    
+    // Clear browser history to prevent going back to protected routes
+    window.history.pushState(null, "", "/login");
   };
-
   const menuItems = [
     { name: "Dashboard", path: "/doctor", icon: <Stethoscope size={20} /> },
     { name: "Doctors", path: "/doctor/list", icon: <User size={20} /> },
