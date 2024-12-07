@@ -96,6 +96,7 @@ const Sidebar: React.FC = () => {
   const menuItems = [
     { name: "Overview", icon: <FaHome />, path: "/admin" },
     { name: "Doctors", icon: <FaUserMd />, path: "/admin/doctors" },
+    { name: "Pharmacists", icon: <FaUserMd />, path: "/admin/pharmacists" },
     { name: "Patients", icon: <FaUsers />, path: "/admin/patients" },
     { name: "Contacts", icon: <FaFileAlt />, path: "/admin/contacts" },
     { name: "Support", icon: <FaHeadset />, path: "/admin/support" },

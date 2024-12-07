@@ -13,6 +13,9 @@ import AddDoctorForm from "./dashboards/admin/pages/addDoctorForm";
 import AddPatientForm from "./dashboards/admin/pages/addPatientForm";
 import EditPatients from "./dashboards/admin/pages/editPatient";
 import Contacts from "./dashboards/admin/pages/contacts";
+import Pharmacists from "./dashboards/admin/pages/pharma";
+import AddPharmacistForm from "./dashboards/admin/pages/addPharma";
+import EditPharmacistForm from "./dashboards/admin/pages/editPharma";
 
 // Pharmacy Components
 import PharmacySidebar from "./dashboards/pharmacy/PharmacySidebar";
@@ -72,6 +75,9 @@ const App: React.FC = () => {
                       <Route path="/support" element={<Support />} />
                       <Route path="/add-doctor" element={<AddDoctorForm />} />
                       <Route path="/edit-doctor" element={<EditDoctorForm />} />
+                      <Route path="/pharmacists" element={<Pharmacists />} />
+                      <Route path="/add-pharmacist" element={<AddPharmacistForm />} />
+                      <Route path="/edit-pharmacist" element={<EditPharmacistForm />} />
                       <Route path="/add-patient" element={<AddPatientForm />} />
                       <Route path="/edit-patient" element={<EditPatients />} />
                       <Route path="/contacts" element={<Contacts />} />
