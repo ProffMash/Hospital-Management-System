@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FaUser, FaLock, FaEye, FaEyeSlash,FaHome } from "react-icons/fa";
+import { FaUser, FaLock, FaEye, FaEyeSlash, FaHome } from "react-icons/fa";
+import { loginAdmin } from "./api/adminAuth";
+import { loginDoctor } from "./api/doctorAuth";
+import { loginPharmacist } from "./api/pharmaAuth";
 
 const LoginPage: React.FC = () => {
   const [selectedRole, setSelectedRole] = useState("admin");
@@ -15,7 +18,7 @@ const LoginPage: React.FC = () => {
     setError("");
   };
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
     // Basic validation
@@ -24,15 +27,48 @@ const LoginPage: React.FC = () => {
       return;
     }
 
-    // Example login logic (replace with API call)
-    if (email === "admin@medinik.com" && password === "admin123" && selectedRole === "admin") {
-      navigate("/admin");
-    } else if (email === "doctor@medinik.com" && password === "doctor123" && selectedRole === "doctor") {
-      navigate("/doctor");
-    } else if (email === "pharmacist@medinik.com" && password === "pharma123" && selectedRole === "pharmacist") {
-      navigate("/pharmacy");
-    } else {
-      setError("Invalid credentials. Please try again.");
+    try {
+      let token = "";
+      let redirectPath = "";
+
+      switch (selectedRole) {
+        case "admin":
+          const adminResponse = await loginAdmin({ email, password });
+          token = adminResponse.token;
+          redirectPath = "/admin";
+          break;
+        case "doctor":
+          const doctorResponse = await loginDoctor({ email, password });
+          token = doctorResponse.token;
+          redirectPath = "/doctor";
+          break;
+        case "pharmacist":
+          const pharmacistResponse = await loginPharmacist({ email, password });
+          token = pharmacistResponse.token;
+          redirectPath = "/pharmacy";
+          break;
+        default:
+          setError("Invalid role selected.");
+          return;
+      }
+
+      if (token) {
+        // Save the token in localStorage (or sessionStorage if preferred)
+        localStorage.setItem("authToken", token);
+
+        // Log successful login
+        console.log(`Login successful for ${selectedRole}: ${email}`);
+        console.log("Token:", token);
+
+        // Navigate to the correct dashboard based on the selected role
+        navigate(redirectPath);
+      }
+    } catch (err: any) {
+      setError(err.message || "Login failed. Please try again.");
+
+      // Log failed login attempt
+      console.error(`Login failed for ${selectedRole}: ${email}`);
+      console.error("Error:", err.message);
     }
   };
 
@@ -108,12 +144,12 @@ const LoginPage: React.FC = () => {
           </button>
         </form>
         <button
-        onClick={() => navigate("/")}
-        className="w-full text-gray-700 py-2 rounded-lg flex items-center justify-center gap-2"
-      >
-        <FaHome />
-        Back to Home Page
-      </button>
+          onClick={() => navigate("/")}
+          className="w-full text-gray-700 py-2 rounded-lg flex items-center justify-center gap-2"
+        >
+          <FaHome />
+          Back to Home Page
+        </button>
       </div>
     </div>
   );
