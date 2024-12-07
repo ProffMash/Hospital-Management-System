@@ -46,14 +46,6 @@ class DoctorLoginSerializer(serializers.Serializer):
         except MedDoctor.DoesNotExist:
             raise serializers.ValidationError("Doctor with this email does not exist")
 
-# class PharmacistRegistrationSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Pharmacist
-#         fields = ['name', 'specialization', 'phone', 'email', 'status']
-
-#     def create(self, validated_data):
-#         return Pharmacist.objects.create(**validated_data)
-# Pharmacist Registration Serializer
 class PharmacistRegistrationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Pharmacist

@@ -190,3 +190,7 @@ def get_doctors_count(request):
 def get_patients_count(request):
     count = Patient.objects.count()
     return JsonResponse({'count': count})
+
+def get_pharmacists_count(request):
+    count = Pharmacist.objects.count()
+    return JsonResponse({'count': count})

@@ -7,7 +7,7 @@ from .views import (
     SupportViewSet, AppointmentsViewSet, ContactViewSet,
     AdminRegistrationView, 
     DoctorRegistrationView, PharmacistRegistrationView, DoctorLoginView, PharmacistLoginView,
-    AdminRegistrationView, AdminLoginView
+    AdminRegistrationView, AdminLoginView, PharmacistViewSet
     
 )
 
@@ -29,6 +29,7 @@ urlpatterns = [
     path('', include(router.urls)),
     path('api/patients/count/', PatientViewSet.as_view({'get': 'get_patient_count'}), name='patient-count'),
     path('api/doctors/count/', DoctorViewSet.as_view({'get': 'get_doctor_count'}), name='doctor-count'),
+    path('api/pharmacists/count/', PharmacistViewSet.as_view({'get': 'get_pharmacist_count'}), name='pharmacist-count'),
     
     path('auth/register/admin/', AdminRegistrationView.as_view(), name='register-admin'),
     path('auth/register/doctor/', DoctorRegistrationView.as_view(), name='register-doctor'),

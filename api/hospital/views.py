@@ -197,3 +197,16 @@ class DoctorViewSet(viewsets.ModelViewSet):
         count = MedDoctor.objects.count()
         # Use the CountSerializer to return the count
         return Response(CountSerializer({'count': count}).data)
+    
+class PharmacistViewSet(viewsets.ModelViewSet):
+    queryset = Pharmacist.objects.all()
+    serializer_class = PharmacistSerializer
+
+    @action(detail=False, methods=['get'], url_path='count')
+    def get_pharmacist_count(self, request):
+        """
+        Returns the total count of pharmacists.
+        """
+        count = Pharmacist.objects.count()
+        # Use the CountSerializer to return the count
+        return Response(CountSerializer({'count': count}).data)
