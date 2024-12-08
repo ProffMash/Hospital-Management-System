@@ -24,6 +24,7 @@ import Users from "./dashboards/pharmacy/Users";
 import MedicineInventory from "./dashboards/pharmacy/Medicine";
 import MedicineForm from "./dashboards/pharmacy/addMedicine";
 import EditMedicine from "./dashboards/pharmacy/editMedicine";
+import PharmSupport from "./dashboards/pharmacy/pharmSupport";
 
 // Doctor Components
 import DoctorSidebar from "./dashboards/doctors/doctorSidebar";
@@ -105,6 +106,7 @@ const App: React.FC = () => {
                     <Route path="/medicine-form" element={<MedicineForm />} />
                     <Route path="/edit-medicine" element={<EditMedicine />} />
                     <Route path="/users" element={<Users />} />
+                    <Route path="/support" element={<PharmSupport />} />
                   </Routes>
                 </div>
               </div>

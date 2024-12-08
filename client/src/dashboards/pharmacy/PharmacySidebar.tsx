@@ -1,6 +1,7 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { FaTachometerAlt, FaPills, FaUser, FaCog, FaSignOutAlt } from "react-icons/fa";
+import { FaTachometerAlt, FaPills, FaUser, FaSignOutAlt } from "react-icons/fa";
+import{ FileText} from "lucide-react";
 
 const PharmacySidebar: React.FC = () => {
   const navigate = useNavigate();
@@ -49,11 +50,11 @@ const PharmacySidebar: React.FC = () => {
       
       {/* Settings Link */}
       <Link
-        to="/pharmacy/settings"
+        to="/pharmacy/support"
         className="flex items-center w-full text-left py-2 px-4 rounded hover:bg-gray-300"
       >
-        <FaCog className="mr-2" />
-        Settings
+        <FileText className="mr-2" />
+        Support
       </Link>
       
       {/* Logout Button */}
