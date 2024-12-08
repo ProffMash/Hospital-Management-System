@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FiUsers, FiHeart, FiActivity, FiDollarSign } from "react-icons/fi";
-import { Line, Pie } from "react-chartjs-2";
+import { Line, Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   LineElement,
@@ -10,26 +10,40 @@ import {
   ArcElement,
   Tooltip,
   Legend,
+  BarElement,
 } from "chart.js";
 import { getDoctorsCount } from "../../api/doctorApi";
 import { getPatientsCount } from "../../api/patientApi";
+import { getPharmacyCount } from "../../api/pharmacistApi";
 
 // Register required Chart.js components
-ChartJS.register(LineElement, PointElement, CategoryScale, LinearScale, ArcElement, Tooltip, Legend);
+ChartJS.register(
+  LineElement,
+  PointElement,
+  CategoryScale,
+  LinearScale,
+  ArcElement,
+  Tooltip,
+  Legend,
+  BarElement
+);
 
 const Dashboard: React.FC = () => {
-  // State for storing doctors and patients count
+  // State for storing counts
   const [doctorsCount, setDoctorsCount] = useState<number | undefined>(undefined);
   const [patientsCount, setPatientsCount] = useState<number | undefined>(undefined);
+  const [pharmacyCount, setPharmacyCount] = useState<number | undefined>(undefined); // New state
 
   // Fetch data on component mount
   useEffect(() => {
     const fetchCounts = async () => {
       try {
-        const doctors = await getDoctorsCount(); 
-        const patients = await getPatientsCount(); 
+        const doctors = await getDoctorsCount();
+        const patients = await getPatientsCount();
+        const pharmacy = await getPharmacyCount(); // Fetch pharmacy count
         setDoctorsCount(doctors);
         setPatientsCount(patients);
+        setPharmacyCount(pharmacy);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -37,35 +51,34 @@ const Dashboard: React.FC = () => {
     fetchCounts();
   }, []);
 
-  // Data for the Line Chart with dynamic counts for doctors and patients
+  // Data for the Line Chart with dynamic counts for doctors, patients, and pharmacists
   const lineChartData = {
-    labels: ["Doctors", "Patients"], // Labels for the x-axis
+    labels: ["Doctors", "Patients", "Pharmacists"], 
     datasets: [
       {
-        label: "Count", 
-        data: [doctorsCount ?? 0, patientsCount ?? 0], 
-        borderColor: "#1D4ED8", 
-        backgroundColor: "rgba(29, 78, 216, 0.3)", 
-        fill: true, 
-        tension: 0.4, 
+        label: "Count",
+        data: [doctorsCount ?? 0, patientsCount ?? 0, pharmacyCount ?? 0], 
+        borderColor: "#1D4ED8",
+        backgroundColor: "rgba(29, 78, 216, 0.3)",
+        fill: true,
+        tension: 0.4,
       },
     ],
   };
 
-  // Data for the Pie Chart
-  const pieChartData = {
-    labels: ["Surgery", "Pediatrics", "Orthopedics", "Lab Tests", "Radiology"],
+  // Data for the Bar Chart (Doctors, Patients, Pharmacists count)
+  const barChartData = {
+    labels: ["Doctors", "Patients", "Pharmacists"],
     datasets: [
       {
-        label: "Department Performance",
-        data: [80, 70, 65, 90, 75],
+        label: "Count",
+        data: [doctorsCount ?? 0, patientsCount ?? 0, pharmacyCount ?? 0],
         backgroundColor: [
-          "#1D4ED8",
-          "#10B981",
-          "#F59E0B",
-          "#EF4444",
-          "#3B82F6",
+          "#1D4ED8", // Blue for Doctors
+          "#10B981", // Green for Patients
+          "#F59E0B", // Yellow for Pharmacists
         ],
+        borderColor: "#ffffff",
         borderWidth: 1,
       },
     ],
@@ -109,7 +122,7 @@ const Dashboard: React.FC = () => {
           <SummaryCard
             icon={<FiUsers />}
             title="Doctors"
-            value={doctorsCount !== undefined ? doctorsCount.toString() : "Loading..."} 
+            value={doctorsCount !== undefined ? doctorsCount.toString() : "Loading..."}
             growth="+8%"
             bgColor="bg-blue-100"
             iconColor="text-blue-600"
@@ -117,15 +130,15 @@ const Dashboard: React.FC = () => {
           <SummaryCard
             icon={<FiHeart />}
             title="Patients"
-            value={patientsCount !== undefined ? patientsCount.toString() : "Loading..."} 
+            value={patientsCount !== undefined ? patientsCount.toString() : "Loading..."}
             growth="+12%"
             bgColor="bg-pink-100"
             iconColor="text-pink-600"
           />
           <SummaryCard
             icon={<FiActivity />}
-            title="Surgeries"
-            value="120"
+            title="Pharmacists"
+            value={pharmacyCount !== undefined ? pharmacyCount.toString() : "Loading..."} // Updated value
             growth="+15%"
             bgColor="bg-green-100"
             iconColor="text-green-600"
@@ -151,10 +164,15 @@ const Dashboard: React.FC = () => {
                 <Line data={lineChartData} options={chartOptions} />
               </div>
 
-              {/* Pie Chart */}
-              <div className="w-60 h-60">
-                <Pie data={pieChartData} />
+              {/* Bar Chart */}
+              <div className="w-full lg:w-1/2 p-2">
+                <Bar data={barChartData} options={chartOptions} />
               </div>
+
+              {/* Pie Chart */}
+              {/* <div className="w-60 h-60">
+                <Pie data={pieChartData} />
+              </div> */}
             </div>
           </div>
 
@@ -167,21 +185,6 @@ const Dashboard: React.FC = () => {
               </div>
               <p className="text-gray-500">Excellent feedback this month</p>
             </div>
-          </div>
-        </div>
-
-        {/* Departmental Performance */}
-        <div className="mt-8 bg-white shadow rounded-lg p-6">
-          <h2 className="text-xl font-bold mb-4">Departmental Performance</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[{ name: "Surgery", progress: 80 },
-              { name: "Pediatrics", progress: 70 },
-              { name: "Orthopedics", progress: 65 },
-              { name: "Lab Tests", progress: 90 },
-              { name: "Radiology", progress: 75 },
-              { name: "Pharmacy", progress: 85 }].map((dept, idx) => (
-              <DepartmentProgress key={idx} name={dept.name} progress={dept.progress} />
-            ))}
           </div>
         </div>
       </div>
@@ -205,29 +208,6 @@ const SummaryCard: React.FC<{
       <h3 className="text-sm font-semibold text-gray-600">{title}</h3>
       <h2 className="text-2xl font-bold text-gray-800">{value}</h2>
       <p className="text-sm text-green-600">{growth}</p>
-    </div>
-  </div>
-);
-
-const DepartmentProgress: React.FC<{ name: string; progress: number }> = ({ name, progress }) => (
-  <div className="bg-gray-50 shadow p-4 rounded-lg">
-    <h4 className="text-sm font-semibold">{name}</h4>
-    <div className="relative pt-1">
-      <div className="flex mb-2 items-center justify-between">
-        <div>
-          <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-green-600 bg-green-200">
-            {progress}%
-          </span>
-        </div>
-      </div>
-      <div className="flex mb-2">
-        <div className="w-full bg-gray-200 rounded-full h-2.5">
-          <div
-            className="bg-green-500 h-2.5 rounded-full"
-            style={{ width: `${progress}%` }}
-          />
-        </div>
-      </div>
     </div>
   </div>
 );
