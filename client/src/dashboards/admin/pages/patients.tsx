@@ -18,6 +18,8 @@ const PatientsTable: React.FC = () => {
   const [patients, setPatients] = useState<Patient[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [searchTerm, setSearchTerm] = useState<string>("");
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const itemsPerPage = 5; // Set items per page
 
   useEffect(() => {
     const fetchPatients = async () => {
@@ -48,17 +50,24 @@ const PatientsTable: React.FC = () => {
     patient.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Handle Edit
+  // Pagination logic
+  const indexOfLastPatient = currentPage * itemsPerPage;
+  const indexOfFirstPatient = indexOfLastPatient - itemsPerPage;
+  const currentPatients = filteredPatients.slice(
+    indexOfFirstPatient,
+    indexOfLastPatient
+  );
+
+  const totalPages = Math.ceil(filteredPatients.length / itemsPerPage);
+
   const handleEdit = (patient: Patient) => {
     navigate("/admin/edit-patient", { state: { patient } });
   };
 
-  // Handle Add Patient
   const handleAddPatient = () => {
     navigate("/admin/add-patient");
   };
 
-  // Handle Delete Patient
   const handleDelete = async (id: number) => {
     try {
       await deletePatient(id);
@@ -66,6 +75,10 @@ const PatientsTable: React.FC = () => {
     } catch (error) {
       console.error("Error deleting patient:", error);
     }
+  };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
   };
 
   if (loading) {
@@ -80,7 +93,7 @@ const PatientsTable: React.FC = () => {
     <div className="overflow-x-auto max-w-full">
       <h1 className="text-3xl font-extrabold text-blue-600">Manage Patients</h1>
 
-      <div className="flex justify-between items-center mb-4 mt-4"> 
+      <div className="flex justify-between items-center mb-4 mt-4">
         <input
           type="text"
           placeholder="Search by name"
@@ -110,7 +123,7 @@ const PatientsTable: React.FC = () => {
           </tr>
         </thead>
         <tbody className="text-gray-600">
-          {filteredPatients.map((patient) => (
+          {currentPatients.map((patient) => (
             <tr key={patient.id} className="hover:bg-gray-50">
               <td className="border-b px-6 py-4">{patient.id}</td>
               <td className="border-b px-6 py-4">{patient.name}</td>
@@ -146,6 +159,27 @@ const PatientsTable: React.FC = () => {
           ))}
         </tbody>
       </table>
+
+      {/* Pagination Controls */}
+      <div className="flex justify-center mt-6">
+        <button
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+          className="px-4 py-2 bg-gray-300 text-gray-700 rounded-l-md hover:bg-gray-400 disabled:opacity-50"
+        >
+          Prev
+        </button>
+        <span className="px-4 py-2 text-gray-700">
+          Page {currentPage} of {totalPages}
+        </span>
+        <button
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={currentPage === totalPages}
+          className="px-4 py-2 bg-gray-300 text-gray-700 rounded-r-md hover:bg-gray-400 disabled:opacity-50"
+        >
+          Next
+        </button>
+      </div>
     </div>
   );
 };
