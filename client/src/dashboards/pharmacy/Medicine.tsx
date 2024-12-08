@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { getMedicines, deleteMedicine } from '../../api/medicineInventoryApi';
-import { ToastContainer, toast } from 'react-toastify'; // Import Toast for notifications
-import 'react-toastify/dist/ReactToastify.css'; // Import the CSS for toast notifications
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; 
 
 const MedicineInventory: React.FC = () => {
   const navigate = useNavigate();
@@ -35,11 +35,7 @@ const MedicineInventory: React.FC = () => {
         setFilteredMedicines(updatedMedicines);
         toast.success('Medicine deleted successfully!', {
           position: 'top-right',
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
+          autoClose: 2000,
         });
       } catch (error) {
         console.error('Error deleting medicine:', error);
@@ -140,7 +136,7 @@ const MedicineInventory: React.FC = () => {
         </table>
       </div>
 
-      <ToastContainer /> {/* Toast container for notifications */}
+      <ToastContainer /> 
     </div>
   );
 };
