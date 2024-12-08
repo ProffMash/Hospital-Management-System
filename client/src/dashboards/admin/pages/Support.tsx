@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { fetchSupportTickets, deleteSupportTicket } from '../../../api/SupportApi';
 import type { Support } from '../../../api/SupportApi';
 import { Search, Trash2, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const ITEMS_PER_PAGE = 5;
 
@@ -29,8 +31,16 @@ const Support: React.FC = () => {
       try {
         await deleteSupportTicket(id);
         setSupports(supports.filter((support) => support.support_id !== id));
+        toast.success('Support ticket deleted successfully', {
+          position: 'top-right',
+          autoClose: 2000, 
+        });
       } catch (error) {
         console.error('Error deleting support ticket:', error);
+        toast.error('Failed to delete support ticket', {
+          position: 'top-right',
+          autoClose: 2000, 
+        });
       }
     }
   };
@@ -175,6 +185,9 @@ const Support: React.FC = () => {
           <ChevronRight className="inline h-5 w-5" />
         </button>
       </div>
+
+      {/* Toast Container */}
+      <ToastContainer />
     </div>
   );
 };

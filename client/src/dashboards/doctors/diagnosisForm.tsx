@@ -7,6 +7,8 @@ import {
   MdHistory,
 } from "react-icons/md";
 import { createDiagnosis, getDiagnoses } from "../../api/diagnosisApi";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const DiagnosisForm: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -59,7 +61,12 @@ const DiagnosisForm: React.FC = () => {
         prescribed_medicine: "",
         dosage: "",
       });
-      alert("Diagnosis submitted successfully!");
+
+      // Show success toast notification
+      toast.success("Diagnosis submitted successfully!", {
+        position: "top-right",
+        autoClose: 2000, // 2 seconds auto-close
+      });
     } catch (err) {
       setError("Error creating diagnosis");
       console.error(err);
@@ -100,6 +107,9 @@ const DiagnosisForm: React.FC = () => {
 
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md flex space-x-8">
+      {/* Toast Container */}
+      <ToastContainer />
+
       {/* Left Section: Diagnosis Form */}
       <div className="flex-1 space-y-4">
         <h2 className="text-2xl font-semibold text-gray-800 mb-4">Patient Diagnosis Form</h2>

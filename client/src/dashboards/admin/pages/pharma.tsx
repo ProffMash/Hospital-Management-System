@@ -3,6 +3,8 @@ import { FaEdit, FaTrash, FaSearch } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { getPharmacists, deletePharmacist } from "../../../api/pharmaApi";
 import { FadeLoader } from "react-spinners";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"; // Import toast styles
 
 interface Pharmacist {
   id: number;
@@ -19,31 +21,44 @@ const Pharmacists: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
+  // Fetch pharmacists on component mount
   useEffect(() => {
     const fetchPharmacists = async () => {
-      setLoading(true);
+      setLoading(true); // Start loading
       try {
         const data = await getPharmacists();
         setPharmacists(data);
       } catch (error) {
         console.error("Error fetching pharmacists:", error);
       } finally {
-        setLoading(false);
+        setLoading(false); // Stop loading
       }
     };
     fetchPharmacists();
   }, []);
 
+  // Handle deletion of a pharmacist
   const handleDelete = async (id: number) => {
     try {
       await deletePharmacist(id);
-      setPharmacists((prev) => prev.filter((pharmacist) => pharmacist.id !== id));
+      setPharmacists((prev) => prev.filter((pharmacist) => pharmacist.id !== id)); // Update state after deletion
+      // Show toast after deletion
+      toast.success("Pharmacist deleted successfully", {
+        position: "top-right",
+        autoClose: 2000, 
+      });
     } catch (error) {
       console.error("Error deleting pharmacist:", error);
+      toast.error("Failed to delete pharmacist", {
+        position: "top-right",
+        autoClose: 2000, // Auto-close after 2 seconds
+        hideProgressBar: true,
+        closeOnClick: true,
+      });
     }
   };
 
-  //search functionality
+  // Handle search functionality
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
   };
@@ -148,6 +163,8 @@ const Pharmacists: React.FC = () => {
           </table>
         </div>
       )}
+
+      <ToastContainer /> 
     </div>
   );
 };

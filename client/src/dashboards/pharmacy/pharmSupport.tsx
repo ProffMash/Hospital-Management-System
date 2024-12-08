@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import { MdPerson, MdEmail, MdMessage, MdSend } from "react-icons/md";
 import { createSupportTicket } from "../../api/SupportApi"; // Assuming you have a createSupportTicket function
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-const PharmSupport: React.FC = () => {
+const SupportForm: React.FC = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -16,27 +17,46 @@ const PharmSupport: React.FC = () => {
       try {
         setLoading(true);
         setError(null);
-        setSuccess(null);
 
-        // Prepare support data (no subject or message fields needed)
         const supportData = { name, email, description };
-
-        // Call the API function to create a support ticket
         await createSupportTicket(supportData);
 
         // On success, reset the form and show success message
         setName("");
         setEmail("");
         setDescription("");
-        setSuccess("Support ticket submitted successfully.");
+        toast.success("Support ticket submitted successfully!", {
+          position: "top-right",
+          autoClose: 2000, // Toast will auto close after 2 seconds
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
       } catch (err) {
         console.error("Error creating support ticket:", err);
         setError("There was an error submitting the support ticket.");
+        toast.error("Error submitting support ticket. Please try again.", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
       } finally {
         setLoading(false);
       }
     } else {
       setError("Please fill out all fields before submitting.");
+      toast.error("Please fill out all fields before submitting.", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
     }
   };
 
@@ -86,9 +106,6 @@ const PharmSupport: React.FC = () => {
         {/* Error Message */}
         {error && <div className="text-red-500 text-sm mt-2">{error}</div>}
 
-        {/* Success Message */}
-        {success && <div className="text-green-500 text-sm mt-2">{success}</div>}
-
         {/* Submit Button */}
         <button
           type="submit"
@@ -105,8 +122,9 @@ const PharmSupport: React.FC = () => {
           )}
         </button>
       </form>
+      <ToastContainer />
     </div>
   );
 };
 
-export default PharmSupport;
+export default SupportForm;

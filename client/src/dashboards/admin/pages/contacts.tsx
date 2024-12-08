@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { getContacts, deleteContact, Contact } from '../../../api/contactApi';
 import { FaTrash } from 'react-icons/fa';
+import { toast, ToastContainer } from 'react-toastify'; 
+import 'react-toastify/dist/ReactToastify.css';
 
 const Contacts: React.FC = () => {
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [itemsPerPage] = useState<number>(5); 
+  const [itemsPerPage] = useState<number>(5);
   const [loading, setLoading] = useState<boolean>(true);
 
   const fetchContacts = async () => {
@@ -25,8 +27,10 @@ const Contacts: React.FC = () => {
       try {
         await deleteContact(id);
         setContacts((prev) => prev.filter((contact) => contact.contact_id !== id));
+        toast.success('Contact deleted successfully!', { autoClose: 2000 }); 
       } catch (error) {
         console.error('Error deleting contact:', error);
+        toast.error('Error deleting contact!', { autoClose: 2000 }); 
       }
     }
   };
@@ -100,6 +104,8 @@ const Contacts: React.FC = () => {
           </div>
         </>
       )}
+      {/* Toast container */}
+      <ToastContainer />
     </div>
   );
 };

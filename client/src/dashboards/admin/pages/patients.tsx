@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { MdEdit, MdDelete } from "react-icons/md";
 import { getPatients, deletePatient } from "../../../api/patientApi";
 import { FadeLoader } from "react-spinners";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface Patient {
   id: number;
@@ -19,7 +21,13 @@ const PatientsTable: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const itemsPerPage = 5; // Set items per page
+  const patientsPerPage = 5;
+
+  const handlePageChange = (newPage: number) => {
+    if (newPage >= 1 && newPage <= totalPages) {
+      setCurrentPage(newPage);
+    }
+  };
 
   useEffect(() => {
     const fetchPatients = async () => {
@@ -50,15 +58,30 @@ const PatientsTable: React.FC = () => {
     patient.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Pagination logic
-  const indexOfLastPatient = currentPage * itemsPerPage;
-  const indexOfFirstPatient = indexOfLastPatient - itemsPerPage;
-  const currentPatients = filteredPatients.slice(
-    indexOfFirstPatient,
-    indexOfLastPatient
-  );
+  // Paginate filtered patients
+  const indexOfLastPatient = currentPage * patientsPerPage;
+  const indexOfFirstPatient = indexOfLastPatient - patientsPerPage;
+  const currentPatients = filteredPatients.slice(indexOfFirstPatient, indexOfLastPatient);
 
-  const totalPages = Math.ceil(filteredPatients.length / itemsPerPage);
+  const totalPages = Math.ceil(filteredPatients.length / patientsPerPage);
+
+  // Handle deletion with toast notification
+  const handleDelete = async (id: number) => {
+    try {
+      await deletePatient(id);
+      setPatients(patients.filter((patient) => patient.id !== id)); // Remove deleted patient from state
+      toast.success("Patient deleted successfully", {
+        position: "top-right",
+        autoClose: 2000, // Auto close after 2 seconds
+      });
+    } catch (error) {
+      console.error("Error deleting patient:", error);
+      toast.error("Error deleting patient", {
+        position: "top-right",
+        autoClose: 2000,
+      });
+    }
+  };
 
   const handleEdit = (patient: Patient) => {
     navigate("/admin/edit-patient", { state: { patient } });
@@ -66,19 +89,6 @@ const PatientsTable: React.FC = () => {
 
   const handleAddPatient = () => {
     navigate("/admin/add-patient");
-  };
-
-  const handleDelete = async (id: number) => {
-    try {
-      await deletePatient(id);
-      setPatients(patients.filter((patient) => patient.id !== id)); // Remove deleted patient from state
-    } catch (error) {
-      console.error("Error deleting patient:", error);
-    }
-  };
-
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
   };
 
   if (loading) {
@@ -180,6 +190,9 @@ const PatientsTable: React.FC = () => {
           Next
         </button>
       </div>
+
+      {/* Toast Container */}
+      <ToastContainer />
     </div>
   );
 };

@@ -3,6 +3,8 @@ import { FaEdit, FaTrash, FaSearch } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { getDoctors, deleteDoctor } from "../../../api/doctorApi";
 import { FadeLoader } from "react-spinners";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface Doctor {
   id: number;
@@ -40,8 +42,18 @@ const Doctors: React.FC = () => {
     try {
       await deleteDoctor(id);
       setDoctors((prev) => prev.filter((doctor) => doctor.id !== id));
+
+      // Show success toast notification
+      toast.success("Doctor deleted successfully!", {
+        position: "top-right",
+        autoClose: 2000, 
+      });
     } catch (error) {
       console.error("Error deleting doctor:", error);
+      toast.error("Error deleting doctor.", {
+        position: "top-right",
+        autoClose: 2000, 
+      });
     }
   };
 
@@ -56,6 +68,9 @@ const Doctors: React.FC = () => {
 
   return (
     <div className="p-6 bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen">
+      {/* Toast Container */}
+      <ToastContainer />
+
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-extrabold text-blue-600">Manage Doctors</h1>
         <button

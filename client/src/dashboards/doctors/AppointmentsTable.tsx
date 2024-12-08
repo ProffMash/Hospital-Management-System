@@ -3,11 +3,13 @@ import { getAppointments, deleteAppointment } from "../../api/appointmentApi";
 import { FaTrash } from "react-icons/fa";
 import { Calendar, dateFnsLocalizer } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import {format} from "date-fns/format";
-import {parse} from "date-fns/parse";
-import{ startOfWeek} from "date-fns/startOfWeek";
-import {getDay} from "date-fns/getDay";
-import {enUS} from "date-fns/locale/en-US";
+import { format } from "date-fns/format";
+import { parse } from "date-fns/parse";
+import { startOfWeek } from "date-fns/startOfWeek";
+import { getDay } from "date-fns/getDay";
+import { enUS } from "date-fns/locale/en-US";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"; // Import the CSS for react-toastify
 
 export interface Appointment {
   appointment_id?: number;
@@ -73,9 +75,17 @@ const AppointmentsTable = () => {
       setAppointments(
         appointments.filter((appt) => appt.appointment_id !== appointmentId)
       );
+      toast.success("Appointment deleted successfully!", {
+        position: "top-right",
+        autoClose: 2000,
+      });
     } catch (err) {
       console.error("Error deleting appointment:", err);
       setError("Failed to delete appointment. Please try again.");
+      toast.error("Failed to delete appointment. Please try again.", {
+        position: "top-right",
+        autoClose: 3000,
+      });
     }
   };
 
@@ -187,6 +197,9 @@ const AppointmentsTable = () => {
           />
         </div>
       </div>
+
+      {/* ToastContainer for notifications */}
+      <ToastContainer />
     </div>
   );
 };

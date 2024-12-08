@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { getMedicines, deleteMedicine } from '../../api/medicineInventoryApi';
+import { ToastContainer, toast } from 'react-toastify'; // Import Toast for notifications
+import 'react-toastify/dist/ReactToastify.css'; // Import the CSS for toast notifications
 
 const MedicineInventory: React.FC = () => {
   const navigate = useNavigate();
@@ -22,15 +24,34 @@ const MedicineInventory: React.FC = () => {
     fetchMedicines();
   }, []);
 
-  // Handle medicine deletion
+  // Handle medicine deletion with confirmation
   const handleDelete = async (id: number) => {
-    try {
-      await deleteMedicine(id);
-      const updatedMedicines = medicines.filter((medicine) => medicine.id !== id);
-      setMedicines(updatedMedicines);
-      setFilteredMedicines(updatedMedicines);
-    } catch (error) {
-      console.error('Error deleting medicine:', error);
+    const confirmed = window.confirm('Are you sure you want to delete this medicine?');
+    if (confirmed) {
+      try {
+        await deleteMedicine(id);
+        const updatedMedicines = medicines.filter((medicine) => medicine.id !== id);
+        setMedicines(updatedMedicines);
+        setFilteredMedicines(updatedMedicines);
+        toast.success('Medicine deleted successfully!', {
+          position: 'top-right',
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+      } catch (error) {
+        console.error('Error deleting medicine:', error);
+        toast.error('Failed to delete medicine. Please try again.', {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+      }
     }
   };
 
@@ -118,6 +139,8 @@ const MedicineInventory: React.FC = () => {
           </tbody>
         </table>
       </div>
+
+      <ToastContainer /> {/* Toast container for notifications */}
     </div>
   );
 };
