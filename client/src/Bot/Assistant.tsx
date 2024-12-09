@@ -20,22 +20,13 @@ const BotpressChat: React.FC = () => {
         lazySocket: true,
         themeName: "prism",
         botName: "Medinik Virtual Assistant",
-        avatarUrl: "https://i.pinimg.com/564x/3c/99/0c/3c990c67c30df3fdc95d1ed1371d21be.jpg",
+        avatarUrl: "https://i.pinimg.com/564x/3c/99/0c/3c990c67c30df3fdc95d1ed1371d21be.jpg", 
         frontendVersion: "v1",
         useSessionStorage: true,
         enableConversationDeletion: true,
         theme: "prism",
         themeColor: "#2563eb",
-        allowedOrigins: [],
-        // Custom CSS for resizing the bot widget
-        style: {
-          width: '350px', 
-          height: '500px',
-          position: 'fixed',
-          bottom: '20px',
-          right: '20px', 
-          borderRadius: '8px', 
-        },
+        allowedOrigins: []
       });
     };
 
