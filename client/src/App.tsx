@@ -1,6 +1,8 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 
+import Home from "./Home";
+
 // Admin Components
 import AdminSidebar from "./dashboards/admin/Sidebar";
 import AdminNavbar from "./dashboards/admin/Navbar";
@@ -37,7 +39,7 @@ import DoctorSettings from "./dashboards/doctors/doctorSetting";
 import DocPatients from "./dashboards/doctors/medPatients";
 
 // Shared Components
-import LandingPage from "./landingPage";
+// import LandingPage from "./landingPage";
 import LoginPage from "./loginPage";
 
 // Utility: ProtectedRoute
@@ -51,7 +53,8 @@ const App: React.FC = () => {
     <Router>
       <Routes>
         {/* Landing Page */}
-        <Route path="/" element={<LandingPage />} />
+        <Route path="/" element={<Home />} />
+        {/* <Route path="/" element={<LandingPage />} /> */}
 
         {/* Login Page */}
         <Route path="/login" element={<LoginPage />} />
