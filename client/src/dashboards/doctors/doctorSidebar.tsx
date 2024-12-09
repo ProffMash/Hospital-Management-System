@@ -1,5 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { Stethoscope, User, Calendar, FileText, LogOut, Tablet } from "lucide-react";
+import { FaUserMd } from "react-icons/fa";
 
 const DoctorSidebar = () => {
   const navigate = useNavigate();
@@ -17,11 +18,11 @@ const DoctorSidebar = () => {
   };
   const menuItems = [
     { name: "Dashboard", path: "/doctor", icon: <Stethoscope size={20} /> },
-    { name: "Doctors", path: "/doctor/list", icon: <User size={20} /> },
+    { name: "Doctors", path: "/doctor/list", icon: <FaUserMd size={20} /> },
+    { name: "Patients", path: "/doctor/patients", icon: <User size={20} /> },
     { name: "Diagnose", path: "/doctor/diagnosis", icon: <Tablet size={20} /> },
     { name: "Appointments", path: "/doctor/appointments", icon: <Calendar size={20} /> },
     { name: "Support", path: "/doctor/support", icon: <FileText size={20} /> },
-    // { name: "Settings", path: "/doctor/settings", icon: <Settings size={20} /> },
     { name: "Logout", path: "/login", icon: <LogOut size={20} />, action: handleLogout },
   ];
 

@@ -34,6 +34,7 @@ import SupportForm from "./dashboards/doctors/SupportForm";
 import DoctorsList from "./dashboards/doctors/doctorsList";
 import DiagnosisForm from "./dashboards/doctors/diagnosisForm";
 import DoctorSettings from "./dashboards/doctors/doctorSetting";
+import DocPatients from "./dashboards/doctors/medPatients";
 
 // Shared Components
 import LandingPage from "./landingPage";
@@ -131,6 +132,7 @@ const App: React.FC = () => {
                     <Route path="/list" element={<DoctorsList />} />
                     <Route path="/diagnosis" element={<DiagnosisForm />} />
                     <Route path="/settings" element={<DoctorSettings />} />
+                    <Route path="/patients" element={<DocPatients />} />
                   </Routes>
                 </div>
               </div>
