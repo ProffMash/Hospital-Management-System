@@ -113,8 +113,13 @@ class AdminLoginSerializer(serializers.Serializer):
             raise serializers.ValidationError("Admin with this email does not exist")
 
         
-        
-        
+class AdminSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Admin
+        fields = '__all__'
+
+    def create(self, validated_data):
+        return Admin.objects.create_user(**validated_data)
 
 class AppointmentsSerializer(serializers.ModelSerializer):
     class Meta:

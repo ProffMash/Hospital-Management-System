@@ -115,13 +115,9 @@ class AdminLoginView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-
-
-
-
-
-
-
+class AdminViewSet(viewsets.ModelViewSet):
+    queryset = Admin.objects.all()
+    serializer_class = AdminSerializer
 
 class AppointmentsViewSet(viewsets.ModelViewSet):
     queryset = Appointments.objects.all()  # Fetch all appointments
