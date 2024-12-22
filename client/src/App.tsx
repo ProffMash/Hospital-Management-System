@@ -18,6 +18,8 @@ import Contacts from "./dashboards/admin/pages/contacts";
 import Pharmacists from "./dashboards/admin/pages/pharma";
 import AddPharmacistForm from "./dashboards/admin/pages/addPharma";
 import EditPharmacistForm from "./dashboards/admin/pages/editPharma";
+import AddAdminForm from "./dashboards/admin/pages/addAdmin";
+import Admins from "./dashboards/admin/pages/admins";
 
 // Pharmacy Components
 import PharmacySidebar from "./dashboards/pharmacy/PharmacySidebar";
@@ -77,7 +79,9 @@ const App: React.FC = () => {
                       <Route path="/" element={<AdminDashboard />} />
                       <Route path="/doctors" element={<Doctors />} />
                       <Route path="/patients" element={<Patients />} />
+                      <Route path="/admins" element={<Admins />} />
                       <Route path="/support" element={<Support />} />
+                      <Route path="/add-admin" element={<AddAdminForm />} />
                       <Route path="/add-doctor" element={<AddDoctorForm />} />
                       <Route path="/edit-doctor" element={<EditDoctorForm />} />
                       <Route path="/pharmacists" element={<Pharmacists />} />

@@ -28,6 +28,7 @@ const Sidebar: React.FC = () => {
     { name: "Overview", icon: <FaHome />, path: "/admin" },
     { name: "Doctors", icon: <FaUserMd />, path: "/admin/doctors" },
     { name: "Pharmacists", icon: <FaUserMd />, path: "/admin/pharmacists" },
+    { name: "Admins", icon: <FaUserMd />, path: "/admin/admins" },
     { name: "Patients", icon: <FaUsers />, path: "/admin/patients" },
     { name: "Contacts", icon: <FaFileAlt />, path: "/admin/contacts" },
     { name: "Support", icon: <FaHeadset />, path: "/admin/support" },
