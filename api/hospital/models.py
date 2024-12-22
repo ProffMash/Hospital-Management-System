@@ -194,3 +194,11 @@ def get_patients_count(request):
 def get_pharmacists_count(request):
     count = Pharmacist.objects.count()
     return JsonResponse({'count': count})
+
+def get_appointments_count(request):
+    count = Appointments.objects.count()
+    return JsonResponse({'count': count})
+
+def get_admin_count(request):
+    count = Admin.objects.count()
+    return JsonResponse({'count': count})
