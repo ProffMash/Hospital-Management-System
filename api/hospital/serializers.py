@@ -116,7 +116,7 @@ class AdminLoginSerializer(serializers.Serializer):
 class AdminSerializer(serializers.ModelSerializer):
     class Meta:
         model = Admin
-        fields = '__all__'
+        fields = ['admin_id', 'name', 'email', 'phone', 'status']
 
     def create(self, validated_data):
         return Admin.objects.create_user(**validated_data)
