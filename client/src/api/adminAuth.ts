@@ -7,7 +7,6 @@ export interface RegisterAdminRequest {
   email: string;
   password: string;
   name: string;
-  specialization: string;
   phone: string;
   status: string;
   is_staff?: boolean;
@@ -24,7 +23,6 @@ export interface AdminResponse {
   admin_id: number;
   email: string;
   name: string;
-  specialization: string;
   phone: string;
   status: string;
 }

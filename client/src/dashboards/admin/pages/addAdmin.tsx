@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import {
   FaUserTie,
-  FaBriefcase,
+  // FaBriefcase,
   FaPhone,
   FaEnvelope,
   FaArrowLeft,
@@ -15,7 +15,6 @@ const AddAdminForm: React.FC = () => {
 
   const [adminData, setAdminData] = useState({
     name: "",
-    specialization: "",
     phone: "",
     email: "",
     password: "",
@@ -93,7 +92,7 @@ const AddAdminForm: React.FC = () => {
             />
           </div>
 
-          {/* Specialization */}
+          {/* Specialization
           <div className="mb-4">
             <label className="block text-gray-700 mb-1 flex items-center gap-2">
               <FaBriefcase className="text-blue-500" />
@@ -108,7 +107,7 @@ const AddAdminForm: React.FC = () => {
               placeholder="Specialization"
               required
             />
-          </div>
+          </div> */}
 
           {/* Phone */}
           <div className="mb-4">

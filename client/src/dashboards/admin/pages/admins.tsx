@@ -8,9 +8,8 @@ import "react-toastify/dist/ReactToastify.css";
 
 // Admin Type
 interface Admin {
-  admin_id: number; // Changed to match the backend field
+  admin_id: number; 
   name: string;
-  role: string;
   phone: string;
   email: string;
   status: string;
@@ -27,8 +26,8 @@ const Admins: React.FC = () => {
     const fetchAdmins = async () => {
       setLoading(true);
       try {
-        const data = await getAdmins();
-        setAdmins(data);
+        const data = await getAdmins(); // Fetch admins using API
+        setAdmins(data); // Set the fetched data in the state
       } catch (error: any) {
         console.error("Error fetching admins:", error);
         toast.error("Failed to fetch admins.", {
@@ -40,13 +39,13 @@ const Admins: React.FC = () => {
       }
     };
     fetchAdmins();
-  }, []);
+  }, []); // Runs once when the component mounts
 
   // Handle admin deletion
   const handleDelete = async (admin_id: number) => {
     try {
-      await deleteAdmin(admin_id);
-      setAdmins((prev) => prev.filter((admin) => admin.admin_id !== admin_id));
+      await deleteAdmin(admin_id); // Call API to delete admin
+      setAdmins((prev) => prev.filter((admin) => admin.admin_id !== admin_id)); // Update the state by removing the deleted admin
       toast.success("Admin deleted successfully!", {
         position: "top-right",
         autoClose: 2000,
@@ -106,7 +105,6 @@ const Admins: React.FC = () => {
               <tr className="text-sm font-semibold text-gray-600 border-b">
                 <th className="p-4">Admin ID</th>
                 <th className="p-4">Name</th>
-                <th className="p-4">Role</th>
                 <th className="p-4">Phone</th>
                 <th className="p-4">Email</th>
                 <th className="p-4">Status</th>
@@ -131,7 +129,6 @@ const Admins: React.FC = () => {
                   >
                     <td className="p-4">{admin.admin_id}</td>
                     <td className="p-4">{admin.name}</td>
-                    <td className="p-4">{admin.role}</td>
                     <td className="p-4">{admin.phone}</td>
                     <td className="p-4">{admin.email}</td>
                     <td className="p-4">

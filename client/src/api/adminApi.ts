@@ -1,42 +1,75 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://127.0.0.1:8000/api/admins';
+const axiosInstance = axios.create({
+  baseURL: 'http://127.0.0.1:8000/api/', 
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
 
-//Admin Type
-interface Admin {
-    admin_id: number;
-    name: string;
-    role: string;
-    phone: string;
-    email: string;
-    status: string;
+export const createAdmin = async (adminData: {
+  name: string;
+  email: string;
+  phone: string;
+  status: string;
+  password: string;
+}) => {
+  try {
+    const response = await axiosInstance.post('admins/', adminData);
+    return response.data;
+  } catch (error) {
+    console.error('Error creating admin:', error);
+    throw error; 
   }
-
-// Fetch all admins
-export const getAdmins = async (): Promise<Admin[]> => {
-    try {
-        const response = await axios.get(`${BASE_URL}/`);
-        return response.data;
-    } catch (error: any) {
-        throw new Error(error.response?.data?.message || 'Failed to fetch admins');
-    }
 };
 
-// Delete an admin
-export const deleteAdmin = async (id: number): Promise<void> => {
+export const getAdmins = async () => {
     try {
-        await axios.delete(`${BASE_URL}/${id}/`);
-    } catch (error: any) {
-        throw new Error(error.response?.data?.message || 'Failed to delete admin');
+      const response = await axiosInstance.get('admins/');
+      const mappedData = response.data.map((admin: any) => ({
+        admin_id: admin.admin_id, 
+        name: admin.name,
+        email: admin.email,
+        phone: admin.phone,
+        status: admin.status,
+      }));
+      return mappedData;
+    } catch (error) {
+      console.error('Error fetching admins:', error);
+      throw error;
     }
+  };
+
+export const updateAdmin = async (id: number, adminData: {
+  name?: string;
+  email?: string;
+  phone?: string;
+  status?: string;
+}) => {
+  try {
+    const response = await axiosInstance.put(`admins/${id}/`, adminData);
+    return response.data;
+  } catch (error) {
+    console.error(`Error updating admin with ID ${id}:`, error);
+    throw error; 
+  }
 };
 
-// Update an admin
-export const updateAdmin = async (id: number, data: Admin): Promise<Admin> => {
-    try {
-        const response = await axios.put(`${BASE_URL}/${id}/`, data);
-        return response.data;
-    } catch (error: any) {
-        throw new Error(error.response?.data?.message || 'Failed to update admin');
-    }
+export const deleteAdmin = async (id: number) => {
+  try {
+    await axiosInstance.delete(`admins/${id}/`);
+  } catch (error) {
+    console.error(`Error deleting admin with ID ${id}:`, error);
+    throw error; 
+  }
+};
+
+export const getAdminsCount = async () => {
+  try {
+    const response = await axiosInstance.get('admins/count');
+    return response.data.count; 
+  } catch (error) {
+    console.error('Error fetching admins count:', error);
+    return 0; 
+  }
 };
