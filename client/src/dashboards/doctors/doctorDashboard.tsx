@@ -44,7 +44,7 @@ const DoctorDashboard = () => {
   return (
     <div className="flex flex-col h-screen bg-gray-100">
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold text-blue-800">Hospital Overview</h1>
+        <h1 className="text-3xl font-bold text-blue-800">Overview</h1>
       </div>
       <div className="p-6 space-y-6">
         <div className="grid grid-cols-4 gap-4">
