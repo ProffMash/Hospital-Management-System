@@ -12,7 +12,7 @@ const DoctorsList = () => {
   useEffect(() => {
     const fetchDoctors = async () => {
       try {
-        const data = await getDoctors(); 
+        const data = await getDoctors();
         setDoctors(data);
       } catch (err) {
         console.error("Error fetching doctors:", err);
@@ -26,11 +26,11 @@ const DoctorsList = () => {
   }, []);
 
   if (loading) {
-    return <div>Loading doctors...</div>;
+    return <div className="text-center">Loading doctors...</div>;
   }
 
   if (error) {
-    return <div className="text-red-500">{error}</div>;
+    return <div className="text-red-500 text-center">{error}</div>;
   }
 
   return (
@@ -59,9 +59,9 @@ const DoctorsList = () => {
               <td className="py-2 px-4 text-sm text-gray-600">
                 <span
                   className={`px-3 py-1 rounded-full text-xs ${
-                    doctor.status === "Available"
+                     doctor.status.toLowerCase() === "active"
                       ? "bg-green-100 text-green-800"
-                      : "bg-yellow-100 text-yellow-800"
+                      : "bg-red-100 text-red-800"
                   }`}
                 >
                   {doctor.status}
