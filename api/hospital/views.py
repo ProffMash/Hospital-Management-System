@@ -120,7 +120,7 @@ class AdminViewSet(viewsets.ModelViewSet):
     queryset = Admin.objects.all()
     serializer_class = AdminSerializer
     
-    @action(detail=False, methods=['get'], url_path='count')
+    @action(detail=False, methods=['get'], url_path='count') #admin count
     def get_admin_count(self, request):
         count = Admin.objects.count()
         return Response(CountSerializer({'count': count}).data)
