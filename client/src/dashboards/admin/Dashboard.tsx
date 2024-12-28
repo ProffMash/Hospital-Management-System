@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FiUsers, FiHeart, FiActivity, FiDollarSign } from "react-icons/fi";
+import { FiUsers, FiHeart, FiActivity, FiUserCheck } from "react-icons/fi";
 import { Line, Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -15,6 +15,7 @@ import {
 import { getDoctorsCount } from "../../api/doctorApi";
 import { getPatientsCount } from "../../api/patientApi";
 import { getPharmacyCount } from "../../api/pharmacistApi";
+import { getAdminsCount } from "../../api/adminApi";
 
 // Register required Chart.js components
 ChartJS.register(
@@ -32,7 +33,8 @@ const Dashboard: React.FC = () => {
   // State for storing counts
   const [doctorsCount, setDoctorsCount] = useState<number | undefined>(undefined);
   const [patientsCount, setPatientsCount] = useState<number | undefined>(undefined);
-  const [pharmacyCount, setPharmacyCount] = useState<number | undefined>(undefined); // New state
+  const [pharmacyCount, setPharmacyCount] = useState<number | undefined>(undefined); 
+  const [adminsCount, setAdminsCount] = useState<number | undefined>(undefined);
 
   // Fetch data on component mount
   useEffect(() => {
@@ -40,10 +42,13 @@ const Dashboard: React.FC = () => {
       try {
         const doctors = await getDoctorsCount();
         const patients = await getPatientsCount();
-        const pharmacy = await getPharmacyCount(); // Fetch pharmacy count
+        const pharmacy = await getPharmacyCount(); 
+        const admins = await getAdminsCount();
+
         setDoctorsCount(doctors);
         setPatientsCount(patients);
         setPharmacyCount(pharmacy);
+        setAdminsCount(admins);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -68,7 +73,7 @@ const Dashboard: React.FC = () => {
 
   // Data for the Bar Chart (Doctors, Patients, Pharmacists count)
   const barChartData = {
-    labels: ["Doctors", "Patients", "Pharmacists"],
+    labels: ["Doctors", "Patients", "Pharmacists", "Admins"],
     datasets: [
       {
         label: "Count",
@@ -144,9 +149,9 @@ const Dashboard: React.FC = () => {
             iconColor="text-green-600"
           />
           <SummaryCard
-            icon={<FiDollarSign />}
-            title="Revenue"
-            value="$12,400"
+            icon={<FiUserCheck />}
+            title="Admins"
+            value={adminsCount !== undefined ? adminsCount.toString() : "Loading..."} // Updated value
             growth="+5%"
             bgColor="bg-yellow-100"
             iconColor="text-yellow-600"
