@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { FiUsers, FiHeart, FiActivity, FiUserCheck } from "react-icons/fi";
+import { FiUsers, FiActivity, FiUserCheck } from "react-icons/fi";
+import { FaProcedures } from "react-icons/fa";
 import { Line, Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -134,7 +135,7 @@ const Dashboard: React.FC = () => {
             iconColor="text-blue-600"
           />
           <SummaryCard
-            icon={<FiHeart />}
+            icon={<FaProcedures />}
             title="Patients"
             value={patientsCount !== undefined ? patientsCount.toString() : "Loading..."}
             growth="+12%"
