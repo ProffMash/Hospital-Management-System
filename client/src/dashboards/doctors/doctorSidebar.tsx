@@ -34,7 +34,7 @@ const DoctorSidebar = () => {
           <li key={index}>
             <Link
               to={item.path}
-              className="flex items-center gap-4 px-4 py-2 text-sm hover:bg-blue-700 transition rounded-lg"
+              className="flex items-center gap-4 px-4 py-2 text-sm hover:bg-blue-300 transition rounded-lg"
               onClick={item.action ? item.action : undefined}
             >
               {item.icon}
