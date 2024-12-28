@@ -143,8 +143,10 @@ const PatientsTable: React.FC = () => {
               <td className="border-b px-6 py-4">
                 <span
                   className={`inline-block px-3 py-1 rounded-full text-sm ${
-                    patient.status === "Active"
-                      ? "bg-green-100 text-green-700"
+                    patient.status === "Admitted"
+                      ? "bg-blue-100 text-green-700"
+                      : patient.status === "Discharged"
+                      ? "bg-red-100 text-red-700"
                       : "bg-yellow-100 text-yellow-700"
                   }`}
                 >

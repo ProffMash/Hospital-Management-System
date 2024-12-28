@@ -8,7 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 // Admin Type
 interface Admin {
-  admin_id: number; 
+  admin_id: number;
   name: string;
   phone: string;
   email: string;
@@ -44,7 +44,7 @@ const Admins: React.FC = () => {
   // Handle admin deletion
   const handleDelete = async (admin_id: number) => {
     try {
-      await deleteAdmin(admin_id); 
+      await deleteAdmin(admin_id);
       setAdmins((prev) => prev.filter((admin) => admin.admin_id !== admin_id)); // Update the state by removing the deleted admin
       toast.success("Admin deleted successfully!", {
         position: "top-right",
@@ -114,10 +114,7 @@ const Admins: React.FC = () => {
             <tbody>
               {filteredAdmins.length === 0 ? (
                 <tr>
-                  <td
-                    colSpan={7}
-                    className="p-4 text-center text-gray-500 italic"
-                  >
+                  <td colSpan={7} className="p-4 text-center text-gray-500 italic">
                     No admins found.
                   </td>
                 </tr>
@@ -134,9 +131,9 @@ const Admins: React.FC = () => {
                     <td className="p-4">
                       <span
                         className={`px-3 py-1 rounded-full text-xs font-medium ${
-                          admin.status === "Active"
-                            ? "bg-green-100 text-green-700"
-                            : "bg-red-100 text-red-700"
+                          admin.status.toLowerCase() === "active"
+                            ? "bg-green-100 text-green-800"
+                            : "bg-red-100 text-red-800"
                         }`}
                       >
                         {admin.status}

@@ -23,19 +23,20 @@ const Doctors: React.FC = () => {
 
   // Fetch doctors on component mount
   useEffect(() => {
-    const fetchDoctors = async () => {
-      setLoading(true); // Start loading
-      try {
-        const data = await getDoctors();
-        setDoctors(data);
-      } catch (error) {
-        console.error("Error fetching doctors:", error);
-      } finally {
-        setLoading(false); // Stop loading
-      }
-    };
     fetchDoctors();
   }, []);
+
+  const fetchDoctors = async () => {
+    setLoading(true);
+    try {
+      const data = await getDoctors();
+      setDoctors(data);
+    } catch (error) {
+      console.error("Error fetching doctors:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // Handle deletion of a doctor
   const handleDelete = async (id: number) => {
@@ -43,16 +44,15 @@ const Doctors: React.FC = () => {
       await deleteDoctor(id);
       setDoctors((prev) => prev.filter((doctor) => doctor.id !== id));
 
-      // Show success toast notification
       toast.success("Doctor deleted successfully!", {
         position: "top-right",
-        autoClose: 2000, 
+        autoClose: 2000,
       });
     } catch (error) {
       console.error("Error deleting doctor:", error);
       toast.error("Error deleting doctor.", {
         position: "top-right",
-        autoClose: 2000, 
+        autoClose: 2000,
       });
     }
   };
@@ -134,9 +134,9 @@ const Doctors: React.FC = () => {
                     <td className="p-4">
                       <span
                         className={`px-3 py-1 rounded-full text-xs font-medium ${
-                          doctor.status === "Active"
-                            ? "bg-green-100 text-green-700"
-                            : "bg-red-100 text-red-700"
+                          doctor.status.toLowerCase() === "active"
+                            ? "bg-green-100 text-green-800"
+                            : "bg-red-100 text-red-800"
                         }`}
                       >
                         {doctor.status}
@@ -146,7 +146,9 @@ const Doctors: React.FC = () => {
                       <button
                         className="text-blue-500 hover:text-blue-700"
                         onClick={() =>
-                          navigate("/admin/edit-doctor", { state: { doctor } })
+                          navigate("/admin/edit-doctor", {
+                            state: { doctor },
+                          })
                         }
                       >
                         <FaEdit />
