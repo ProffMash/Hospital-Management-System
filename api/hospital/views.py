@@ -16,8 +16,9 @@ from .serializers import (
     ReportSerializer, SupportTicketSerializer, PatientDiagnosisSerializer,
     AppointmentSerializer, MedicineInventorySerializer, CountSerializer, 
     DoctorProfileSerializer, SupportSerializer, AppointmentsSerializer,
-     AdminSerializer,
-    DoctorRegistrationSerializer, PharmacistRegistrationSerializer, DoctorLoginSerializer, PharmacistLoginSerializer, AdminRegistrationSerializer, AdminLoginSerializer
+    AdminSerializer,
+    DoctorRegistrationSerializer, PharmacistRegistrationSerializer, DoctorLoginSerializer, 
+    PharmacistLoginSerializer, AdminRegistrationSerializer, AdminLoginSerializer
 )
 
 from rest_framework.decorators import action
@@ -118,6 +119,11 @@ class AdminLoginView(APIView):
 class AdminViewSet(viewsets.ModelViewSet):
     queryset = Admin.objects.all()
     serializer_class = AdminSerializer
+    
+    @action(detail=False, methods=['get'], url_path='count')
+    def get_admin_count(self, request):
+        count = Admin.objects.count()
+        return Response(CountSerializer({'count': count}).data)
 
 class AppointmentsViewSet(viewsets.ModelViewSet):
     queryset = Appointments.objects.all()  # Fetch all appointments
