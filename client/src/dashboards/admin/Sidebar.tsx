@@ -4,11 +4,11 @@ import {
   FaHome,
   FaUserMd,
   FaUsers,
-  // FaCog,
   FaHeadset,
   FaSignOutAlt,
   FaFileAlt,
 } from "react-icons/fa";
+import { FiUserCheck, FiBox } from "react-icons/fi";
 
 const Sidebar: React.FC = () => {
   const navigate = useNavigate();
@@ -27,8 +27,8 @@ const Sidebar: React.FC = () => {
   const menuItems = [
     { name: "Overview", icon: <FaHome />, path: "/admin" },
     { name: "Doctors", icon: <FaUserMd />, path: "/admin/doctors" },
-    { name: "Pharmacists", icon: <FaUserMd />, path: "/admin/pharmacists" },
-    { name: "Admins", icon: <FaUserMd />, path: "/admin/admins" },
+    { name: "Pharmacists", icon: <FiBox />, path: "/admin/pharmacists" },
+    { name: "Admins", icon: <FiUserCheck />, path: "/admin/admins" },
     { name: "Patients", icon: <FaUsers />, path: "/admin/patients" },
     { name: "Contacts", icon: <FaFileAlt />, path: "/admin/contacts" },
     { name: "Support", icon: <FaHeadset />, path: "/admin/support" },

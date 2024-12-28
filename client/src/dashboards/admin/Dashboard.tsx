@@ -58,11 +58,11 @@ const Dashboard: React.FC = () => {
 
   // Data for the Line Chart with dynamic counts for doctors, patients, and pharmacists
   const lineChartData = {
-    labels: ["Doctors", "Patients", "Pharmacists"], 
+    labels: ["Doctors", "Patients", "Pharmacists", "Admins"], 
     datasets: [
       {
         label: "Count",
-        data: [doctorsCount ?? 0, patientsCount ?? 0, pharmacyCount ?? 0], 
+        data: [doctorsCount ?? 0, patientsCount ?? 0, pharmacyCount ?? 0, adminsCount ?? 0], 
         borderColor: "#1D4ED8",
         backgroundColor: "rgba(29, 78, 216, 0.3)",
         fill: true,
@@ -71,17 +71,18 @@ const Dashboard: React.FC = () => {
     ],
   };
 
-  // Data for the Bar Chart (Doctors, Patients, Pharmacists count)
+  // Data for the Bar Chart (Doctors, Patients, Pharmacists count, and Admins)
   const barChartData = {
     labels: ["Doctors", "Patients", "Pharmacists", "Admins"],
     datasets: [
       {
         label: "Count",
-        data: [doctorsCount ?? 0, patientsCount ?? 0, pharmacyCount ?? 0],
+        data: [doctorsCount ?? 0, patientsCount ?? 0, pharmacyCount ?? 0, adminsCount ?? 0],
         backgroundColor: [
           "#1D4ED8", // Blue for Doctors
           "#10B981", // Green for Patients
           "#F59E0B", // Yellow for Pharmacists
+          "#EF4444", // Red for Admins
         ],
         borderColor: "#ffffff",
         borderWidth: 1,
