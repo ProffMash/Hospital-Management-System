@@ -44,7 +44,7 @@ const Admins: React.FC = () => {
   // Handle admin deletion
   const handleDelete = async (admin_id: number) => {
     try {
-      await deleteAdmin(admin_id); // Call API to delete admin
+      await deleteAdmin(admin_id); 
       setAdmins((prev) => prev.filter((admin) => admin.admin_id !== admin_id)); // Update the state by removing the deleted admin
       toast.success("Admin deleted successfully!", {
         position: "top-right",
