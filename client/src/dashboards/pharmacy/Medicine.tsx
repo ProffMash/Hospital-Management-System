@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
+import { FaPlus, FaEdit, FaTrash,  FaShoppingBag } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
-import { getMedicines, deleteMedicine } from '../../api/medicineInventoryApi';
+import { getMedicines, deleteMedicine, updateMedicine } from '../../api/medicineInventoryApi';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; 
 
 const MedicineInventory: React.FC = () => {
   const navigate = useNavigate();
   const [medicines, setMedicines] = useState<any[]>([]);
-  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [searchQuery, setSearchQuery] = useState<string>(''); 
   const [filteredMedicines, setFilteredMedicines] = useState<any[]>([]);
 
   useEffect(() => {
@@ -61,6 +61,43 @@ const MedicineInventory: React.FC = () => {
         medicine.category.toLowerCase().includes(query)
     );
     setFilteredMedicines(filtered);
+  };
+
+  // Handle sale action (reduces quantity)
+  const handleSell = async (medicine: any) => {
+    if (medicine.quantity > 0) {
+      const updatedMedicine = {
+        ...medicine,
+        quantity: medicine.quantity - 1, // Reduce quantity by 1
+      };
+      try {
+        await updateMedicine(medicine.id, updatedMedicine);
+        const updatedMedicines = medicines.map((med) =>
+          med.id === medicine.id ? updatedMedicine : med
+        );
+        setMedicines(updatedMedicines);
+        setFilteredMedicines(updatedMedicines);
+        toast.success('Medicine sold successfully!', {
+          position: 'top-right',
+          autoClose: 2000,
+        });
+      } catch (error) {
+        console.error('Error updating medicine:', error);
+        toast.error('Failed to sell medicine. Please try again.', {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+      }
+    } else {
+      toast.error('Insufficient quantity for sale!', {
+        position: 'top-right',
+        autoClose: 3000,
+      });
+    }
   };
 
   return (
@@ -121,6 +158,12 @@ const MedicineInventory: React.FC = () => {
                       className="p-2 bg-red-100 text-red-600 rounded-full hover:bg-red-200 transition duration-200"
                     >
                       <FaTrash />
+                    </button>
+                    <button
+                      onClick={() => handleSell(medicine)}
+                      className="p-2 bg-yellow-100 text-yellow-600 rounded-full hover:bg-yellow-200 transition duration-200"
+                    >
+                      < FaShoppingBag />
                     </button>
                   </td>
                 </tr>
