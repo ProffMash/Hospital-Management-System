@@ -65,3 +65,16 @@ export const getMedicinesCount = async () => {
     return 0;
   }
 };
+
+//total stock value
+export const getStockValue = async () => {
+  try {
+    const response = await axiosInstance.get('api/medicines/total-stock-value/');
+    console.log('Stock Value Response:', response.data); // Ensure you can see the exact data structure
+    return response.data.total_stock_value || 0; // Ensure you're accessing 'total_stock_value'
+  } catch (error) {
+    console.error('Error fetching stock value:', error);
+    return 0;
+  }
+};
+
