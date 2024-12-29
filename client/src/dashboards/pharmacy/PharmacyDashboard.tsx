@@ -1,11 +1,37 @@
-import React from 'react';
-import { FaPills, FaUsers, FaShoppingCart, FaDollarSign, FaFileAlt, FaChartBar } from 'react-icons/fa';
+import React, { useEffect, useState } from 'react';
+import { FaPills, FaUsers, FaDollarSign, FaFileAlt, FaChartBar } from 'react-icons/fa';
 import { Line, Bar } from 'react-chartjs-2';
 import { Chart, registerables } from 'chart.js';
+import { getMedicinesCount } from '../../api/medicineInventoryApi';
+import { getPatientsCount } from '../../api/patientApi';
+import { getPharmacistsCount } from '../../api/pharmaApi';
 
 Chart.register(...registerables);
 
 const PharmacyDashboard: React.FC = () => {
+  const [medicineCount, setMedicineCount] = useState<number | null>(null);
+  const [patientsCount, setPatientsCount] = useState<number | null>(null);
+  const [pharmacistsCount, setPharmacistsCount] = useState<number | null>(null);
+
+  useEffect(() => {
+    const fetchCounts = async () => {
+      try {
+        const [medicineData, patientData, pharmacistData] = await Promise.all([
+          getMedicinesCount(),
+          getPatientsCount(),
+          getPharmacistsCount(),
+        ]);
+        setMedicineCount(medicineData);
+        setPatientsCount(patientData);
+        setPharmacistsCount(pharmacistData);
+      } catch (error) {
+        console.error('Failed to fetch counts:', error);
+      }
+    };
+
+    fetchCounts();
+  }, []);
+
   const salesData = {
     labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
     datasets: [
@@ -15,7 +41,7 @@ const PharmacyDashboard: React.FC = () => {
         backgroundColor: 'rgba(54, 162, 235, 0.2)',
         borderColor: 'rgba(54, 162, 235, 1)',
         borderWidth: 2,
-        tension: 0.4, // smooth line
+        tension: 0.4,
         fill: true,
       },
     ],
@@ -38,7 +64,7 @@ const PharmacyDashboard: React.FC = () => {
     <div className="flex flex-col md:flex-row h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100">
       <main className="flex-1 p-6">
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold text-gray-800">Overview </h1>
+          <h1 className="text-2xl font-bold text-gray-800">Overview</h1>
           <div className="flex items-center space-x-4">
             <input
               type="text"
@@ -53,14 +79,28 @@ const PharmacyDashboard: React.FC = () => {
 
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 mb-8">
           {[
-            { icon: <FaShoppingCart />, value: "239", label: "Quantity of Sales", bgColor: "bg-blue-500" },
-            { icon: <FaDollarSign />, value: "$19,989.00", label: "Revenue", bgColor: "bg-green-500" },
-            { icon: <FaChartBar />, value: "$5,999.00", label: "Profit", bgColor: "bg-yellow-500" },
-            { icon: <FaPills />, value: "$96,000.00", label: "Value of Stock", bgColor: "bg-orange-500" },
-            { icon: <FaDollarSign />, value: "$3,449.00", label: "Total Due", bgColor: "bg-pink-500" },
-            { icon: <FaUsers />, value: "39", label: "Total Customers", bgColor: "bg-purple-500" },
-            { icon: <FaFileAlt />, value: "11", label: "Total Suppliers", bgColor: "bg-red-500" },
-            { icon: <FaUsers />, value: "4", label: "Total Users", bgColor: "bg-teal-500" },
+            // { icon: <FaShoppingCart />, value: '239', label: 'Quantity of Sales', bgColor: 'bg-blue-500' },
+            {
+              icon: <FaPills />,
+              value: medicineCount !== null ? medicineCount : 'Loading...',
+              label: 'Total Medicines',
+              bgColor: 'bg-orange-500',
+            },
+            {
+              icon: <FaUsers />,
+              value: patientsCount !== null ? patientsCount : 'Loading...',
+              label: 'Total Patients',
+              bgColor: 'bg-purple-500',
+            },
+            {
+              icon: <FaUsers />,
+              value: pharmacistsCount !== null ? pharmacistsCount : 'Loading...',
+              label: 'Total Pharmacists',
+              bgColor: 'bg-teal-500',
+            },
+            { icon: <FaChartBar />, value: '$5,999.00', label: 'Profit', bgColor: 'bg-yellow-500' },
+            { icon: <FaDollarSign />, value: '$3,449.00', label: 'Total Due', bgColor: 'bg-pink-500' },
+            { icon: <FaFileAlt />, value: '11', label: 'Total Suppliers', bgColor: 'bg-red-500' },
           ].map((stat, index) => (
             <div
               key={index}
@@ -77,15 +117,11 @@ const PharmacyDashboard: React.FC = () => {
           ))}
         </div>
 
-        {/* Animated Charts */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-          {/* Sales Line Chart */}
           <div className="bg-white p-6 rounded-lg shadow-lg">
             <h2 className="text-lg font-semibold mb-4 text-gray-800">Weekly Sales</h2>
             <Line data={salesData} options={{ responsive: true, animation: { duration: 1000 } }} />
           </div>
-
-          {/* Expenses Bar Chart */}
           <div className="bg-white p-6 rounded-lg shadow-lg">
             <h2 className="text-lg font-semibold mb-4 text-gray-800">Expense Breakdown</h2>
             <Bar data={expenseData} options={{ responsive: true, animation: { duration: 1000 } }} />

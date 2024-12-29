@@ -54,3 +54,14 @@ export const deleteMedicine = async (id: number) => {
     throw error;
   }
 };
+
+//medicine count
+export const getMedicinesCount = async () => {
+  try {
+    const response = await axiosInstance.get('api/medicines/count/');
+    return response.data.count;
+  } catch (error) {
+    console.error('Error fetching medicines count:', error);
+    return 0;
+  }
+};
