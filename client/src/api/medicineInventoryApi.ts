@@ -35,8 +35,18 @@ export const createMedicine = async (medicineData: {
 };
 
 // Update a medicine by ID
+// export const updateMedicine = async (id: number, medicineData: object) => {
+//   try {
+//     const response = await axiosInstance.put(`medicines/${id}/`, medicineData);
+//     return response.data;
+//   } catch (error) {
+//     console.error('Error updating medicine:', error);
+//     throw error;
+//   }
+// };
 export const updateMedicine = async (id: number, medicineData: object) => {
   try {
+    console.log("Updating Medicine Payload:", medicineData);
     const response = await axiosInstance.put(`medicines/${id}/`, medicineData);
     return response.data;
   } catch (error) {
@@ -44,6 +54,7 @@ export const updateMedicine = async (id: number, medicineData: object) => {
     throw error;
   }
 };
+
 
 // Delete a medicine by ID
 export const deleteMedicine = async (id: number) => {
@@ -66,15 +77,15 @@ export const getMedicinesCount = async () => {
   }
 };
 
-//total stock value
-export const getStockValue = async () => {
+// Fetch the total stock value
+export const getTotalStockValue = async () => {
   try {
     const response = await axiosInstance.get('api/medicines/total-stock-value/');
-    console.log('Stock Value Response:', response.data); 
-    return response.data.total_stock_value || 0;
+    return response.data.total_stock_value; 
   } catch (error) {
-    console.error('Error fetching stock value:', error);
-    return 0;
+    console.error('Error fetching total stock value:', error);
+    throw error;
   }
 };
+
 

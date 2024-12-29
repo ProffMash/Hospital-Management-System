@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { FaPills, FaUsers, FaDollarSign, FaFileAlt, FaChartBar } from 'react-icons/fa';
+import { FaPills, FaUsers, FaDollarSign } from 'react-icons/fa';
 import { Line, Bar } from 'react-chartjs-2';
 import { Chart, registerables } from 'chart.js';
 import { getMedicinesCount } from '../../api/medicineInventoryApi';
 import { getPatientsCount } from '../../api/patientApi';
 import { getPharmacistsCount } from '../../api/pharmaApi';
+import { getTotalStockValue } from '../../api/medicineInventoryApi'; 
 
 Chart.register(...registerables);
 
@@ -12,20 +13,23 @@ const PharmacyDashboard: React.FC = () => {
   const [medicineCount, setMedicineCount] = useState<number | null>(null);
   const [patientsCount, setPatientsCount] = useState<number | null>(null);
   const [pharmacistsCount, setPharmacistsCount] = useState<number | null>(null);
+  const [totalStockValue, setTotalStockValue] = useState<number | null>(null); 
 
   useEffect(() => {
     const fetchCounts = async () => {
       try {
-        const [medicineData, patientData, pharmacistData] = await Promise.all([
+        const [medicineData, patientData, pharmacistData, stockValueData] = await Promise.all([
           getMedicinesCount(),
           getPatientsCount(),
           getPharmacistsCount(),
+          getTotalStockValue(), 
         ]);
         setMedicineCount(medicineData);
         setPatientsCount(patientData);
         setPharmacistsCount(pharmacistData);
+        setTotalStockValue(stockValueData); 
       } catch (error) {
-        console.error('Failed to fetch counts:', error);
+        console.error('Failed to fetch data:', error);
       }
     };
 
@@ -79,7 +83,6 @@ const PharmacyDashboard: React.FC = () => {
 
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 mb-8">
           {[
-            // { icon: <FaShoppingCart />, value: '239', label: 'Quantity of Sales', bgColor: 'bg-blue-500' },
             {
               icon: <FaPills />,
               value: medicineCount !== null ? medicineCount : 'Loading...',
@@ -98,9 +101,12 @@ const PharmacyDashboard: React.FC = () => {
               label: 'Total Pharmacists',
               bgColor: 'bg-teal-500',
             },
-            { icon: <FaChartBar />, value: '$5,999.00', label: 'Profit', bgColor: 'bg-yellow-500' },
-            { icon: <FaDollarSign />, value: '$3,449.00', label: 'Total Due', bgColor: 'bg-pink-500' },
-            { icon: <FaFileAlt />, value: '11', label: 'Total Suppliers', bgColor: 'bg-red-500' },
+            {
+              icon: <FaDollarSign />,
+              value: totalStockValue !== null ? `$${totalStockValue.toFixed(2)}` : 'Loading...', 
+              label: 'Total Stock Value',
+              bgColor: 'bg-blue-500',
+            },
           ].map((stat, index) => (
             <div
               key={index}
