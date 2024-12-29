@@ -202,3 +202,7 @@ def get_appointments_count(request):
 def get_admin_count(request):
     count = Admin.objects.count()
     return JsonResponse({'count': count})
+
+def get_medicines_count(request):
+    count = MedicineInventory.objects.count()
+    return JsonResponse({'count': count})

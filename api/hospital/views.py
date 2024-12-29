@@ -172,6 +172,11 @@ class AppointmentViewSet(viewsets.ModelViewSet):
 class MedicineInventoryViewSet(viewsets.ModelViewSet):
     queryset = MedicineInventory.objects.all()
     serializer_class = MedicineInventorySerializer
+    
+    @action(detail=False, methods=['get'], url_path='count')
+    def get_medicine_count(self, request):
+        count = MedicineInventory.objects.count()
+        return Response(CountSerializer({'count': count}).data)
 
 
 class PatientViewSet(viewsets.ModelViewSet):
