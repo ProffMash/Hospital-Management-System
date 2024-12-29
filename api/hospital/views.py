@@ -11,6 +11,8 @@ from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
 import uuid
 
+from django.db.models import Sum, F
+
 from .serializers import (
     PatientSerializer, DoctorSerializer, PharmacistSerializer, ContactSerializer,
     ReportSerializer, SupportTicketSerializer, PatientDiagnosisSerializer,
@@ -222,3 +224,11 @@ class PharmacistViewSet(viewsets.ModelViewSet):
         count = Pharmacist.objects.count()
         # Use the CountSerializer to return the count
         return Response(CountSerializer({'count': count}).data)
+    
+
+class TotalStockValueView(APIView):
+    def get(self, request, *args, **kwargs):
+        total_stock_value = MedicineInventory.objects.aggregate(
+            total_value=Sum(F('price') * F('quantity'))
+        )['total_value'] or 0
+        return Response({"total_stock_value": total_stock_value})
