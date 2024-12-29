@@ -126,8 +126,13 @@ class AdminViewSet(viewsets.ModelViewSet):
         return Response(CountSerializer({'count': count}).data)
 
 class AppointmentsViewSet(viewsets.ModelViewSet):
-    queryset = Appointments.objects.all()  # Fetch all appointments
-    serializer_class = AppointmentsSerializer  # Use the serializer
+    queryset = Appointments.objects.all()  
+    serializer_class = AppointmentsSerializer  
+    
+    @action(detail=False, methods=['get'], url_path='count')
+    def get_appointments_count(self, request):
+        count = Appointments.objects.count()
+        return Response(CountSerializer({'count': count}).data)
 
 class SupportViewSet(viewsets.ModelViewSet):
     queryset = Support.objects.all()
@@ -165,9 +170,10 @@ class PatientDiagnosisViewSet(viewsets.ModelViewSet):
     queryset = PatientDiagnosis.objects.all()
     serializer_class = PatientDiagnosisSerializer
 
-class AppointmentViewSet(viewsets.ModelViewSet):
-    queryset = Appointment.objects.all()  # Get all appointments
-    serializer_class = AppointmentSerializer  # Use the modified serializer
+class AppointmentViewSet(viewsets.ModelViewSet): ###duplicate###
+    queryset = Appointment.objects.all()  
+    serializer_class = AppointmentSerializer 
+    
 
 class MedicineInventoryViewSet(viewsets.ModelViewSet):
     queryset = MedicineInventory.objects.all()
@@ -189,7 +195,6 @@ class PatientViewSet(viewsets.ModelViewSet):
         Returns the total count of patients.
         """
         count = Patient.objects.count()
-        # Use the CountSerializer to return the count
         return Response(CountSerializer({'count': count}).data)
 
 class DoctorViewSet(viewsets.ModelViewSet):
