@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FaPlus, FaEdit, FaTrash,  FaShoppingBag } from 'react-icons/fa';
+import { FaPlus, FaEdit, FaTrash, FaShoppingBag } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { getMedicines, deleteMedicine, updateMedicine } from '../../api/medicineInventoryApi';
 import { ToastContainer, toast } from 'react-toastify';
@@ -10,6 +10,8 @@ const MedicineInventory: React.FC = () => {
   const [medicines, setMedicines] = useState<any[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>(''); 
   const [filteredMedicines, setFilteredMedicines] = useState<any[]>([]);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const itemsPerPage = 6;
 
   useEffect(() => {
     const fetchMedicines = async () => {
@@ -61,6 +63,7 @@ const MedicineInventory: React.FC = () => {
         medicine.category.toLowerCase().includes(query)
     );
     setFilteredMedicines(filtered);
+    setCurrentPage(1); // Reset to the first page after search
   };
 
   // Handle sale action (reduces quantity)
@@ -100,6 +103,15 @@ const MedicineInventory: React.FC = () => {
     }
   };
 
+  // Pagination logic
+  const totalPages = Math.ceil(filteredMedicines.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const paginatedMedicines = filteredMedicines.slice(startIndex, startIndex + itemsPerPage);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
   return (
     <div className="p-8 bg-gradient-to-br from-gray-50 to-gray-200 min-h-screen">
       <h2 className="text-4xl font-extrabold text-blue-900 mb-8">Medicine Inventory</h2>
@@ -136,8 +148,8 @@ const MedicineInventory: React.FC = () => {
             </tr>
           </thead>
           <tbody>
-            {filteredMedicines.length > 0 ? (
-              filteredMedicines.map((medicine) => (
+            {paginatedMedicines.length > 0 ? (
+              paginatedMedicines.map((medicine) => (
                 <tr key={medicine.id} className="transition duration-150 hover:bg-blue-50">
                   <td className="p-4 font-semibold text-gray-600">{medicine.id}</td>
                   <td className="p-4 font-semibold text-gray-600">{medicine.name}</td>
@@ -163,7 +175,7 @@ const MedicineInventory: React.FC = () => {
                       onClick={() => handleSell(medicine)}
                       className="p-2 bg-yellow-100 text-yellow-600 rounded-full hover:bg-yellow-200 transition duration-200"
                     >
-                      < FaShoppingBag />
+                      <FaShoppingBag />
                     </button>
                   </td>
                 </tr>
@@ -177,6 +189,20 @@ const MedicineInventory: React.FC = () => {
             )}
           </tbody>
         </table>
+      </div>
+
+      <div className="flex justify-center mt-4">
+        {Array.from({ length: totalPages }, (_, index) => index + 1).map((page) => (
+          <button
+            key={page}
+            onClick={() => handlePageChange(page)}
+            className={`mx-1 px-4 py-2 rounded-full ${
+              currentPage === page ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-600'
+            } hover:bg-blue-400 hover:text-white transition duration-200`}
+          >
+            {page}
+          </button>
+        ))}
       </div>
 
       <ToastContainer /> 
