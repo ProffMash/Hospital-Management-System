@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FiUsers, FiActivity, FiUserCheck } from "react-icons/fi";
 import { FaDollarSign } from "react-icons/fa";
-import { FaProcedures } from "react-icons/fa";
+import { FaProcedures, FaPills } from "react-icons/fa";
 import { Line, Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -19,6 +19,7 @@ import { getPatientsCount } from "../../api/patientApi";
 import { getPharmacyCount } from "../../api/pharmacistApi";
 import { getAdminsCount } from "../../api/adminApi";
 import { getTotalStockValue } from "../../api/medicineInventoryApi";
+import { getMedicinesCount } from "../../api/medicineInventoryApi";
 
 // Register required Chart.js components
 ChartJS.register(
@@ -39,6 +40,7 @@ const Dashboard: React.FC = () => {
   const [pharmacyCount, setPharmacyCount] = useState<number | undefined>(undefined); 
   const [adminsCount, setAdminsCount] = useState<number | undefined>(undefined);
   const [totalStockValue, setTotalStockValue] = useState<number | undefined>(undefined);
+  const [medicineCount, setMedicineCount] = useState<number | undefined>(undefined);
 
   // Fetch data on component mount
   useEffect(() => {
@@ -49,12 +51,14 @@ const Dashboard: React.FC = () => {
         const pharmacy = await getPharmacyCount(); 
         const admins = await getAdminsCount();
         const stockValue = await getTotalStockValue();
+        const medicineData = await getMedicinesCount();
 
         setDoctorsCount(doctors);
         setPatientsCount(patients);
         setPharmacyCount(pharmacy);
         setAdminsCount(admins);
         setTotalStockValue(stockValue);
+        setMedicineCount(medicineData);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -171,6 +175,14 @@ const Dashboard: React.FC = () => {
             bgColor="bg-red-100"
             iconColor="text-yellow-600"
           />
+          <SummaryCard
+            icon={<FaPills />}
+            title="Total Medicines Type"
+            value={medicineCount !== undefined ? medicineCount.toString() : "Loading..."}
+            growth="+5%"
+            bgColor="bg-purple-200"
+            iconColor="text-yellow-600"
+            />
         </div>
 
         {/* Analytics Section */}
