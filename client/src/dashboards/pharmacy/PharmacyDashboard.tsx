@@ -86,7 +86,7 @@ const PharmacyDashboard: React.FC = () => {
             {
               icon: <FaPills />,
               value: medicineCount !== null ? medicineCount : 'Loading...',
-              label: 'Total Medicines',
+              label: 'Total Medicines Type',
               bgColor: 'bg-orange-500',
             },
             {
