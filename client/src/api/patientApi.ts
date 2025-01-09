@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://127.0.0.1:8000/api/patients/';
+const API_URL = 'https://hospital-m-s-backend.onrender.com/api/patients/';
 
 interface Patient {
   id: number;
@@ -63,7 +63,7 @@ export const deletePatient = async (id: number) => {
 
 export const getPatientsCount = async () => {
   try {
-    const response = await axios.get('http://127.0.0.1:8000/api/patients/count/');
+    const response = await axios.get('https://hospital-m-s-backend.onrender.com/api/patients/count/');
     return response.data.count; 
   } catch (error) {
     console.error('Error fetching patients count:', error);
