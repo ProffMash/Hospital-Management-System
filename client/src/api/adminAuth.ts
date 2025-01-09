@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://127.0.0.1:8000/api/auth';
+const BASE_URL = 'https://hospital-m-s-backend.onrender.com/api/auth';
 
 // Define types for requests and responses
 export interface RegisterAdminRequest {
