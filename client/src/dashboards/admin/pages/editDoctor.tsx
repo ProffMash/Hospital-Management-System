@@ -42,7 +42,7 @@ const EditDoctorForm: React.FC = () => {
     setLoading(true); // Set loading state to true while updating
     try {
       const response = await axios.patch(
-        `http://127.0.0.1:8000/api/doctors/${formData.id}/`,
+        `https://hospital-m-s-backend.onrender.com/api/doctors/${formData.id}/`,
         formData
       );
 
