@@ -188,7 +188,7 @@ const AppointmentsTable = () => {
             events={events}
             startAccessor="start"
             endAccessor="end"
-            style={{ height: 300, width: "100%", marginBottom: 20 }} // Adjusted width and height
+            style={{ height: 300, width: "100%", marginBottom: 20 }} 
             onSelectSlot={(slotInfo) => {
               const selectedDate = format(slotInfo.start, "yyyy-MM-dd");
               setSelectedDate(selectedDate);
