@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const BASE_URL = "http://127.0.0.1:8000/api/medappointment/";
+// const BASE_URL = "http://127.0.0.1:8000/api/medappointment/";
+const BASE_URL = "https://hospital-m-s-backend.onrender.com/api/medappointment/";
 
 // Define the Appointment interface
 export interface Appointment {
