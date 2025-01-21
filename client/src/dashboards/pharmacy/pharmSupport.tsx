@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { MdPerson, MdEmail, MdMessage, MdSend } from "react-icons/md";
-import { createSupportTicket } from "../../api/SupportApi"; // Assuming you have a createSupportTicket function
+import { createSupportTicket } from "../../api/SupportApi"; 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
