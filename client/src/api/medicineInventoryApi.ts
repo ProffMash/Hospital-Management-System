@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-  baseURL: 'http://127.0.0.1:8000/api/', 
+  // baseURL: 'http://127.0.0.1:8000/api/', 
+  baseURL: 'https://hospital-m-s-backend.onrender.com/api/',
   headers: {
     'Content-Type': 'application/json',
   },
@@ -34,16 +35,6 @@ export const createMedicine = async (medicineData: {
   }
 };
 
-// Update a medicine by ID
-// export const updateMedicine = async (id: number, medicineData: object) => {
-//   try {
-//     const response = await axiosInstance.put(`medicines/${id}/`, medicineData);
-//     return response.data;
-//   } catch (error) {
-//     console.error('Error updating medicine:', error);
-//     throw error;
-//   }
-// };
 export const updateMedicine = async (id: number, medicineData: object) => {
   try {
     console.log("Updating Medicine Payload:", medicineData);
