@@ -1,7 +1,9 @@
 import axios from 'axios';
 
 const API_URL = 'http://127.0.0.1:8000/api/patient-diagnosis/'; 
-const PHARMACY_COUNT_API_URL = 'http://127.0.0.1:8000/api/api/pharmacists/count'; 
+const PHARMACY_COUNT_API_URL = 'http://127.0.0.1:8000/api/api/pharmacists/count';
+// const API_URL = 'http://127.0.0.1:8000/api/patient-diagnosis/'; 
+// const PHARMACY_COUNT_API_URL = 'http://127.0.0.1:8000/api/api/pharmacists/count';  
 
 export const createPatientDiagnosis = async (patientDiagnosisData: {
   patient: number; // Patient ID
@@ -56,7 +58,7 @@ export const deletePatientDiagnosis = async (id: number) => {
 export const getPharmacyCount = async (): Promise<number> => {
   try {
     const response = await axios.get(PHARMACY_COUNT_API_URL);
-    return response.data.count; // Assuming the API response has a 'count' field
+    return response.data.count; 
   } catch (error) {
     console.error('Error fetching pharmacy count:', error);
     throw error;

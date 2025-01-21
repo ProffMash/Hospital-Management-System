@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { FaPills, FaUsers, FaDollarSign } from 'react-icons/fa';
-import { Line, Bar } from 'react-chartjs-2';
+import { Bar } from 'react-chartjs-2';
 import { Chart, registerables } from 'chart.js';
 import { getMedicinesCount } from '../../api/medicineInventoryApi';
 import { getPatientsCount } from '../../api/patientApi';
@@ -36,29 +36,35 @@ const PharmacyDashboard: React.FC = () => {
     fetchCounts();
   }, []);
 
-  const salesData = {
-    labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+  const barDataCounts = {
+    labels: ['Medicines', 'Patients', 'Pharmacists'],
     datasets: [
       {
-        label: 'Sales ($)',
-        data: [150, 200, 250, 180, 220],
-        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-        borderColor: 'rgba(54, 162, 235, 1)',
-        borderWidth: 2,
-        tension: 0.4,
-        fill: true,
+        label: 'Counts',
+        data: [medicineCount || 0, patientsCount || 0, pharmacistsCount || 0],
+        backgroundColor: [
+          'rgba(255, 159, 64, 0.6)',
+          'rgba(153, 102, 255, 0.6)',
+          'rgba(75, 192, 192, 0.6)',
+        ],
+        borderColor: [
+          'rgba(255, 159, 64, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(75, 192, 192, 1)',
+        ],
+        borderWidth: 1,
       },
     ],
   };
 
-  const expenseData = {
-    labels: ['Food', 'Transport', 'Office Supplies', 'Utilities'],
+  const barDataStock = {
+    labels: ['Total Stock Value'],
     datasets: [
       {
-        label: 'Expenses ($)',
-        data: [250, 120, 80, 60],
-        backgroundColor: 'rgba(255, 99, 132, 0.6)',
-        borderColor: 'rgba(255, 99, 132, 1)',
+        label: 'Stock Value ($)',
+        data: [totalStockValue || 0],
+        backgroundColor: 'rgba(54, 162, 235, 0.6)',
+        borderColor: 'rgba(54, 162, 235, 1)',
         borderWidth: 1,
       },
     ],
@@ -82,8 +88,7 @@ const PharmacyDashboard: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 mb-8">
-          {[
-            {
+          {[{
               icon: <FaPills />,
               value: medicineCount !== null ? medicineCount : 'Loading...',
               label: 'Total Medicines Type',
@@ -103,11 +108,10 @@ const PharmacyDashboard: React.FC = () => {
             },
             {
               icon: <FaDollarSign />,
-              value: totalStockValue !== null ? `$${totalStockValue.toFixed(2)}` : 'Loading...', 
+              value: totalStockValue !== null ? `$${totalStockValue.toFixed(2)}` : 'Loading...',
               label: 'Total Stock Value',
               bgColor: 'bg-blue-500',
-            },
-          ].map((stat, index) => (
+            }].map((stat, index) => (
             <div
               key={index}
               className={`${stat.bgColor} text-white p-5 rounded-lg shadow-lg transform hover:scale-105 transition duration-300 ease-in-out`}
@@ -125,12 +129,12 @@ const PharmacyDashboard: React.FC = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           <div className="bg-white p-6 rounded-lg shadow-lg">
-            <h2 className="text-lg font-semibold mb-4 text-gray-800">Weekly Sales</h2>
-            <Line data={salesData} options={{ responsive: true, animation: { duration: 1000 } }} />
+            <h2 className="text-lg font-semibold mb-4 text-gray-800">Overview Counts</h2>
+            <Bar data={barDataCounts} options={{ responsive: true, animation: { duration: 1000 } }} />
           </div>
           <div className="bg-white p-6 rounded-lg shadow-lg">
-            <h2 className="text-lg font-semibold mb-4 text-gray-800">Expense Breakdown</h2>
-            <Bar data={expenseData} options={{ responsive: true, animation: { duration: 1000 } }} />
+            <h2 className="text-lg font-semibold mb-4 text-gray-800">Total Stock Value</h2>
+            <Bar data={barDataStock} options={{ responsive: true, animation: { duration: 1000 } }} />
           </div>
         </div>
       </main>

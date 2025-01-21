@@ -1,6 +1,8 @@
 import axios from 'axios';
 
 const BASE_URL = 'https://hospital-m-s-backend.onrender.com/api/contacts/';
+// const BASE_URL = 'http://127.0.0.1:8000/api/contacts/';
+
 
 export interface Contact {
   contact_id?: number; 

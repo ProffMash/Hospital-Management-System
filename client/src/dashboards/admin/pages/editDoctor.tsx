@@ -43,6 +43,7 @@ const EditDoctorForm: React.FC = () => {
     try {
       const response = await axios.patch(
         `https://hospital-m-s-backend.onrender.com/api/doctors/${formData.id}/`,
+        // `http://127.0.0.1:8000/api/doctors/${formData.id}/`,
         formData
       );
 

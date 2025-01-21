@@ -2,6 +2,7 @@ import axios from 'axios';
 
 // Base URL of the API
 const API_BASE_URL = 'https://hospital-m-s-backend.onrender.com/api/supports/';
+// const API_BASE_URL = 'http://127.0.0.1:8000/api/supports/';
 
 // Support Model Interface
 export interface Support {
